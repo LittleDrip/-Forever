@@ -1,0 +1,8 @@
+/* 加载字体 */
+@font-face {
+    font-family: "MiSans";
+    src: url('./MiSans-Normal.woff2');
+    
+    font-weight: normal;
+    font-style: normal;
+}
