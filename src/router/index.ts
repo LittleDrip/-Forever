@@ -13,12 +13,17 @@ const router = createRouter({
         {
           path: '/commonSense',
           name: '心理常识',
-          component: () => import('../components/meunContent/CommonSense.vue'),
+          component: () => import('../views/menu/CommonSense.vue'),
         },
         {
           path: '/diagnosticTests',
           name: '诊断测试',
-          component: () => import('../components/meunContent/DiagnosticTests.vue'),
+          component: () => import('../views/menu/DiagnosticTests.vue'),
+        },
+        {
+          path: '/article',
+          name: '文章',
+          component: () => import('../views/details/ArticleDetail.vue'),
         }
       ]
     },

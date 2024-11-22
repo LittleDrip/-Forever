@@ -8,6 +8,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     ComfortCenter: typeof import('./src/components/meunContent/ComfortCenter.vue')['default']
+    Comment: typeof import('./src/components/comment/Comment.vue')['default']
     CommonSense: typeof import('./src/components/meunContent/CommonSense.vue')['default']
     DiagnosticTests: typeof import('./src/components/meunContent/DiagnosticTests.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
@@ -20,8 +21,14 @@ declare module 'vue' {
     ElRow: typeof import('element-plus/es')['ElRow']
     ElTag: typeof import('element-plus/es')['ElTag']
     ElText: typeof import('element-plus/es')['ElText']
+    FunClass: typeof import('./src/components/aside/FunClass.vue')['default']
+    Quote: typeof import('./src/components/aside/Quote.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     TeensPsy: typeof import('./src/components/meunContent/TeensPsy.vue')['default']
+    UComment: typeof import('undraw-ui')['UComment']
+    UCommentScroll: typeof import('undraw-ui')['UCommentScroll']
+    UDivider: typeof import('undraw-ui')['UDivider']
+    UFold: typeof import('undraw-ui')['UFold']
   }
 }

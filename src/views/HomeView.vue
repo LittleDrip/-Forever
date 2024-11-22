@@ -42,6 +42,7 @@ const handleSearch = () => {
             <div class="search-bar">
               <input type="text" class="search-input" placeholder="Search..." />
               <div class="search-icon">
+
                 <img src="../assets/svg/search.svg" alt="">
               </div>
             </div>
@@ -49,6 +50,8 @@ const handleSearch = () => {
           </div>
 
         </div>
+
+
       </div>
     </div>
     <div class="main-container">
@@ -71,7 +74,8 @@ const handleSearch = () => {
 }
 
 .header {
-
+  z-index: 1000;
+  /* 确保导航栏位于最上方 */
   display: flex;
   align-items: center; // 垂直居中
   // justify-content: center; // 水平居中（可选，根据需求调整）
@@ -187,7 +191,7 @@ const handleSearch = () => {
   .content {
     // margin: 0 15em; // 设置左右两边的空白距离
     padding: 0; // 内容的内边距（可选）
-    // background-color: #ffffff; // 内容区域的白色背景
+    // background-color: #ffffff; // 内容区域的白色背景s
     flex: 1; // 子元素撑满父容器
 
   }
