@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import router from '@/router';
 import { ref } from 'vue';
-
+import Avatar from '@/components/head/avatar.vue';
 //菜单
 const menuItems = ["心理常识", "诊断测试", "慰藉中心", "青少年心理", "论坛信息", "热点新闻"];
 // 搜索框内容
@@ -9,6 +9,19 @@ const searchQuery = ref("");
 
 // 保存选中的菜单索引
 const activeIndex = ref(0);
+// 用户菜单显示状态
+const userMenuVisible = ref(false);
+
+// 切换用户菜单显示状态
+const toggleUserMenu = () => {
+  userMenuVisible.value = !userMenuVisible.value;
+};
+
+// 登录操作
+const handleLogin = () => {
+  console.log("跳转到登录页面");
+  router.push({ name: "login" });
+};
 
 // 点击菜单时，更新选中的索引
 const handleMenuClick = (index: number, item: any) => {
@@ -48,12 +61,15 @@ const handleSearch = () => {
             </div>
             <div class="glow"></div>
           </div>
-
         </div>
+      </div>
 
-
+      <!-- 登录头像 -->
+      <div class="avatar-container">
+        <Avatar />
       </div>
     </div>
+
     <div class="main-container">
       <div class="content">
         <transition name="el-fade-in-linear">
@@ -74,6 +90,10 @@ const handleSearch = () => {
 }
 
 .header {
+
+
+
+
   z-index: 1000;
   /* 确保导航栏位于最上方 */
   display: flex;
@@ -120,10 +140,11 @@ const handleSearch = () => {
     }
   }
 
+
+
   .search-box {
-    // flex: 0 0 10%;
     /* 占 20% */
-    // margin-left: 2em;
+    margin-left: 2em;
 
 
     /* From Uiverse.io by themrsami */
@@ -177,6 +198,13 @@ const handleSearch = () => {
   }
 
 }
+
+.avatar-container {
+  position: relative;
+  margin-left: auto; // 推到右侧
+  margin-right: 2em;
+}
+
 
 .main-container {
   flex: 1; // 占满剩余空间

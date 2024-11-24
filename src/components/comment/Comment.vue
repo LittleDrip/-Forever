@@ -2,7 +2,10 @@
     <u-comment-scroll style="padding: 0;" :disable="disable" @more="more">
         <u-comment :config="config" @submit="submit" @reply-page="replyPage" @before-data="beforeData">
             <!-- <template>导航栏卡槽</template> -->
-            <!-- <template #header>头部卡槽</template> -->
+            <template #header>
+                <br>
+                <h1>评论</h1>
+            </template>
             <!-- <template #action="{ user }">动作卡槽{{ user.username }}</template> -->
             <!-- <template #avatar="{ id, user }">头像卡槽{{ user.avatar }}</template> -->
             <!-- <template #info>信息卡槽</template> -->
@@ -19,7 +22,6 @@ import emoji from '@/assets/emoji'
 import { defineProps, reactive, ref, watch, toRef } from 'vue'
 import { ConfigApi, UToast, CommentSubmitApi, CommentReplyPageApi } from 'undraw-ui'
 import { AComment } from '@/api';
-// 接收来自父组件的 articleId
 // 接收来自父组件的 articleId
 const props = defineProps({
     articleId: {
@@ -40,14 +42,18 @@ const config = reactive<ConfigApi>({
     relativeTime: true,  // 开启人性化时间
     page: true, // 开启分页
     show: {
-        likes: false
+        likes: false,
+        homeLink: false,
+        address: false,
+        level: false,
+
     }
 })
 
 setTimeout(() => {
     // 当前登录用户数据
     config.user = {
-        id: 1,
+        id: 2,
         username: '杜甫 [唐代]',
         homeLink: '/1',
         avatar: 'https://static.juzicon.com/images/image-180327173755-IELJ.jpg',
@@ -92,6 +98,7 @@ watch(
 
 // 提交评论事件
 const submit = ({ content, parentId, finish }: CommentSubmitApi) => {
+    // 做敏感词审核
     let str = '提交评论:' + content + ';\t父id: ' + parentId
     console.log(str)
 
@@ -131,6 +138,7 @@ const replyPage = ({ parentId, pageNum, pageSize, finish }: CommentReplyPageApi)
 
 // 加载前评论数据处理
 function beforeData(val: any) {
+    // console.log("123");
 }
 </script>
 

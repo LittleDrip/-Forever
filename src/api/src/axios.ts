@@ -1,7 +1,10 @@
+import router from '@/router'
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
 // import { ResApi } from './requests.ts'
 import NProgress from 'nprogress'
+import { getAccessToken } from "@/stores/token";
+
 import 'nprogress/nprogress.css'
 
 const service = axios.create({
@@ -18,11 +21,18 @@ service.interceptors.request.use(
     if (num++ == 0) {
       NProgress.start()
     }
+    const token = getAccessToken()
+    //判断有没有token
+    if (token) {
+      config.headers.satoken = `Bearer ${token}`
+    }
     return config
   },
   error => {
     ElMessage.error('服务器出问题了')
     return Promise.reject(error)
+    // 网络错误或状态码处理
+
   }
 )
 
@@ -52,10 +62,21 @@ service.interceptors.response.use(
     }
     return Promise.reject(data.msg)
   },
-  error => {
+  (error) => {
     inc()
     NProgress.done()
-    return Promise.reject(error)
+    // 网络错误或状态码处理
+    if (error.response) {
+      const { status } = error.response;
+
+      // 未授权（401）
+      if (status === 401) {
+        ElMessage.error('未登录或登录已过期，请重新登录');
+        // 重定向到登录页面
+        router.push({ name: '登录' });
+      }
+      return Promise.reject(error)
+    }
   }
 )
 

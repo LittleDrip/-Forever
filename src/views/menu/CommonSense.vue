@@ -156,15 +156,15 @@ const toggleStar = (post: any) => {
 // 帖子数据
 const posts = ref([
     {
-        "title": "心理健康的重要性",
-        "content": "<p><strong>心理健康是整体健康的重要组成部分。研究表明，良好的心理状态能够有效增强免疫力，同时改善生活质量。</strong></p>",
-        "createTime": "2024-11-01 10:30:00",
-        "userId": 1,
-        "type": "1",
-        "commentCount": 5,
-        "likeCount": 23,
-        "readCount": 150,
-        "collectCount": 10
+        "title": "",
+        "content": "",
+        "createTime": "",
+        "userId": "",
+        "type": "",
+        "commentCount": "",
+        "likeCount": "",
+        "readCount": "",
+        "collectCount": ""
     },
 
 ]);

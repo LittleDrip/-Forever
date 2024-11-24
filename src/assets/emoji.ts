@@ -1,10 +1,10 @@
 const raw = '/static'
 
-const faceList = [`${raw}/emoji/smile.webp`, `${raw}/emoji/tv/tv.webp`]
+const faceList = [`${raw}/emoji/smile.webp`]
 
 const emojiList: {}[] = [
   {
-    '[口罩]': `${raw}/emoji/kouzhao.webp`,
+    '[口罩123]': `${raw}/emoji/kouzhao.webp`,
     '[狗头]': `${raw}/emoji/goutou.webp`,
     '[微笑]': `${raw}/emoji/smile.webp`,
     '[OK]': `${raw}/emoji/ok.webp`,
@@ -135,7 +135,7 @@ function allEmoji(): {} {
 }
 
 export default {
-  faceList,
+  // faceList,
   emojiList,
   allEmoji: allEmoji()
 }
