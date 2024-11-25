@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import { unauthorized } from '@/stores/token.ts';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -32,9 +33,18 @@ const router = createRouter({
       name: '登录',
       component: () => import('../views/user/Login.vue'),
     }
-
-
   ],
 })
+
+// router.beforeEach((to, from, next) => {
+//   const isUnauthorized = unauthorized()
+//   if (to.name.startsWith('welcome') && !isUnauthorized) {
+//     next('/index')
+//   } else if (to.fullPath.startsWith('/index') && isUnauthorized) {
+//     next('/')
+//   } else {
+//     next()
+//   }
+// })
 
 export default router

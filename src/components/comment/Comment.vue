@@ -22,6 +22,8 @@ import emoji from '@/assets/emoji'
 import { defineProps, reactive, ref, watch, toRef } from 'vue'
 import { ConfigApi, UToast, CommentSubmitApi, CommentReplyPageApi } from 'undraw-ui'
 import { AComment } from '@/api';
+import { useUserStore } from '@/stores/user';
+const userStore = useUserStore();
 // 接收来自父组件的 articleId
 const props = defineProps({
     articleId: {
@@ -50,16 +52,29 @@ const config = reactive<ConfigApi>({
     }
 })
 
-setTimeout(() => {
-    // 当前登录用户数据
-    config.user = {
-        id: 2,
-        username: '杜甫 [唐代]',
-        homeLink: '/1',
-        avatar: 'https://static.juzicon.com/images/image-180327173755-IELJ.jpg',
-    } as any
-}, 500)
-
+// setTimeout(() => {
+//     // 当前登录用户数据
+//     config.user = {
+//         username: userStore.userInfo.nickname,
+//         avatar: userStore.userInfo.avatar || 'https://cdn.uviewui.com/uview/album/1.jpg',
+//     } as any
+// }, 500)
+config.user = {
+    username: "未登录",
+    avatar: '',
+} as any
+watch(
+    () => userStore.userInfo,
+    (newUserInfo) => {
+        if (newUserInfo.nickname) {
+            config.user = {
+                username: newUserInfo.nickname,
+                avatar: newUserInfo.avatar,
+            };
+        }
+    },
+    { immediate: true } // 立即执行一次
+);
 
 const query = reactive({
     current: 1, // 当前页数

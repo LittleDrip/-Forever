@@ -2,6 +2,9 @@
 import router from '@/router';
 import { ref } from 'vue';
 import Avatar from '@/components/head/avatar.vue';
+import { useDarkMode } from '@/utils/useDarkMode';
+const { isDarkMode, toggleDarkMode } = useDarkMode();
+const value = ref(false)
 //菜单
 const menuItems = ["心理常识", "诊断测试", "慰藉中心", "青少年心理", "论坛信息", "热点新闻"];
 // 搜索框内容
@@ -16,6 +19,7 @@ const userMenuVisible = ref(false);
 const toggleUserMenu = () => {
   userMenuVisible.value = !userMenuVisible.value;
 };
+
 
 // 登录操作
 const handleLogin = () => {
@@ -68,6 +72,22 @@ const handleSearch = () => {
       <div class="avatar-container">
         <Avatar />
       </div>
+      <!-- 暗色模式 -->
+      <div class="dark-mode">
+        <div class="darkMode">
+          <el-tooltip content="颜色主题" placement="bottom">
+            <el-switch size="large" v-model="value" @click="toggleDarkMode"
+              style="--el-switch-on-color: #2c2c2c; --el-switch-off-color: #f2f2f2">
+              <template #active-action>
+                <span class="custom-action">🌙</span>
+              </template>
+              <template #inactive-action>
+                <span class="custom-action">🔆</span>
+              </template>
+            </el-switch>
+          </el-tooltip>
+        </div>
+      </div>
     </div>
 
     <div class="main-container">
@@ -91,10 +111,23 @@ const handleSearch = () => {
 
 .header {
 
+  .darkMode {
+    z-index: 999;
+  }
+
+  .custom-action {
+    user-select: none;
+    /* 禁止用户选择 */
+    -webkit-user-select: none;
+    /* 针对旧版 Webkit 内核的浏览器 */
+    -moz-user-select: none;
+    /* 针对旧版 Firefox 浏览器 */
+    -ms-user-select: none;
+    /* 针对旧版 Internet Explorer */
+  }
 
 
-
-  z-index: 1000;
+  z-index: 10;
   /* 确保导航栏位于最上方 */
   display: flex;
   align-items: center; // 垂直居中
@@ -202,7 +235,7 @@ const handleSearch = () => {
 .avatar-container {
   position: relative;
   margin-left: auto; // 推到右侧
-  margin-right: 2em;
+  margin-right: 10em;
 }
 
 

@@ -1,25 +1,29 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import { RouterLink, RouterView } from 'vue-router'
 import TestView from '@/views/TestView.vue';
-import { useDarkMode } from './utils/useDarkMode';
-const { isDarkMode, toggleDarkMode } = useDarkMode();
+
 </script>
 
 <template>
-  <div class="darkMode">
-    <el-button @click="toggleDarkMode">
-      {{ isDarkMode ? ' 🔆 ' : ' 🌙 ' }}
-    </el-button>
-  </div>
-  <RouterView />
+  <transition name="el-fade-in-linear">
+    <RouterView />
+  </transition>
   <!-- <TestView /> -->
 </template>
 
-<style scoped>
-.darkMode {
-  position: fixed;
-  top: 10px;
-  right: 10px;
-  z-index: 999;
+<style lang="scss" scoped>
+::v-deep(.el-switch__core) {
+  background: var(--gray-4) !important;
+}
+
+.el-fade-in-linear-enter-active,
+.el-fade-in-linear-leave-active {
+  transition: opacity 0.3s linear; // 设置过渡效果
+}
+
+.el-fade-in-linear-enter-from,
+.el-fade-in-linear-leave-to {
+  opacity: 0; // 初始状态或消失状态
 }
 </style>

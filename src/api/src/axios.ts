@@ -3,7 +3,7 @@ import axios from 'axios'
 import { ElMessage } from 'element-plus'
 // import { ResApi } from './requests.ts'
 import NProgress from 'nprogress'
-import { getAccessToken } from "@/stores/token";
+import { getAccessToken } from "@/stores/token.ts";
 
 import 'nprogress/nprogress.css'
 

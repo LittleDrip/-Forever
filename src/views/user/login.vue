@@ -8,7 +8,8 @@
                 </div>
                 <div class="form-container">
 
-                    <el-form ref="formRef" :model="form" :rules="rules" label-width="0" class="center-form">
+                    <el-form @keyup.enter.native="handleLogin" ref="formRef" :model="form" :rules="rules"
+                        label-width="0" class="center-form">
                         <el-form-item prop="username">
                             <el-input placeholder="请输入账号" :maxlength="30" v-model="form.username" clearable></el-input>
                         </el-form-item>
@@ -36,11 +37,14 @@
 </template>
 
 <script lang="ts" setup>
-import { userLoginService } from "@/api/user";
+import { userInfoService, userLoginService } from "@/api/user";
 import router from "@/router";
-import { storeAccessToken } from "@/stores/token";
+import { storeAccessToken } from "@/stores/token.ts";
+import { useUserStore } from '@/stores/user';
 import { ref, reactive } from "vue";
 // import { FormInstance } from 'element-plus';
+
+const userStore = useUserStore();
 // 引用表单实例
 const formRef = ref<FormInstance>();
 const form = ref({
@@ -48,6 +52,15 @@ const form = ref({
     password: "",
     remember: true,
 
+});
+const userInfo = ref({
+    username: '',  // 用户名
+    nickname: '',  // 昵称
+    age: null,     // 年龄
+    email: '',     // 邮箱
+    phone: '',     // 手机号码
+    avatar: '',    // 头像
+    createTime: null // 创建时间
 });
 
 // 引用表单实例
@@ -60,10 +73,13 @@ const handleLogin = async () => {
             const { username, password } = form.value;
             const requestData = { username, password }; // 使用解构得到的变量构建 requestData 对象
             let res = await userLoginService(requestData);
-            console.log(res);
             storeAccessToken(res.data.token, form.value.remember, res.data.expire);
+            let userInfo = await userInfoService();
+            console.log('userInfo', userInfo);
+            userStore.saveUserInfo(userInfo.data);
             router.push("/");
             ElMessage.success('登录成功！');
+
             console.log('登录表单数据：', form);
         } else {
             ElMessage.error('请检查填写是否正确');

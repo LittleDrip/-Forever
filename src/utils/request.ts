@@ -3,7 +3,7 @@ import axios from "axios";
 const baseURL = "/api"; //这个是在前端配置同源策略
 const instance = axios.create({ baseURL })
 import router from "@/router/index.js";
-import { getAccessToken } from "@/stores/token";
+import { getAccessToken } from "@/stores/token.ts";
 // 添加请求拦截器
 instance.interceptors.request.use(
   (config) => {

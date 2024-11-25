@@ -4,7 +4,9 @@
         <div class="container">
             <!-- 左侧内容 -->
             <div class="content">
-                <div class="post" v-for="post in posts" :key="post.id">
+                <el-skeleton :rows="50" animated v-if="posts.length <= 1    " />
+
+                <div v-else class="post" v-for="post in posts" :key="post.id">
                     <div @click="goToDetail(post.id)">
                         <h3 class="post-title">{{ post.title }}</h3>
                         <p class="post-content">{{ post.content }}</p>
