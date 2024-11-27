@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import router from '@/router';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import Avatar from '@/components/head/avatar.vue';
 import { useDarkMode } from '@/utils/useDarkMode';
 const { isDarkMode, toggleDarkMode } = useDarkMode();
@@ -14,6 +14,12 @@ const searchQuery = ref("");
 const activeIndex = ref(0);
 // 用户菜单显示状态
 const userMenuVisible = ref(false);
+
+watch(() => router.currentRoute.value, (to) => {
+  const index = to.meta.menuIndex;
+  activeIndex.value = typeof index === 'number' ? index : 0;
+}, { immediate: true });
+
 
 // 切换用户菜单显示状态
 const toggleUserMenu = () => {

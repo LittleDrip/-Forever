@@ -1,18 +1,20 @@
 <template>
     <div class="app">
         <h1 class="title">测试试卷</h1>
-        <div v-if="questions.length > 0" class="questions-container">
+        <div v-if="questions.length > 2" class="questions-container">
             <div v-for="(item, index) in questions" :key="item.id" class="question-item">
                 <p class="question-title">
-                    第 {{ index + 1 }} 题: {{ item.stContent }} <span>（{{ item.stScore }}分）</span>
+                    {{ index + 1 }} 、{{ item.stContent }}
                 </p>
                 <!-- 动态加载不同题型的组件 -->
                 <SingleChoice v-if="item.questionType === 1" v-model="item.resource" :options="item.options" />
                 <Judgment v-if="item.questionType === 2" v-model="item.resource" :options="item.options" />
                 <MultiChoice v-if="item.questionType === 3" v-model="item.resource" :options="item.options" />
                 <ShortAnswer v-if="item.questionType === 4" v-model="item.resource" />
+                <el-divider />
             </div>
-            <button class="submit-button" @click="submitAnswers">提交</button>
+
+            <el-button type="primary" class="submit-button" @click="submitAnswers">立即提交</el-button>
         </div>
         <div v-else class="no-questions">
             <p>暂无试题</p>
@@ -21,11 +23,15 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import SingleChoice from "@/components/quiz/SingleChoice.vue";
 import MultiChoice from "@/components/quiz/MultiChoice.vue";
 import Judgment from "@/components/quiz/Judgment.vue";
 import ShortAnswer from "@/components/quiz/ShortAnswer.vue";
+import { getQuestionsList } from "@/api/quiz";
+import { useRoute } from "vue-router";
+const route = useRoute();
+const loading = ref(true);
 
 const questions = ref([
     {
@@ -36,26 +42,41 @@ const questions = ref([
         resource: "",
         options: ["2000--3000", "5000--8000", "10000--12000", "14000--16000"],
     },
-    {
-        id: 2,
-        stContent: "太阳从西边升起。",
-        questionType: 2,
-        stScore: 5,
-        resource: "",
-        options: ["对", "错"],
-    },
 
-    {
-        id: 4,
-        stContent: "请简述Vue 3的主要特性。",
-        questionType: 4,
-        stScore: 20,
-        resource: "",
-    },
 ]);
+onMounted(() => {
 
+    console.log(route.params.id);
+    getQuestionsList(route.params.id).then((res) => {
+        const data = res.data;
+        // 将后端返回的数据转换为前端所需的数据格式
+        const formattedData = data.map(item => {
+            return {
+                id: item.id,
+                stContent: item.stcontent,  // 后端的字段名与前端不一致，需要映射
+                questionType: item.questiontype,
+                stScore: item.stscore,
+                options: JSON.parse(item.options)  // 解析 options 字符串为数组
+            };
+        });
+        // 更新 questions 数据
+        questions.value = formattedData;
+        loading.value = false;  // 数据加载完成，关闭 loading
+    }).catch((error) => {
+        loading.value = false;  // 如果请求失败，关闭 loading
+        console.error(error);
+    });
+});
 const submitAnswers = () => {
-    console.log("用户提交的答案:", questions.value.map((q) => q.resource));
+    // 处理用户提交的答案
+    const paperId = route.params.id; // 获取试卷ID
+    const userAnswer = questions.value.map(item => item.resource);
+    // 构建提交的数据对象
+    const submitData = {
+        paperId: paperId,
+        answers: userAnswer
+    };
+    console.log("用户提交的答案:", submitData);
 };
 </script>
 
@@ -75,20 +96,16 @@ const submitAnswers = () => {
             margin-bottom: 20px;
 
             .question-title {
-                font-weight: 700;
+                font-size: 1.5em;
                 margin-bottom: 10px;
             }
         }
 
         .submit-button {
             display: block;
-            margin: 20px auto;
-            padding: 10px 20px;
-            background-color: #409eff;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
+            margin: 6em auto 0 auto;
+            width: 12em;
+            height: 3em;
         }
     }
 

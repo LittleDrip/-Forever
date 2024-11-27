@@ -7,7 +7,6 @@
                     <p>专注青少年心理健康，让我们共同守护</p>
                 </div>
                 <div class="form-container">
-
                     <el-form @keyup.enter.native="handleLogin" ref="formRef" :model="form" :rules="rules"
                         label-width="0" class="center-form">
                         <el-form-item prop="username">
@@ -28,7 +27,6 @@
                             </el-button>
                         </el-form-item>
                     </el-form>
-
                 </div>
             </el-card>
 
@@ -41,6 +39,7 @@ import { userInfoService, userLoginService } from "@/api/user";
 import router from "@/router";
 import { storeAccessToken } from "@/stores/token.ts";
 import { useUserStore } from '@/stores/user';
+
 import { ref, reactive } from "vue";
 // import { FormInstance } from 'element-plus';
 

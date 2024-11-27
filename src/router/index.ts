@@ -14,12 +14,26 @@ const router = createRouter({
         {
           path: '/commonSense',
           name: '心理常识',
+          meta: { menuIndex: 0 },
           component: () => import('../views/menu/CommonSense.vue'),
         },
         {
           path: '/diagnosticTests',
           name: '诊断测试',
+          meta: { menuIndex: 1 },
           component: () => import('../views/menu/DiagnosticTests.vue'),
+          children: [
+            {
+              path: '/diagnosticTests/:id',
+              name: '测试详情',
+              component: () => import('../views/details/Quiz.vue'),
+            },
+            {
+              path: '/diagnosticTests/:id/result',
+              name: '测试结果',
+              component: () => import('../views/details/QuizResult.vue'),
+            }
+          ]
         },
         {
           path: '/article',

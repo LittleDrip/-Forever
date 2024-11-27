@@ -4,7 +4,7 @@
         <div class="container">
             <!-- 左侧内容 -->
             <div class="content">
-                <el-skeleton :rows="50" animated v-if="posts.length <= 1    " />
+                <el-skeleton :rows="50" animated v-if="posts.length <= 1" />
 
                 <div v-else class="post" v-for="post in posts" :key="post.id">
                     <div @click="goToDetail(post.id)">
@@ -134,11 +134,10 @@ import starSvg from "@/assets/svg/star.svg";
 import starSvgActive from "@/assets/svg/star_active.svg";
 import FunClass from "@/components/aside/FunClass.vue";
 import Quote from '@/components/aside/Quote.vue';
-import { articleListService } from '@/api/article.ts';
+import { articleListByPageService, articleListService, getAllPagesTotal } from '@/api/article.ts';
 import router from "@/router";
 
-onMounted(() => {
-})
+
 const goToDetail = (id: any) => router.push(
     { path: '/article', query: { id } }
 );
@@ -156,20 +155,21 @@ const toggleStar = (post: any) => {
 };
 
 // 帖子数据
-const posts = ref([
-    {
-        "title": "",
-        "content": "",
-        "createTime": "",
-        "userId": "",
-        "type": "",
-        "commentCount": "",
-        "likeCount": "",
-        "readCount": "",
-        "collectCount": ""
-    },
+// 定义 Post 接口
+interface Post {
+    title: string;
+    content: string;
+    createTime: string;
+    userId: string;
+    type: string;
+    commentCount: string;
+    likeCount: string;
+    readCount: string;
+    collectCount: string;
+}
 
-]);
+// 初始化 posts 数组，确保每个元素都符合 Post 接口
+const posts = ref<Post[]>([]);
 const stripHtmlTags = () => {
     posts.value.forEach(post => {
         if (post.content) { // 确保 content 存在并为字符串
@@ -178,7 +178,7 @@ const stripHtmlTags = () => {
             post.content = ''; // 如果 content 为 null 或 undefined，设置为空字符串
         }
     });
-    console.log(posts.value);
+    console.log(posts.value.length);
 };
 
 const postSummaries = () => {
@@ -192,14 +192,53 @@ const postSummaries = () => {
     });
 };
 
-const getArticleList = async () => {
-    const res = await articleListService();
-    posts.value = res.data;
+// const getArticleList = async () => {
+//     const res = await articleListService();
+//     posts.value = res.data;
+//     stripHtmlTags();
+//     postSummaries();
+//     // console.log(posts.value);
+// };
+const page = ref({
+    "current": 1,
+    "size": 8,
+    "totalPages": 10,
+})
+
+
+const getArticleListByPage = async () => {
+    // TODO：获取总页数
+    const res = await articleListByPageService(page.value);
+    posts.value = [...posts.value, ...res.data];  // 将新数据追加到 posts 数组
     stripHtmlTags();
     postSummaries();
-    // console.log(posts.value);
 };
-getArticleList();
+const getTotalPages = async () => {
+    const res = await getAllPagesTotal(page.value);
+    page.value.totalPages = res.data;
+}
+// 页面滚动加载更多功能
+const handleScroll = () => {
+    const scrollTop = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop;
+    const windowHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+    const documentHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
+
+    // 判断是否滚动到页面底部
+    if (scrollTop + windowHeight >= documentHeight - 100 && page.value.current <= page.value.totalPages) {
+        // 如果当前页面不是最后一页，则加载下一页数据
+        if (page.value.current < page.value.totalPages) {
+            page.value.current += 1;  // 切换到下一页
+            getArticleListByPage();  // 获取新数据
+        }
+    }
+};
+
+onMounted(() => {
+    window.addEventListener("scroll", handleScroll);
+    getTotalPages();  // 获取总页数
+    getArticleListByPage();  // 加载第一页数据
+});
+
 
 
 
