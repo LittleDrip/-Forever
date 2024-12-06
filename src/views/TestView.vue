@@ -1,101 +1,63 @@
+<script lang="ts" setup>
+import '@wangeditor/editor/dist/css/style.css' // 引入 css
+
+import { onBeforeUnmount, ref, shallowRef, onMounted } from 'vue'
+import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
+import { server } from 'typescript';
+// 编辑器实例，必须用 shallowRef
+const editorRef = shallowRef()
+
+
+const editorConfig = {
+    placeholder: '请输入内容...',
+    // 可继续其他配置...
+}
+
+const toolbarConfig = {
+    excludeKeys: [
+        'group-image',
+        'group-video',
+        'todo',
+        'group-indent',
+        'bgColor',
+        'group-more-style' // 排除菜单组，写菜单组 key 的值即可
+    ]
+}
+
+const handleChange = (editor) => { console.log('change:', editor.children) }
+const handleDestroyed = (editor) => { console.log('destroyed', editor) }
+const handleFocus = (editor) => { console.log('focus', editor) }
+const handleBlur = (editor) => { getText() }
+const customAlert = (info, type) => { alert(`【自定义提示】${type} - ${info}`) }
+// 组件销毁时，也及时销毁编辑器
+onBeforeUnmount(() => {
+    const editor = editorRef.value
+    if (editor == null) return
+    editor.destroy()
+})
+
+const getText = () => {
+    const editor = editorRef.value
+    if (editor == null) return
+    console.log('text', editor.getHtml())
+}
+
+
+const handleCreated = (editor) => {
+    editorRef.value = editor // 记录 editor 实例，重要！
+}
+
+</script>
+
 <template>
-    <div class="app">
-        <h1 class="title">测试试卷</h1>
-        <div v-if="questions.length > 0" class="questions-container">
-            <div v-for="(item, index) in questions" :key="item.id" class="question-item">
-                <p class="question-title">
-                    第 {{ index + 1 }} 题: {{ item.stContent }} <span>（{{ item.stScore }}分）</span>
-                </p>
-                <!-- 动态加载不同题型的组件 -->
-                <SingleChoice v-if="item.questionType === 1" v-model="item.resource" :options="item.options" />
-                <Judgment v-if="item.questionType === 2" v-model="item.resource" :options="item.options" />
-                <MultiChoice v-if="item.questionType === 3" v-model="item.resource" :options="item.options" />
-                <ShortAnswer v-if="item.questionType === 4" v-model="item.resource" />
-            </div>
-            <button class="submit-button" @click="submitAnswers">提交</button>
-        </div>
-        <div v-else class="no-questions">
-            <p>暂无试题</p>
+    <div>
+        <div style="width: 50%; border: 1px solid #ccc">
+            <Toolbar style="border-bottom: 1px solid #ccc" :editor="editorRef" :defaultConfig="toolbarConfig" />
+            <Editor :defaultConfig="editorConfig" :defaultContent="defaultContent" style="height: 500px"
+                @onCreated="handleCreated" @onChange="handleChange" @onDestroyed="handleDestroyed"
+                @onFocus="handleFocus" @onBlur="handleBlur" @customAlert="customAlert" @customPaste="customPaste" />
         </div>
     </div>
 </template>
 
-<script setup>
-import { ref } from "vue";
-import SingleChoice from "@/components/quiz/SingleChoice.vue";
-import MultiChoice from "@/components/quiz/MultiChoice.vue";
-import Judgment from "@/components/quiz/Judgment.vue";
-import ShortAnswer from "@/components/quiz/ShortAnswer.vue";
-
-const questions = ref([
-    {
-        id: 1,
-        stContent: "多数轿车更换发动机机油的周期里程为________km。",
-        questionType: 1,
-        stScore: 10,
-        resource: "",
-        options: ["2000--3000", "5000--8000", "10000--12000", "14000--16000"],
-    },
-    {
-        id: 2,
-        stContent: "太阳从西边升起。",
-        questionType: 2,
-        stScore: 5,
-        resource: "",
-        options: ["对", "错"],
-    },
-
-    {
-        id: 4,
-        stContent: "请简述Vue 3的主要特性。",
-        questionType: 4,
-        stScore: 20,
-        resource: "",
-    },
-]);
-
-const submitAnswers = () => {
-    console.log("用户提交的答案:", questions.value.map((q) => q.resource));
-};
-</script>
-
-<style scoped lang="scss">
-.app {
-    padding: 20px;
-
-    .title {
-        text-align: center;
-        margin-bottom: 20px;
-        font-size: 24px;
-        font-weight: bold;
-    }
-
-    .questions-container {
-        .question-item {
-            margin-bottom: 20px;
-
-            .question-title {
-                font-weight: 700;
-                margin-bottom: 10px;
-            }
-        }
-
-        .submit-button {
-            display: block;
-            margin: 20px auto;
-            padding: 10px 20px;
-            background-color: #409eff;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-    }
-
-    .no-questions {
-        text-align: center;
-        font-size: 18px;
-        color: #666;
-    }
-}
-</style>
+<style scoped></style>

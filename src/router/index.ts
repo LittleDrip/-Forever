@@ -36,6 +36,12 @@ const router = createRouter({
           ]
         },
         {
+          path: "/Forum",
+          name: "论坛信息",
+          meta: { menuIndex: 2 },
+          component: () => import('../views/menu/Forum.vue')
+        },
+        {
           path: '/article',
           name: '文章',
           component: () => import('../views/details/ArticleDetail.vue'),

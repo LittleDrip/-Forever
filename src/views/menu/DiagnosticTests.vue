@@ -60,19 +60,24 @@ onMounted(() => {
 
             <!-- 遍历题库，生成卡片 -->
             <el-card v-if="showCards" v-for="test in testStatus" :key="test.id" class="test-card" shadow="hover">
-                <div class="card-header">
-                    <el-tag size="middle" type="primary">{{ test.type }}</el-tag>
-                    <h3>{{ test.title }}</h3>
+                <div v-if="testBank.length > 1">
+                    <div class="card-header">
+                        <el-tag size="middle" type="primary">{{ test.type }}</el-tag>
+                        <h3>{{ test.title }}</h3>
+                    </div>
+                    <p class="test-description">{{ test.description }}</p>
+                    <p class="test-duration">预计时长：{{ test.duration + "分钟" }}+</p>
+                    <div class="card-footer">
+                        <el-button v-if="test.hasTaken" type="success" size="large" plain
+                            @click="searchResult(test.id)">查看结果</el-button>
+                        <el-button :type="test.hasTaken ? 'warning' : 'primary'" size="large" plain
+                            @click="startTest(test.id)">
+                            {{ test.hasTaken ? '重新测试' : '开始测试' }}
+                        </el-button>
+                    </div>
                 </div>
-                <p class="test-description">{{ test.description }}</p>
-                <p class="test-duration">预计时长：{{ test.duration + "分钟" }}+</p>
-                <div class="card-footer">
-                    <el-button v-if="test.hasTaken" type="success" size="large" plain
-                        @click="searchResult(test.id)">查看结果</el-button>
-                    <el-button :type="test.hasTaken ? 'warning' : 'primary'" size="large" plain
-                        @click="startTest(test.id)">
-                        {{ test.hasTaken ? '重新测试' : '开始测试' }}
-                    </el-button>
+                <div v-else>
+                    <el-skeleton animated :rows="20" />
                 </div>
             </el-card>
 

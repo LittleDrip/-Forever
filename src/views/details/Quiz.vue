@@ -14,10 +14,12 @@
                 <el-divider />
             </div>
 
-            <el-button type="primary" class="submit-button" @click="submitAnswers">立即提交</el-button>
+            <el-button type="primary" class="submit-button" @click="submitAnswers" :disabled="isSubmitting">
+                {{ isSubmitting ? '正在提交...' : '立即提交' }}
+            </el-button>
         </div>
         <div v-else class="no-questions">
-            <p>暂无试题</p>
+            <el-skeleton :rows="40" />
         </div>
     </div>
 </template>
@@ -28,11 +30,12 @@ import SingleChoice from "@/components/quiz/SingleChoice.vue";
 import MultiChoice from "@/components/quiz/MultiChoice.vue";
 import Judgment from "@/components/quiz/Judgment.vue";
 import ShortAnswer from "@/components/quiz/ShortAnswer.vue";
-import { getQuestionsList } from "@/api/quiz";
+import { getQuestionsList, submitPaper } from "@/api/quiz";
 import { useRoute } from "vue-router";
+import router from "@/router";
 const route = useRoute();
 const loading = ref(true);
-
+const isSubmitting = ref(false); // 新增的提交状态
 const questions = ref([
     {
         id: 1,
@@ -67,7 +70,18 @@ onMounted(() => {
         console.error(error);
     });
 });
-const submitAnswers = () => {
+
+const submitAnswers = async () => {
+    isSubmitting.value = true;  // 提交开始时，禁用按钮
+
+    // 判断是否所有问题都有答案
+    const unansweredQuestions = questions.value.filter(item => !item.resource);
+
+    if (unansweredQuestions.length > 0) {
+        ElMessage.warning("请确保所有题目都已作答！"); // 提示用户有未作答的题目
+        isSubmitting.value = false; // 恢复按钮状态
+        return;
+    }
     // 处理用户提交的答案
     const paperId = route.params.id; // 获取试卷ID
     const userAnswer = questions.value.map(item => item.resource);
@@ -76,7 +90,14 @@ const submitAnswers = () => {
         paperId: paperId,
         answers: userAnswer
     };
-    console.log("用户提交的答案:", submitData);
+    await submitPaper(submitData);
+    ElMessage.success("提交成功，正在跳转到结果页面");
+    // 使用 setTimeout 实现延迟跳转，设置延时为 2 秒
+    setTimeout(() => {
+        router.push({
+            path: `/diagnosticTests/${paperId}/result`, // 跳转到测试结果页面
+        });
+    }, 2000);  // 2 秒后跳转
 };
 </script>
 

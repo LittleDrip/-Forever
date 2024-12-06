@@ -13,10 +13,16 @@ export const getQuestionsList = (pid: number) => {
         method: "get",
     })
 }
+export const getPaperRuslt = (id: number) => {
+    return request({
+        url: `/papers/getEvaluation/${id}`,
+        method: "get",
+    })
+}
 
 export const submitPaper = (submitData: any) => {
     return request({
-        url: "/papers/submit",
+        url: "/papers/submitAnswer",
         method: "post",
         data: submitData
     })

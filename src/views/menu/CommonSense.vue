@@ -129,7 +129,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, ref, watch } from "vue";
+import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import starSvg from "@/assets/svg/star.svg";
 import starSvgActive from "@/assets/svg/star_active.svg";
 import FunClass from "@/components/aside/FunClass.vue";
@@ -238,7 +238,10 @@ onMounted(() => {
     getTotalPages();  // 获取总页数
     getArticleListByPage();  // 加载第一页数据
 });
-
+// 组件销毁时移除滚动事件监听器
+onBeforeUnmount(() => {
+    window.removeEventListener("scroll", handleScroll);
+});
 
 
 
