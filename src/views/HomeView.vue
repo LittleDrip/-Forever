@@ -6,7 +6,7 @@ import { useDarkMode } from '@/utils/useDarkMode';
 const { isDarkMode, toggleDarkMode } = useDarkMode();
 const value = ref(false)
 //菜单
-const menuItems = ["心理常识", "诊断测试", "论坛信息", "青少年心理", "热点新闻"];
+const menuItems = ["心理常识", "诊断测试", "论坛信息", "跃心助手", "热点新闻"];
 // 搜索框内容
 const searchQuery = ref("");
 

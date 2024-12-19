@@ -42,10 +42,22 @@ const router = createRouter({
           component: () => import('../views/menu/Forum.vue')
         },
         {
+          path: "/HeartAssistant",
+          name: "跃心助手",
+          meta: { menuIndex: 3 },
+          component: () => import('../views/menu/HeartAssistant.vue'),
+        },
+        {
           path: '/article',
           name: '文章',
           component: () => import('../views/details/ArticleDetail.vue'),
-        }
+        },
+        {
+          path: '/HeartAssistant/chat',
+          name: '聊天详情',
+          meta: { menuIndex: 3 },
+          component: () => import('../views/details/ChatDetail.vue'),
+        },
       ]
     },
     {
