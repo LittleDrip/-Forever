@@ -3,7 +3,7 @@
         <div class="background">
             <el-card class="form-card" shadow="hover">
                 <div class="title">
-                    <h1>欢迎登录跃动Forever</h1>
+                    <h1>欢迎登录心晴小屋</h1>
                     <p>专注青少年心理健康，让我们共同守护</p>
                 </div>
                 <div class="form-container">

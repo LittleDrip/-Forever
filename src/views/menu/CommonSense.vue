@@ -250,9 +250,13 @@ onBeforeUnmount(() => {
 
 <style lang="scss" scoped>
 /* 页面整体样式 */
+.common-sense {
+    background-color: #fafafa; // 更改背景色为浅灰色
+    min-height: 100vh;
+}
+
 .container {
     display: flex;
-    /* max-width: 1200px; */
     max-width: 70%;
     margin: 0 auto;
     padding: 1.2em;
@@ -262,151 +266,153 @@ onBeforeUnmount(() => {
 /* 左侧内容区域 */
 .content {
     flex: 2.2;
-    /* 左侧占比 */
     background-color: #ffffff;
-    /* width: 700px; */
-    padding: 1.2em;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
+    padding: 1.5em;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
 
-.post {
-    margin-bottom: 2em;
-    padding-bottom: 1.5em;
-    border-bottom: 1px solid #e0e0e0;
-}
+    .post {
+        margin-bottom: 2em;
+        padding: 1.5em;
+        border-radius: 10px;
+        background: linear-gradient(145deg, #ffffff, #f8f8f8);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
 
-.post-title {
-    font-size: 1.8em;
-    font-weight: bold;
-    margin-bottom: 0.8em;
-    cursor: pointer;
+        &:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        }
 
-    &:hover {
-        color: #007bff;
+        .post-title {
+            font-size: 1.8em;
+            font-weight: 500;
+            margin-bottom: 0.8em;
+            color: #2c3e50;
+            cursor: pointer;
+            position: relative;
+            padding-left: 1em;
+
+            &::before {
+                content: '';
+                position: absolute;
+                left: 0;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 4px;
+                height: 100%;
+                background-color: #E8D575;
+                border-radius: 2px;
+            }
+
+            &:hover {
+                color: #a89743;
+            }
+        }
+
+        .post-content {
+            color: #666;
+            font-size: 1.2em;
+            line-height: 1.8;
+            margin-bottom: 1.5em;
+            padding: 0 1em;
+            cursor: pointer;
+
+            &:hover {
+                color: #333;
+            }
+        }
+
+        .post-footer {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 0.5em 1em;
+            border-top: 1px solid rgba(232, 213, 117, 0.2);
+            margin-top: 1em;
+
+            span {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                color: #666;
+                transition: all 0.3s ease;
+                padding: 0.5em 1em;
+                border-radius: 20px;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: rgba(232, 213, 117, 0.1);
+                    color: #E8D575;
+                }
+
+                svg {
+                    width: 20px;
+                    height: 20px;
+                    transition: transform 0.3s ease;
+
+                    &:hover {
+                        transform: scale(1.2);
+                    }
+                }
+            }
+        }
     }
-}
-
-.post-content {
-    color: #666;
-
-    max-width: 100%;
-    /* 或者使用视口单位，如 max-width: 50vw; */
-    min-width: 0;
-    /* 允许内容区域缩小到0宽度 */
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    font-size: 1.3em;
-    line-height: 1.6;
-    margin-bottom: 1em;
-    cursor: pointer;
-
-    &:hover {
-
-        color: var(--gray-2);
-    }
-}
-
-.post-footer {
-    display: flex;
-    /* 将子元素按行排列 */
-    align-items: center;
-    /* 子元素垂直居中 */
-    gap: 20px;
-    /* 设置子元素之间的间距 */
-    font-size: 14px;
-    /* 可调整为适合的字体大小 */
-    color: #666;
-    /* 设置文字颜色 */
-}
-
-.post-footer span {
-    display: flex;
-    /* 确保内部元素也是对齐的 */
-    align-items: center;
-    /* 图标和文字垂直居中 */
-    gap: 5px;
-    /* 图标与文字间距 */
-}
-
-.post-footer svg {
-    cursor: pointer;
-    width: 16px;
-    height: 16px;
-    transition: transform 0.2s ease;
-    /* 添加放大效果 */
-    -webkit-user-drag: none;
-    /* 禁用Chrome和Safari中的拖拽 */
-}
-
-.post-footer svg:hover {
-    transform: scale(1.2);
-    /* 点击时放大 */
 }
 
 /* 右侧工具区域 */
 .sidebar {
     flex: 1;
-    /* 右侧占比 */
     display: flex;
     flex-direction: column;
-
     gap: 2em;
-}
 
-.tools {
+    .tools,
+    .quote {
+        background: linear-gradient(145deg, #ffffff, #f8f8f8);
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+        transition: all 0.3s ease;
 
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        // &:hover {
+        //     transform: translateY(-3px);
+        //     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        // }
 
-    p {
-        display: flex;
-        align-items: center;
-        /* 垂直居中 */
+        p {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5em;
+            color: #2c3e50;
+            margin: 0;
+            padding: 1em;
+            border-bottom: 2px solid rgba(232, 213, 117, 0.2);
+
+            svg {
+                width: 24px;
+                height: 24px;
+            }
+        }
     }
 }
 
-.quote {
+// 响应式设计
+@media (max-width: 1200px) {
+    .container {
+        max-width: 90%;
+    }
+}
 
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-
-    p {
-        display: flex;
-        align-items: center;
-        /* 垂直居中 */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
     }
 
-}
-
-.quote h4 {
-    font-size: 16px;
-    margin-bottom: 10px;
-}
-
-.user {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-}
-
-.user button {
-    padding: 5px 10px;
-    font-size: 12px;
-    border: none;
-    background-color: #007bff;
-    color: #fff;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.user button:hover {
-    background-color: #0056b3;
-}
-
-img {
-    -webkit-user-drag: none;
-    /* 禁用Chrome和Safari中的拖拽 */
+    .sidebar {
+        order: -1;
+    }
 }
 </style>

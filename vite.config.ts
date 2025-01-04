@@ -11,7 +11,7 @@ import { UndrawUiResolver } from 'undraw-ui/es/resolvers'
 export default defineConfig({
   plugins: [
     vue(),
-    vueDevTools(),
+    // vueDevTools(),
     AutoImport({
       resolvers: [ElementPlusResolver()],
     }),

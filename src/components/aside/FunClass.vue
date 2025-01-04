@@ -1,4 +1,11 @@
 <script lang="ts" setup>
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+const goToRelaxation = () => {
+    router.push('/relaxation');
+};
 </script>
 
 <template>
@@ -14,7 +21,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="tool">
+            <div class="tool" @click="goToRelaxation">
                 <img src="../../assets/svg/rest.svg" alt="放松训练">
                 <p>放松训练</p>
             </div>

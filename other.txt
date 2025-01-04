@@ -1,0 +1,49 @@
+option= {
+  color: ['#67F9D8', '#FFE434', '#56A3F1', '#FF917C'],
+  title: {
+    text: 'Radar Chart 2'
+  },
+  legend: {},
+  radar: {
+    indicator: [
+      { text: 'Indicator1', max: 150 },
+      { text: 'Indicator2', max: 150 },
+      { text: 'Indicator3', max: 150 },
+      { text: 'Indicator4', max: 120 },
+      { text: 'Indicator5', max: 108 },
+      { text: 'Indicator6', max: 72 }
+    ],
+    center: ['50%', '50%'],
+    radius: 120,
+    axisName: {
+      color: '#000',
+      backgroundColor: '#61bc84',
+      borderRadius: 50,
+      padding: [4, 9]
+    }
+  },
+  series: [
+    {
+      type: 'radar',
+      data: [
+     
+        {
+          value: [100, 93, 50, 90, 70, 60],
+          name: 'Data D',
+          areaStyle: {
+            color: new echarts.graphic.RadialGradient(122, 33, 42, [
+             {
+  color: 'rgba(124, 215, 184, 0.2)', // 浅绿色，增加清新感
+  offset: 0
+},
+{
+  color: 'rgba(84, 184, 153, 0.8)', // 深绿色，带透明度
+  offset: 1
+}
+            ])
+          }
+        }
+      ]
+    }
+  ]
+};

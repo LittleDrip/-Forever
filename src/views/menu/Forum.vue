@@ -5,6 +5,7 @@ import PostCard from '@/components/forum/PostCard.vue';
 import { ChatLineSquare, CircleCheck, Clock, Compass, Document, Edit, EditPen, Star } from '@element-plus/icons-vue';
 import type { maxHeaderSize } from 'http';
 import { ref } from 'vue';
+import WeatherInfo from '@/components/forum/WeatherInfo.vue';
 const isDrawerVisible = ref(false);
 // 打开 Drawer
 const openEditor = () => {
@@ -15,62 +16,77 @@ const openEditor = () => {
 const closeEditor = () => {
     isDrawerVisible.value = false;
 };
-const type = ref(["全部", "生活", "学习", "校园", "其他"]);
+const type = ref(["全部", "求助倾诉", "经验分享", "积极心理", "日常成长"]);
 const getColor = (index: number) => {
-    const colors = ['#2486b9', '#e9ccd3', '#cf4813', '#f07c82', '#f28e16']; // 颜色顺序
-    return colors[index % colors.length]; // 防止索引超出范围
+    const colors = ['#7eb0e3', '#95b3d7', '#b4c7e7', '#88b378', '#c3d69b']; // 更温和的颜色
+    return colors[index % colors.length];
 };
 const topics = ref([
     {
         "id": "1",
         "author": {
             "id": "user1",
-            "name": "张三",
+            "name": "小雨",
             "avatarUrl": "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
         },
         "timestamp": "2024-11-29T22:54:13",
-        "category": "生活",
-        "title": "这是一个生活类的帖子标题",
-        "content": "这是一些预览内容，展示帖子的大致信息。",
+        "category": "求助倾诉",
+        "title": "总是感到焦虑，该如何调节？",
+        "content": "最近工作压力很大，经常失眠，感觉很焦虑。白天注意力难以集中，不知道该如何调节自己的状态。希望有经验的朋友能给些建议。",
         "stats": {
-            "likes": 12,
-            "favorites": 4
+            "likes": 15,
+            "favorites": 8
         }
     },
     {
         "id": "2",
         "author": {
             "id": "user2",
-            "name": "李四",
+            "name": "阳光小树",
             "avatarUrl": "https://cube.elemecdn.com/1/88/03b0d39583f48206768a7534e55bcpng.png"
         },
         "timestamp": "2024-11-28T10:30:45",
-        "category": "学习",
-        "title": "Vue3 学习心得",
-        "content": "分享一些在使用 Vue3 开发中的心得和经验。",
+        "category": "经验分享",
+        "title": "我是如何走出抑郁的",
+        "content": "去年经历了一段低谷期，通过正确的方法和坚持，现在已经重拾信心。分享一下我的心路历程，希望能帮助到有类似经历的朋友。",
         "stats": {
-            "likes": 20,
-            "favorites": 8
+            "likes": 42,
+            "favorites": 23
         }
     },
     {
         "id": "3",
         "author": {
             "id": "user3",
-            "name": "王五",
+            "name": "暖心语",
             "avatarUrl": "https://cube.elemecdn.com/2/88/03b0d39583f48206768a7534e55bcpng.png"
         },
         "timestamp": "2024-11-27T18:20:00",
-        "category": "校园",
-        "title": "校园趣事分享",
-        "content": "这是一些关于校园趣事的帖子内容预览。",
+        "category": "积极心理",
+        "title": "每天一个积极心理小练习",
+        "content": "分享一些简单但有效的积极心理学练习方法，帮助大家培养乐观心态。这些方法我已经坚持了三个月，确实感受到了很大的改变。",
         "stats": {
-            "likes": 15,
-            "favorites": 6
+            "likes": 35,
+            "favorites": 19
+        }
+    },
+    {
+        "id": "4",
+        "author": {
+            "id": "user4",
+            "name": "心灵摆渡人",
+            "avatarUrl": "https://cube.elemecdn.com/3/88/03b0d39583f48206768a7534e55bcpng.png"
+        },
+        "timestamp": "2024-11-26T15:10:00",
+        "category": "日常成长",
+        "title": "学会与自己对话：自我关怀的重要性",
+        "content": "很多时候我们对别人很温柔，却总是苛责自己。今天想和大家分享如何培养自我关怀，学会善待自己的内心。",
+        "stats": {
+            "likes": 28,
+            "favorites": 16
         }
     }
-]
-)
+]);
 </script>
 
 <template>
@@ -115,7 +131,7 @@ const topics = ref([
                 <!-- 帖子展示区 -->
                 <div class="postList">
                     <PostCard v-for="(topic, index) in topics" :key="topic.id" class="topic-card">
-                        <div style="display: flex">
+                        <div class="author-info" style="display: flex">
                             <div>
                                 <el-avatar :size="30" :src="topic.author.avatarUrl" />
                             </div>
@@ -131,13 +147,12 @@ const topics = ref([
                                 </div>
                             </div>
                         </div>
-                        <div style="margin-top: 1.2em; display: flex; align-items: center;">
+                        <div class="title-section" style="margin-top: 1.2em; display: flex; align-items: center;">
                             <el-tag size="middle" type="success">{{ topic.category }}</el-tag>
-                            <span style="font-weight: bold; font-size: 1.5em;margin-left: .5em;">{{ topic.title
-                                }}</span>
+                            <span style="font-weight: bold; font-size: 1.5em;">{{ topic.title }}</span>
                         </div>
                         <div class="topic-preview-content">{{ topic.content }}</div>
-                        <div style="display: flex; gap: 20px; font-size: 1.2em; margin-top: 10px;">
+                        <div class="stats-section" style="display: flex; gap: 20px; font-size: 1.2em;">
                             <div style="display: flex; align-items: center;">
                                 <el-icon style="margin-right: 5px;">
                                     <CircleCheck />
@@ -171,6 +186,7 @@ const topics = ref([
                         </svg>
                         天气信息
                     </p>
+                    <WeatherInfo />
                 </div>
             </div>
         </div>
@@ -268,6 +284,7 @@ const topics = ref([
 
         border-radius: 8px;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        background-color: #e8f1f2;
 
         p {
             display: flex;
@@ -284,8 +301,6 @@ const topics = ref([
     transition: scale .3s;
     padding: 20px;
 
-
-
     &:hover {
         scale: 1.01;
         cursor: pointer;
@@ -300,11 +315,30 @@ const topics = ref([
         font-size: 1.3em;
         color: grey;
         margin: 1em 0;
+        line-height: 1.6;
         display: -webkit-box;
         -webkit-box-orient: vertical;
         -webkit-line-clamp: 3;
         overflow: hidden;
         text-overflow: ellipsis;
+    }
+
+    .author-info {
+        margin-bottom: 1.5em;
+    }
+
+    .title-section {
+        margin: 1.2em 0;
+
+        .el-tag {
+            margin-right: 1em;
+        }
+    }
+
+    .stats-section {
+        margin-top: 1.5em;
+        padding-top: 1em;
+        border-top: 1px solid #f0f0f0;
     }
 }
 </style>

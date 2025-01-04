@@ -58,6 +58,21 @@ const router = createRouter({
           meta: { menuIndex: 3 },
           component: () => import('../views/details/ChatDetail.vue'),
         },
+        {
+          path: '/relaxation',
+          name: '放松训练',
+          component: () => import('../views/details/RelaxationTraining.vue')
+        },
+        {
+          path: '/relaxation/:type/:id',
+          name: '训练详情',
+          component: () => import('../views/details/TrainingDetail.vue')
+        },
+        {
+          path: '/sound-healing',
+          name: 'SoundHealing',
+          component: () => import('../views/details/SoundHealing.vue')
+        }
       ]
     },
     {

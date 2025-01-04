@@ -47,14 +47,21 @@ const buttons = ref([
 ]);
 
 // 点击处理方法
-const handleClick = (label: any) => {
+const handleClick = (label: string) => {
     console.log(`点击了按钮: ${label}`);
+    router.push({
+        name: '聊天详情',
+        query: { initialMessage: label }
+    });
 };
 const sendMessage = () => {
     if (message.value.trim()) {
         console.log("发送的消息:", message.value);
+        router.push({
+            name: '聊天详情',
+            query: { initialMessage: message.value.trim() }  // 通过 query 参数传递消息
+        });
         message.value = ''; // 清空输入框
-        router.push({ name: '聊天详情' });
     }
 };
 </script>

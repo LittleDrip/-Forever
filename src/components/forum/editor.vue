@@ -5,13 +5,13 @@ import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
 
 // 编辑器实例，必须用 shallowRef
 const editorRef = shallowRef()
-const value = ref('生活')
+const value = ref('求助倾诉')
 const titleValue = ref('')
 const options = [
-    { value: '生活', label: '生活' },
-    { value: '学习', label: '学习' },
-    { value: '校园', label: '校园' },
-    { value: '其他', label: '其他' },
+    { value: '求助倾诉', label: '求助倾诉' },
+    { value: '经验分享', label: '经验分享' },
+    { value: '积极心理', label: '积极心理' },
+    { value: '日常成长', label: '日常成长' },
 ]
 
 const editorConfig = {
@@ -70,7 +70,7 @@ const getText = () => {
 <template>
     <div class="editor_up">
         <h1 style="margin-bottom: .5em;color: #5e616d">发表新的帖子</h1>
-        <p style="color: var(--gray-2);font-size: 1.2em;">发表您的内容之前，请遵守相关法律法规，不要出现脏话骂人这种不文明行为。</p>
+        <p style="color: var(--gray-2);font-size: 1.2em;">😄 你的声音很重要，让我们听到你的想法和经历。</p>
         <!-- 使用 flex 布局使 select 和 input 在同一行 -->
         <div class="form-row">
             <el-select v-model="value" placeholder="选择分类" style="width: 240px;">

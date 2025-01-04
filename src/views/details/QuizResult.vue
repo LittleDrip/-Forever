@@ -1,7 +1,9 @@
 <script lang="ts" setup>
-import { onMounted, ref } from "vue";
+import { onMounted, ref, nextTick } from "vue";
 import { getPaperRuslt } from '@/api/quiz';
 import { useRoute, useRouter } from "vue-router";
+import * as echarts from 'echarts';
+
 const route = useRoute();
 const router = useRouter();
 const formatDate = (dateStr: string): string => {
@@ -17,13 +19,103 @@ const formatDate = (dateStr: string): string => {
 const result = ref({
     "evaluation": "", // html富文本
     "createdAt": "",
-    "updatedAt": ""
+    "updatedAt": "",
+    "level": ""
 });
 
 // 获取测试结果
 const getResult = async (id: any) => {
     const res = await getPaperRuslt(id);
     result.value = res.data;
+};
+
+// 定义雷达图的配置生成函数
+const getRadarOption = (level: string) => {
+    // 获取数字等级
+    const levelNum = parseInt(level.replace('level', ''));
+
+    // 根据level定义不同的颜色方案
+    const colorSchemes: Record<string, string[]> = {
+        'level1': ['rgba(255, 99, 132, 0.2)', 'rgba(255, 99, 132, 0.8)'], // 红色系
+        'level2': ['rgba(255, 159, 64, 0.2)', 'rgba(255, 159, 64, 0.8)'], // 橙色系
+        'level3': ['rgba(255, 205, 86, 0.2)', 'rgba(255, 205, 86, 0.8)'], // 黄色系
+        'level4': ['rgba(75, 192, 192, 0.2)', 'rgba(75, 192, 192, 0.8)'], // 青色系
+        'level5': ['rgba(124, 215, 184, 0.2)', 'rgba(84, 184, 153, 0.8)']  // 绿色系
+    };
+
+    // 根据level生成不同的数据
+    const generateData = (level: string) => {
+        const baseValues: Record<string, number[]> = {
+            'level1': [30, 25, 20, 35, 30, 25],
+            'level2': [45, 40, 35, 50, 45, 40],
+            'level3': [65, 60, 55, 70, 65, 60],
+            'level4': [85, 80, 75, 90, 85, 80],
+            'level5': [95, 90, 85, 100, 95, 90]
+        };
+        return baseValues[level] || baseValues['level1']; // 默认返回 level1 的数据
+    };
+
+    return {
+
+        radar: {
+            indicator: [
+                { text: '情绪管理', max: 100 },
+                { text: '人际关系', max: 100 },
+                { text: '压力应对', max: 100 },
+                { text: '自我认知', max: 100 },
+                { text: '生活适应', max: 100 },
+                { text: '心理韧性', max: 100 }
+            ],
+            center: ['50%', '50%'],
+            radius: 120,
+            axisName: {
+                color: '#666',
+                backgroundColor: '#fff',
+                borderRadius: 3,
+                padding: [3, 5]
+            },
+            splitArea: {
+                areaStyle: {
+                    color: ['#fff']
+                }
+            }
+        },
+        series: [
+            {
+                type: 'radar',
+                data: [
+                    {
+                        value: generateData(level),
+                        name: '当前水平',
+                        areaStyle: {
+                            color: new echarts.graphic.RadialGradient(0.5, 0.5, 1, [
+                                {
+                                    color: colorSchemes[level]?.[0] || colorSchemes['level1'][0],
+                                    offset: 0
+                                },
+                                {
+                                    color: colorSchemes[level]?.[1] || colorSchemes['level1'][1],
+                                    offset: 1
+                                }
+                            ])
+                        },
+                        lineStyle: {
+                            width: 1
+                        }
+                    }
+                ]
+            }
+        ]
+    };
+};
+
+// 初始化图表
+const initChart = () => {
+    const chartDom = document.getElementById('radarChart');
+    if (chartDom) {
+        const myChart = echarts.init(chartDom);
+        myChart.setOption(getRadarOption(result.value.level));
+    }
 };
 
 // 页面加载后获取测试结果
@@ -35,6 +127,10 @@ onMounted(async () => {
     if (result.value.updatedAt) {
         result.value.updatedAt = formatDate(result.value.updatedAt);
     }
+    // 等待 DOM 更新后初始化图表
+    nextTick(() => {
+        initChart();
+    });
 });
 
 // 返回首页
@@ -52,13 +148,21 @@ const goBack = () => {
             <h1>测试结果</h1>
             <p class="subheading">您的心理健康测试已完成！</p>
         </div>
+
         <!-- 显示测试结果 -->
         <div v-if="result && result.evaluation" class="result-content">
             <div class="evaluation" v-html="result.evaluation"></div>
+            <!-- 雷达图移到这里 -->
+            <div class="chart-container">
+                <h2 class="chart-title">心理健康维度分析</h2>
+                <div id="radarChart" class="radar-chart"></div>
+            </div>
             <div class="result-meta">
                 <p><strong>初次测试时间:</strong> {{ result.createdAt }}</p>
                 <p><strong>上次测试时间:</strong> {{ result.updatedAt }}</p>
             </div>
+
+
         </div>
 
         <!-- 加载状态 -->
@@ -110,14 +214,14 @@ h1 {
 }
 
 .evaluation {
+    background-color: #fff;
     padding: 1.5em;
-
     border-radius: 8px;
 
-    margin-bottom: 1.5em;
 }
 
 .result-meta {
+    margin-top: 1em;
     font-size: 0.9rem;
     color: #777;
 }
@@ -153,5 +257,39 @@ h1 {
 
 .el-spinner {
     margin-right: 1em;
+}
+
+/* 添加雷达图样式 */
+.radar-chart {
+    width: 100%;
+    height: 400px;
+    margin: 20px 0;
+}
+
+.chart-container {
+    margin-top: 0;
+    padding: 1.5em;
+    border-radius: 8px;
+    width: 100%;
+    position: relative;
+
+    .chart-title {
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+        font-size: 1.2rem;
+        color: #666;
+        margin: 0;
+        padding: 8px 12px;
+        background-color: rgba(255, 255, 255, 0.9);
+        border-radius: 4px;
+        z-index: 1;
+    }
+
+    .radar-chart {
+        width: 100%;
+        height: 400px;
+        margin: 0;
+    }
 }
 </style>
