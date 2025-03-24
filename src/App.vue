@@ -2,10 +2,12 @@
 import { ref } from 'vue';
 import { RouterLink, RouterView } from 'vue-router'
 import TestView from '@/views/TestView.vue';
+import PromptLandscape from '@/components/other/PromptLandscape.vue'
 
 </script>
 
 <template>
+  <PromptLandscape />
   <transition name="el-fade-in-linear">
     <RouterView />
   </transition>

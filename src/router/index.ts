@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import { unauthorized } from '@/stores/token.ts';
+import DiagnosticTests from '@/views/menu/DiagnosticTests.vue';
+import BookRecommend from '@/views/details/BookRecommend.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -21,7 +23,7 @@ const router = createRouter({
           path: '/diagnosticTests',
           name: '诊断测试',
           meta: { menuIndex: 1 },
-          component: () => import('../views/menu/DiagnosticTests.vue'),
+          component: DiagnosticTests,
           children: [
             {
               path: '/diagnosticTests/:id',
@@ -72,6 +74,16 @@ const router = createRouter({
           path: '/sound-healing',
           name: 'SoundHealing',
           component: () => import('../views/details/SoundHealing.vue')
+        },
+        {
+          path: '/books',
+          name: 'BookRecommend',
+          component: BookRecommend
+        },
+        {
+          path: '/diary',
+          name: '心情日记',
+          component: () => import('../views/details/MoodDiary.vue')
         }
       ]
     },

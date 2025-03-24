@@ -8,13 +8,14 @@
                 </p>
                 <!-- 动态加载不同题型的组件 -->
                 <SingleChoice v-if="item.questionType === 1" v-model="item.resource" :options="item.options" />
-                <Judgment v-if="item.questionType === 2" v-model="item.resource" :options="item.options" />
+                <!-- <Judgment v-if="item.questionType === 2" v-model="item.resource" :options="item.options" />
                 <MultiChoice v-if="item.questionType === 3" v-model="item.resource" :options="item.options" />
-                <ShortAnswer v-if="item.questionType === 4" v-model="item.resource" />
+                <ShortAnswer v-if="item.questionType === 4" v-model="item.resource" /> -->
                 <el-divider />
             </div>
 
-            <el-button type="primary" class="submit-button" @click="submitAnswers" :disabled="isSubmitting">
+            <el-button color="#e8d575" type="primary" class="submit-button" @click="submitAnswers"
+                :disabled="isSubmitting">
                 {{ isSubmitting ? '正在提交...' : '立即提交' }}
             </el-button>
         </div>
@@ -104,21 +105,31 @@ const submitAnswers = async () => {
 <style scoped lang="scss">
 .app {
     padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
 
     .title {
         text-align: center;
         margin-bottom: 20px;
         font-size: 24px;
         font-weight: bold;
+        color: #2c3e50;
     }
 
     .questions-container {
+        background-color: #fff;
+        padding: 2em;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+
         .question-item {
             margin-bottom: 20px;
 
             .question-title {
                 font-size: 1.5em;
                 margin-bottom: 10px;
+                color: #2c3e50;
+                line-height: 1.4;
             }
         }
 
@@ -134,6 +145,110 @@ const submitAnswers = async () => {
         text-align: center;
         font-size: 18px;
         color: #666;
+    }
+
+    /* 响应式设计 */
+    @media screen and (max-width: 1200px) {
+        padding: 15px;
+        max-width: 90%;
+
+        .questions-container {
+            padding: 1.5em;
+
+            .question-item {
+                .question-title {
+                    font-size: 1.3em;
+                }
+            }
+        }
+    }
+
+    // 平板和手机横屏
+    @media screen and (max-width: 926px) {
+        padding: 12px;
+        max-width: 95%;
+
+        .title {
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+
+        .questions-container {
+            padding: 1.2em;
+
+            .question-item {
+                margin-bottom: 15px;
+
+                .question-title {
+                    font-size: 1.2em;
+                    margin-bottom: 8px;
+                }
+            }
+
+            .submit-button {
+                margin-top: 4em;
+                width: 10em;
+                height: 2.8em;
+            }
+        }
+    }
+
+    // 手机竖屏
+    @media screen and (max-width: 768px) {
+        padding: 10px;
+        max-width: 100%;
+
+        .title {
+            font-size: 18px;
+            margin-bottom: 12px;
+        }
+
+        .questions-container {
+            padding: 1em;
+
+            .question-item {
+                margin-bottom: 12px;
+
+                .question-title {
+                    font-size: 1.1em;
+                    line-height: 1.3;
+                }
+            }
+
+            .submit-button {
+                margin-top: 3em;
+                width: 9em;
+                height: 2.6em;
+            }
+        }
+    }
+
+    // 超小屏幕
+    @media screen and (max-width: 480px) {
+        padding: 8px;
+
+        .title {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .questions-container {
+            padding: 0.8em;
+
+            .question-item {
+                margin-bottom: 10px;
+
+                .question-title {
+                    font-size: 1em;
+                }
+            }
+
+            .submit-button {
+                margin-top: 2.5em;
+                width: 8em;
+                height: 2.4em;
+            }
+        }
     }
 }
 </style>

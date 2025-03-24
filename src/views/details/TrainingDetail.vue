@@ -348,6 +348,127 @@ onMounted(() => {
     }
 }
 
+// 手机横屏特定样式
+@media screen and (max-height: 500px) and (orientation: landscape) {
+    .training-detail {
+        padding: 0.8rem;
+
+        .header {
+            margin-bottom: 1rem;
+
+            h1 {
+                font-size: 1.5rem;
+            }
+        }
+
+        .content {
+            grid-template-columns: 3fr 2fr;
+            gap: 1rem;
+
+            .main-section {
+                .visual-guide {
+                    padding-bottom: 40%; // 调整视频区域高度
+                }
+            }
+
+            .instructions {
+                padding: 1rem;
+
+                h2 {
+                    font-size: 1.2rem;
+                    margin-bottom: 1rem;
+                }
+
+                ol {
+                    margin-bottom: 1rem;
+
+                    li {
+                        margin-bottom: 0.8rem;
+                        font-size: 0.9rem;
+                        line-height: 1.5;
+                    }
+                }
+
+                .tips {
+                    padding: 1rem;
+
+                    h3 {
+                        font-size: 1.1rem;
+                        margin-bottom: 0.5rem;
+                    }
+
+                    p {
+                        font-size: 0.9rem;
+                        line-height: 1.5;
+                    }
+                }
+
+                .complete-button-container {
+                    margin-top: 1rem;
+
+                    .complete-button {
+                        height: 2.5rem;
+                        font-size: 1rem;
+                    }
+                }
+            }
+        }
+    }
+
+    // 评分弹窗的横屏适配
+    .rating-container {
+        padding: 0.8rem;
+
+        .rating-title {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .rating-stars {
+            margin-bottom: 1rem;
+
+            :deep(.el-rate) {
+                .el-rate__icon {
+                    font-size: 1.2rem;
+                }
+
+                .el-rate__text {
+                    font-size: 0.9rem;
+                }
+            }
+        }
+
+        .feedback-input {
+            margin-top: 0.8rem;
+        }
+    }
+
+    :deep(.el-dialog) {
+        .el-dialog__header {
+            padding: 1rem;
+
+            .el-dialog__title {
+                font-size: 1.1rem;
+            }
+        }
+
+        .el-dialog__body {
+            padding: 1rem;
+        }
+
+        .el-dialog__footer {
+            padding: 0.8rem;
+        }
+
+        .dialog-footer {
+            .confirm-button {
+                height: 2.4rem;
+                font-size: 1rem;
+            }
+        }
+    }
+}
+
 .rating-container {
     padding: 1rem;
     text-align: center;

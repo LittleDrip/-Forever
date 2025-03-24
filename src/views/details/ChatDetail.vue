@@ -233,6 +233,12 @@ const sendMessage = () => {
     display: flex;
     flex-direction: column;
     gap: 1em;
+
+    @media screen and (orientation: landscape) and (max-width: 900px) {
+        width: 90%;
+        min-width: auto;
+        max-width: 90%;
+    }
 }
 
 .message {
@@ -275,13 +281,19 @@ const sendMessage = () => {
     position: absolute;
     bottom: 1em;
     width: 100%;
-
     display: flex;
     flex-direction: column;
     overflow-y: auto;
     justify-content: center;
     text-align: center;
     align-items: center;
+
+    @media screen and (orientation: landscape) and (max-width: 900px) {
+        position: fixed;
+        bottom: 0;
+        background-color: #fff;
+        padding: 0.5em;
+    }
 
     /* 添加阴影效果 */
     .input-wrapper {
@@ -292,6 +304,12 @@ const sendMessage = () => {
         margin-bottom: 20px;
         width: 100%;
         max-width: 700px;
+
+        @media screen and (orientation: landscape) and (max-width: 900px) {
+            margin-top: 10px;
+            margin-bottom: 10px;
+            max-width: 90%;
+        }
 
         .input-box {
             width: 100%;

@@ -52,8 +52,9 @@
                                         d="M784.16441 645.6c-3.8 3.7-5.5 9-4.6 14.2L835.36441 985c1.8 10.3-6.4 18.7-15.8 18.7-2.5 0-5-0.6-7.5-1.9L520.16441 848.3c-2.3-1.2-4.9-1.8-7.5-1.8s-5.1 0.6-7.5 1.8l-292.1 153.5c-2.5 1.3-5 1.9-7.5 1.9-9.3 0-17.5-8.4-15.8-18.7L245.66441 659.8c0.9-5.2-0.8-10.5-4.6-14.2L4.86441 415.3C-4.63559 406 0.56441 389.9 13.66441 388l326.5-47.5c5.2-0.8 9.7-4 12-8.8l146-295.9c2.9-5.9 8.6-8.9 14.3-8.9s11.4 3 14.3 8.9l146 295.9c2.3 4.7 6.8 8 12 8.8L1011.66441 388c13.1 1.9 18.4 18 8.9 27.3L784.16441 645.6z"
                                         p-id="4607" fill="#1196db"></path>
                                 </svg>
-                                收藏
                             </div>
+                            收藏
+
                         </span>
                     </div>
                 </div>
@@ -399,20 +400,174 @@ onBeforeUnmount(() => {
     }
 }
 
-// 响应式设计
-@media (max-width: 1200px) {
+/* 响应式设计 */
+@media screen and (max-width: 1200px) {
     .container {
-        max-width: 90%;
+        max-width: 95%;
+        padding: 0.8em;
+    }
+
+    .content {
+        .post {
+            padding: 1.2em;
+
+            .post-title {
+                font-size: 1.5em;
+            }
+
+            .post-content {
+                font-size: 1em;
+            }
+        }
     }
 }
 
-@media (max-width: 768px) {
+// 平板和手机横屏
+@media screen and (max-width: 926px) and (orientation: landscape) {
+    .container {
+        max-width: 100%;
+        padding: 0.5em;
+        gap: 0.8em;
+        flex-direction: row;
+        height: 100vh;
+        overflow: hidden;
+    }
+
+    .content {
+        flex: 1.8;
+        padding: 0.8em;
+        height: 100vh;
+        overflow-y: auto;
+
+        .post {
+            margin-bottom: 0.8em;
+            padding: 0.8em;
+
+            .post-title {
+                font-size: 1.2em;
+                margin-bottom: 0.5em;
+                padding-left: 0.8em;
+            }
+
+            .post-content {
+                font-size: 0.9em;
+                line-height: 1.6;
+                margin-bottom: 0.8em;
+                padding: 0 0.8em;
+            }
+
+            .post-footer {
+                padding: 0.3em 0.5em;
+                gap: 8px;
+                margin-top: 0.8em;
+
+                span {
+                    padding: 0.3em 0.6em;
+                    font-size: 0.85em;
+
+                    svg {
+                        width: 16px;
+                        height: 16px;
+                    }
+                }
+            }
+        }
+    }
+
+    .sidebar {
+        flex: 1;
+        gap: 0.8em;
+        height: 100vh;
+        overflow-y: auto;
+        padding-right: 0.5em;
+
+        .tools,
+        .quote {
+            margin-bottom: 0.8em;
+            background: #fff;
+            height: auto;
+
+            p {
+                font-size: 1.1em;
+                padding: 0.6em;
+                margin-bottom: 0.5em;
+
+                svg {
+                    width: 18px;
+                    height: 18px;
+                }
+            }
+        }
+
+        .tools {
+            max-height: none;
+            overflow: visible;
+        }
+
+        .quote {
+            margin-top: 1em;
+        }
+    }
+}
+
+// 手机竖屏
+@media screen and (max-width: 768px) and (orientation: portrait) {
     .container {
         flex-direction: column;
+        max-width: 100%;
+        padding: 0.3em;
+    }
+
+    .content {
+        padding: 0.8em;
+
+        .post {
+            .post-title {
+                font-size: 1.2em;
+            }
+
+            .post-content {
+                font-size: 0.85em;
+            }
+
+            .post-footer {
+                flex-wrap: wrap;
+                justify-content: space-around;
+            }
+        }
     }
 
     .sidebar {
         order: -1;
+
+        .tools,
+        .quote {
+            margin-bottom: 0.5em;
+        }
+    }
+}
+
+// 超小屏幕
+@media screen and (max-width: 480px) {
+    .container {
+        padding: 0.2em;
+    }
+
+    .content {
+        padding: 0.5em;
+
+        .post {
+            padding: 0.8em;
+
+            .post-title {
+                font-size: 1.1em;
+            }
+
+            .post-content {
+                font-size: 0.8em;
+                padding: 0 0.5em;
+            }
+        }
     }
 }
 </style>

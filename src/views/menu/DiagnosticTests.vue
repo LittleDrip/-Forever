@@ -141,10 +141,130 @@ onMounted(() => {
     display: flex;
     justify-content: flex-end;
     margin-top: 1em;
+    gap: 1em;
 }
 
 .el-button {
     font-size: 0.85rem;
+}
+
+/* 响应式设计 */
+@media screen and (max-width: 1200px) {
+    .container {
+        max-width: 65%;
+        margin: 15px auto;
+        padding: 1.2em;
+        gap: 1.2em;
+    }
+
+    .test-card {
+        padding: 1.2em;
+    }
+
+    .card-header h3 {
+        font-size: 1.3rem;
+    }
+}
+
+// 平板和手机横屏
+@media screen and (max-width: 926px) {
+    .container {
+        max-width: 80%;
+        margin: 12px auto;
+        padding: 1em;
+        gap: 1em;
+    }
+
+    .test-card {
+        padding: 1em;
+
+        .card-header h3 {
+            font-size: 1.2rem;
+        }
+
+        .test-description {
+            font-size: 0.9rem;
+        }
+
+        .test-duration {
+            font-size: 0.85rem;
+        }
+    }
+
+    .card-footer {
+        flex-wrap: wrap;
+        gap: 0.8em;
+    }
+}
+
+// 手机竖屏
+@media screen and (max-width: 768px) {
+    .container {
+        max-width: 95%;
+        margin: 10px auto;
+        padding: 0.8em;
+        gap: 0.8em;
+    }
+
+    .test-card {
+        padding: 0.8em;
+
+        .card-header {
+            h3 {
+                font-size: 1.1rem;
+            }
+        }
+
+        .test-description {
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+
+        .test-duration {
+            font-size: 0.8rem;
+        }
+    }
+
+    .el-button {
+        font-size: 0.8rem;
+    }
+}
+
+// 超小屏幕
+@media screen and (max-width: 480px) {
+    .container {
+        max-width: 100%;
+        margin: 8px auto;
+        padding: 0.6em;
+        gap: 0.6em;
+    }
+
+    .test-card {
+        padding: 0.6em;
+
+        .card-header {
+            h3 {
+                font-size: 1rem;
+            }
+        }
+
+        .test-description {
+            font-size: 0.8rem;
+        }
+
+        .test-duration {
+            font-size: 0.75rem;
+        }
+    }
+
+    .card-footer {
+        justify-content: center;
+    }
+
+    .el-button {
+        font-size: 0.75rem;
+        padding: 8px 12px;
+    }
 }
 
 .el-fade-in-linear-enter-active,

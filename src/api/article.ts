@@ -29,5 +29,13 @@ export const getArticleById = (id: number) => {
     });
 }
 
+export const getArticleSummary = (id: number) => {
+    return request({
+        url: `/article/summary`,
+        method: "get",
+        params: { id },
+    });
+}
+
 
 

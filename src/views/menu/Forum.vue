@@ -4,8 +4,9 @@ import Editor from '@/components/Forum/editor.vue';
 import PostCard from '@/components/forum/PostCard.vue';
 import { ChatLineSquare, CircleCheck, Clock, Compass, Document, Edit, EditPen, Star } from '@element-plus/icons-vue';
 import type { maxHeaderSize } from 'http';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import WeatherInfo from '@/components/forum/WeatherInfo.vue';
+import { getPostsService } from '@/api/posts';
 const isDrawerVisible = ref(false);
 // 打开 Drawer
 const openEditor = () => {
@@ -21,71 +22,27 @@ const getColor = (index: number) => {
     const colors = ['#7eb0e3', '#95b3d7', '#b4c7e7', '#88b378', '#c3d69b']; // 更温和的颜色
     return colors[index % colors.length];
 };
+onMounted(async () => {
+    let res = await getPostsService();
+    topics.value = res.data;
+    console.log(res.data);
+})
 const topics = ref([
     {
-        "id": "1",
-        "author": {
-            "id": "user1",
-            "name": "小雨",
-            "avatarUrl": "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
-        },
-        "timestamp": "2024-11-29T22:54:13",
-        "category": "求助倾诉",
-        "title": "总是感到焦虑，该如何调节？",
-        "content": "最近工作压力很大，经常失眠，感觉很焦虑。白天注意力难以集中，不知道该如何调节自己的状态。希望有经验的朋友能给些建议。",
-        "stats": {
-            "likes": 15,
-            "favorites": 8
-        }
+
+        "authorName": "",
+        "authorAvatarUrl": "",
+        "createdAt": "",
+        "category": "",
+        "title": "",
+        "content": "",
+        // "stats": {
+        //     "likes": 15,
+        //     "favorites": 8
+        // }
     },
-    {
-        "id": "2",
-        "author": {
-            "id": "user2",
-            "name": "阳光小树",
-            "avatarUrl": "https://cube.elemecdn.com/1/88/03b0d39583f48206768a7534e55bcpng.png"
-        },
-        "timestamp": "2024-11-28T10:30:45",
-        "category": "经验分享",
-        "title": "我是如何走出抑郁的",
-        "content": "去年经历了一段低谷期，通过正确的方法和坚持，现在已经重拾信心。分享一下我的心路历程，希望能帮助到有类似经历的朋友。",
-        "stats": {
-            "likes": 42,
-            "favorites": 23
-        }
-    },
-    {
-        "id": "3",
-        "author": {
-            "id": "user3",
-            "name": "暖心语",
-            "avatarUrl": "https://cube.elemecdn.com/2/88/03b0d39583f48206768a7534e55bcpng.png"
-        },
-        "timestamp": "2024-11-27T18:20:00",
-        "category": "积极心理",
-        "title": "每天一个积极心理小练习",
-        "content": "分享一些简单但有效的积极心理学练习方法，帮助大家培养乐观心态。这些方法我已经坚持了三个月，确实感受到了很大的改变。",
-        "stats": {
-            "likes": 35,
-            "favorites": 19
-        }
-    },
-    {
-        "id": "4",
-        "author": {
-            "id": "user4",
-            "name": "心灵摆渡人",
-            "avatarUrl": "https://cube.elemecdn.com/3/88/03b0d39583f48206768a7534e55bcpng.png"
-        },
-        "timestamp": "2024-11-26T15:10:00",
-        "category": "日常成长",
-        "title": "学会与自己对话：自我关怀的重要性",
-        "content": "很多时候我们对别人很温柔，却总是苛责自己。今天想和大家分享如何培养自我关怀，学会善待自己的内心。",
-        "stats": {
-            "likes": 28,
-            "favorites": 16
-        }
-    }
+
+
 ]);
 </script>
 
@@ -129,20 +86,22 @@ const topics = ref([
                     </span>
                 </el-card>
                 <!-- 帖子展示区 -->
-                <div class="postList">
-                    <PostCard v-for="(topic, index) in topics" :key="topic.id" class="topic-card">
+                <el-skeleton :rows="15" animated v-if="!topics[0].title" />
+                <div v-else class="postList">
+                    <PostCard v-for="(topic, index) in topics" class="topic-card">
                         <div class="author-info" style="display: flex">
                             <div>
-                                <el-avatar :size="30" :src="topic.author.avatarUrl" />
+                                <el-avatar :size="40" :src="topic.authorAvatarUrl" />
                             </div>
                             <div style="margin-left: 1em; transform: translateY(.3em);">
-                                <div style="font-size: 1.4em;font-weight: bold">{{ topic.author.name }}</div>
-                                <div style="font-size: 1.2em;color: grey">
+                                <div style="font-size: 1.4em;font-weight: bold">{{ topic.authorName }}</div>
+                                <div style="font-size: 1.2em;color: grey;margin-top: .5em;display: flex; ">
                                     <el-icon>
                                         <Clock />
                                     </el-icon>
-                                    <div style="margin-left: .2em;display: inline-block;transform: translateY(-2px)">
-                                        {{ new Date(topic.timestamp).toLocaleString() }}
+                                    <div style="margin-left: .2em;">
+                                        {{ new Date(topic.createdAt).toLocaleString() }}
+                                        <!-- {{ topic.createdAt }} -->
                                     </div>
                                 </div>
                             </div>
@@ -151,8 +110,8 @@ const topics = ref([
                             <el-tag size="middle" type="success">{{ topic.category }}</el-tag>
                             <span style="font-weight: bold; font-size: 1.5em;">{{ topic.title }}</span>
                         </div>
-                        <div class="topic-preview-content">{{ topic.content }}</div>
-                        <div class="stats-section" style="display: flex; gap: 20px; font-size: 1.2em;">
+                        <div class="topic-preview-content" v-html="topic.content"></div>
+                        <!-- <div class="stats-section" style="display: flex; gap: 20px; font-size: 1.2em;">
                             <div style="display: flex; align-items: center;">
                                 <el-icon style="margin-right: 5px;">
                                     <CircleCheck />
@@ -165,7 +124,7 @@ const topics = ref([
                                 </el-icon>
                                 {{ topic.stats.favorites }} 收藏
                             </div>
-                        </div>
+                        </div> -->
                     </PostCard>
                 </div>
             </div>
@@ -191,7 +150,7 @@ const topics = ref([
             </div>
         </div>
         <div class="editorDrawer">
-            <el-drawer v-model="isDrawerVisible" title="发表主题" size="59em" :with-header="false" :show-close="true"
+            <el-drawer v-model="isDrawerVisible" title="发表主题" size="80%" :with-header="false" :show-close="true"
                 direction="btt" @close="closeEditor" :style="{ width: '55%', margin: '0 auto' }">
                 <Editor />
             </el-drawer>
@@ -339,6 +298,238 @@ const topics = ref([
         margin-top: 1.5em;
         padding-top: 1em;
         border-top: 1px solid #f0f0f0;
+    }
+}
+
+/* 响应式设计 */
+@media screen and (max-width: 1200px) {
+    .container {
+        max-width: 85%;
+        padding: 1em;
+    }
+
+    .content {
+        padding: 1em;
+
+        .post-button {
+            font-size: 1.2em;
+        }
+
+        .topic-card {
+            padding: 15px;
+
+            .topic-preview-content {
+                font-size: 1.2em;
+            }
+        }
+    }
+}
+
+// 平板和手机横屏
+@media screen and (max-width: 926px) and (orientation: landscape) {
+    .container {
+        max-width: 100%;
+        padding: 0.8em;
+        gap: 1em;
+        flex-direction: row; // 确保在横屏时保持水平布局
+    }
+
+    .content {
+        flex: 1.8;
+        padding: 0.8em;
+        max-height: 85vh; // 限制内容区域高度
+        overflow-y: auto; // 添加垂直滚动
+        transform: translateY(0); // 重置transform
+
+        .post-button {
+            font-size: 1.1em;
+            padding: 0.8em 0.3em;
+        }
+
+        .icon-container {
+            gap: 8px;
+            margin-top: 0.8em;
+        }
+
+        .topic-card {
+            padding: 12px;
+            margin-top: 8px;
+
+            .topic-preview-content {
+                font-size: 1.1em;
+                line-height: 1.5;
+                margin: 0.8em 0;
+                -webkit-line-clamp: 2; // 在横屏时减少显示行数
+            }
+
+            .author-info {
+                margin-bottom: 1em;
+
+                .el-avatar {
+                    transform: scale(0.9);
+                }
+            }
+
+            .title-section {
+                margin: 0.8em 0;
+                gap: 8px;
+
+                span {
+                    font-size: 1.3em;
+                }
+
+                .el-tag {
+                    transform: scale(0.9);
+                    margin-right: 0.8em;
+                }
+            }
+
+            .stats-section {
+                font-size: 1em;
+                margin-top: 1em;
+                padding-top: 0.8em;
+                gap: 15px;
+            }
+        }
+    }
+
+    .sidebar {
+        flex: 1;
+        gap: 0.8em;
+        max-height: 85vh; // 限制侧边栏高度
+        overflow-y: auto; // 添加垂直滚动
+        transform: translateY(0); // 重置transform
+
+        .tools {
+            p {
+                font-size: 1.3em;
+                padding: 12px;
+
+                svg {
+                    width: 24px;
+                    height: 24px;
+                }
+            }
+        }
+    }
+
+    :deep(.el-drawer) {
+        width: 70% !important; // 在横屏模式下调整抽屉宽度
+        margin: 0 auto;
+    }
+}
+
+// 手机竖屏
+@media screen and (max-width: 768px) and (orientation: portrait) {
+    .container {
+        flex-direction: column;
+        max-width: 100%;
+        padding: 0.5em;
+    }
+
+    .content {
+        padding: 0.5em;
+        transform: translateY(0);
+
+        .post-button {
+            font-size: 1em;
+            padding: 0.6em 0.3em;
+        }
+
+        .topic-card {
+            padding: 10px;
+
+            .topic-preview-content {
+                font-size: 1em;
+                -webkit-line-clamp: 2;
+            }
+
+            .author-info {
+                margin-bottom: 1em;
+            }
+
+            .title-section {
+                margin: 0.8em 0;
+
+                span {
+                    font-size: 1.2em;
+                }
+            }
+
+            .stats-section {
+                font-size: 1em;
+                margin-top: 1em;
+                padding-top: 0.6em;
+            }
+        }
+    }
+
+    .sidebar {
+        order: -1;
+        transform: translateY(0);
+
+        .tools {
+            p {
+                font-size: 1.2em;
+                padding: 10px;
+            }
+        }
+    }
+
+    :deep(.el-drawer) {
+        width: 100% !important;
+    }
+}
+
+// 超小屏幕
+@media screen and (max-width: 480px) {
+    .container {
+        padding: 0.3em;
+    }
+
+    .content {
+        padding: 0.3em;
+
+        .post-button {
+            font-size: 0.9em;
+            padding: 0.5em 0.2em;
+        }
+
+        .icon-container {
+            gap: 6px;
+        }
+
+        .topic-card {
+            padding: 8px;
+
+            .topic-preview-content {
+                font-size: 0.9em;
+                margin: 0.6em 0;
+            }
+
+            .title-section {
+                margin: 0.6em 0;
+
+                span {
+                    font-size: 1.1em;
+                }
+            }
+
+            .stats-section {
+                font-size: 0.9em;
+                margin-top: 0.8em;
+                padding-top: 0.5em;
+            }
+        }
+    }
+
+    .sidebar {
+        .tools {
+            p {
+                font-size: 1.1em;
+                padding: 8px;
+            }
+        }
     }
 }
 </style>

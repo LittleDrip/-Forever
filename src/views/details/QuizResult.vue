@@ -185,25 +185,23 @@ const goBack = () => {
     padding: 2em;
     max-width: 800px;
     margin: 0 auto;
-
     border-radius: 10px;
-
 }
 
 .result-header {
     text-align: center;
     margin-bottom: 2em;
-}
 
-h1 {
-    font-size: 2.2rem;
-    color: #333;
-}
+    h1 {
+        font-size: 2.2rem;
+        color: #333;
+    }
 
-.subheading {
-    margin-top: 1em;
-    font-size: 1.1rem;
-    color: #666;
+    .subheading {
+        margin-top: 1em;
+        font-size: 1.1rem;
+        color: #666;
+    }
 }
 
 .result-content {
@@ -211,23 +209,24 @@ h1 {
     font-size: 1rem;
     color: #444;
     line-height: 1.6;
+    width: 100%;
 }
 
 .evaluation {
     background-color: #fff;
     padding: 1.5em;
     border-radius: 8px;
-
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .result-meta {
     margin-top: 1em;
     font-size: 0.9rem;
     color: #777;
-}
 
-.result-meta p {
-    margin: 0.5em 0;
+    p {
+        margin: 0.5em 0;
+    }
 }
 
 .loading {
@@ -249,29 +248,20 @@ h1 {
     background-color: #409eff;
     color: #fff;
     border-radius: 5px;
-}
 
-.el-button:hover {
-    background-color: #66b1ff;
-}
-
-.el-spinner {
-    margin-right: 1em;
-}
-
-/* 添加雷达图样式 */
-.radar-chart {
-    width: 100%;
-    height: 400px;
-    margin: 20px 0;
+    &:hover {
+        background-color: #66b1ff;
+    }
 }
 
 .chart-container {
-    margin-top: 0;
+    margin-top: 2em;
     padding: 1.5em;
     border-radius: 8px;
     width: 100%;
     position: relative;
+    background-color: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 
     .chart-title {
         position: absolute;
@@ -290,6 +280,172 @@ h1 {
         width: 100%;
         height: 400px;
         margin: 0;
+    }
+}
+
+/* 响应式设计 */
+@media screen and (max-width: 1200px) {
+    .result-container {
+        max-width: 90%;
+        padding: 1.5em;
+    }
+
+    .result-header h1 {
+        font-size: 2rem;
+    }
+
+    .chart-container {
+        padding: 1.2em;
+
+        .radar-chart {
+            height: 350px;
+        }
+    }
+}
+
+// 平板和手机横屏
+@media screen and (max-width: 926px) {
+    .result-container {
+        max-width: 95%;
+        padding: 1.2em;
+    }
+
+    .result-header {
+        margin-bottom: 1.5em;
+
+        h1 {
+            font-size: 1.8rem;
+        }
+
+        .subheading {
+            font-size: 1rem;
+        }
+    }
+
+    .result-content {
+        font-size: 0.95rem;
+    }
+
+    .evaluation {
+        padding: 1.2em;
+    }
+
+    .chart-container {
+        padding: 1em;
+
+        .chart-title {
+            font-size: 1.1rem;
+            padding: 6px 10px;
+        }
+
+        .radar-chart {
+            height: 300px;
+        }
+    }
+}
+
+// 手机竖屏
+@media screen and (max-width: 768px) {
+    .result-container {
+        padding: 1em;
+    }
+
+    .result-header {
+        margin-bottom: 1.2em;
+
+        h1 {
+            font-size: 1.5rem;
+        }
+
+        .subheading {
+            font-size: 0.9rem;
+        }
+    }
+
+    .result-content {
+        font-size: 0.9rem;
+    }
+
+    .evaluation {
+        padding: 1em;
+    }
+
+    .result-meta {
+        font-size: 0.8rem;
+    }
+
+    .chart-container {
+        padding: 0.8em;
+        margin-top: 1.5em;
+
+        .chart-title {
+            font-size: 1rem;
+            padding: 5px 8px;
+            bottom: 15px;
+            right: 15px;
+        }
+
+        .radar-chart {
+            height: 250px;
+        }
+    }
+
+    .el-button {
+        font-size: 0.9rem;
+        padding: 0.6em 1.5em;
+    }
+}
+
+// 超小屏幕
+@media screen and (max-width: 480px) {
+    .result-container {
+        padding: 0.8em;
+    }
+
+    .result-header {
+        margin-bottom: 1em;
+
+        h1 {
+            font-size: 1.3rem;
+        }
+
+        .subheading {
+            font-size: 0.85rem;
+            margin-top: 0.8em;
+        }
+    }
+
+    .result-content {
+        font-size: 0.85rem;
+    }
+
+    .evaluation {
+        padding: 0.8em;
+    }
+
+    .result-meta {
+        font-size: 0.75rem;
+    }
+
+    .chart-container {
+        padding: 0.6em;
+        margin-top: 1.2em;
+
+        .chart-title {
+            font-size: 0.9rem;
+            padding: 4px 6px;
+            bottom: 10px;
+            right: 10px;
+        }
+
+        .radar-chart {
+            height: 200px;
+        }
+    }
+
+    .el-button {
+        font-size: 0.85rem;
+        padding: 0.5em 1.2em;
     }
 }
 </style>

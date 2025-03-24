@@ -102,6 +102,7 @@ onMounted(() => {
 });
 </script>
 
+
 <template>
     <div class="sound-healing">
         <div class="header">
@@ -110,7 +111,6 @@ onMounted(() => {
             </el-button>
             <h1>声音疗愈</h1>
         </div>
-
         <el-skeleton :loading="loading" animated>
             <template #default>
                 <div class="player-container" v-if="playlist.length > 0">
@@ -339,7 +339,7 @@ onMounted(() => {
                         color: white;
 
                         &:hover {
-                            background-color: darken(#e8d575, 5%);
+                            background-color: #d0be61;
                         }
                     }
                 }

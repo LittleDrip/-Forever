@@ -1,32 +1,74 @@
 <template>
     <div class="single-choice">
-        <el-radio-group :model-value="modelValue" @change="updateValue">
-            <el-radio size="middle" class="radio" v-for="(option, index) in options" :key="index" :label="option">
+        <div class="radio-group">
+            <label v-for="(option, index) in options" :key="index" class="radio-label">
+                <input type="radio" :value="option" :checked="modelValue === option" @change="updateValue(option)" />
+                <span class="custom-radio"></span>
                 {{ option }}
-            </el-radio>
-        </el-radio-group>
+            </label>
+        </div>
     </div>
 </template>
 
 <script setup>
 import { defineProps, defineEmits } from "vue";
 
-// 定义 props 和 emits
 const props = defineProps({
-    modelValue: String, // 当前选中的值
-    options: Array,     // 单选题选项
+    modelValue: String,
+    options: Array,
 });
 
-const emit = defineEmits(["update:modelValue"]); // 声明事件
+const emit = defineEmits(["update:modelValue", "answered"]);
 
-// 触发更新事件
 const updateValue = (value) => {
     emit("update:modelValue", value);
+    emit("answered"); // 通知父组件题目已回答
 };
 </script>
 
 <style scoped lang="scss">
 .single-choice {
     margin-top: 10px;
+
+    .radio-group {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .radio-label {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        font-size: 1rem;
+        color: #333;
+        padding: 10px;
+        border: 1px solid #e8d575;
+        border-radius: 8px;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+
+        &:hover {
+            background-color: #fdfbf2;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        input[type="radio"] {
+            display: none;
+        }
+
+        .custom-radio {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #e8d575;
+            border-radius: 50%;
+            margin-right: 10px;
+            position: relative;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="radio"]:checked+.custom-radio {
+            background-color: #e8d575;
+        }
+    }
 }
 </style>

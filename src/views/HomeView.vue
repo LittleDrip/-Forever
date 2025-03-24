@@ -111,11 +111,19 @@ const handleSearch = () => {
 .home {
   width: 100%;
   height: 100%;
-  overflow: hidden; // 防止超出滚动
+  overflow: hidden;
   font-family: "MiSans";
 }
 
 .header {
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  font-size: 1em;
+  min-height: 7.5vh;
+  width: 100%;
+  position: fixed;
+  background-color: #ffffff;
 
   .darkMode {
     z-index: 999;
@@ -123,70 +131,44 @@ const handleSearch = () => {
 
   .custom-action {
     user-select: none;
-    /* 禁止用户选择 */
     -webkit-user-select: none;
-    /* 针对旧版 Webkit 内核的浏览器 */
     -moz-user-select: none;
-    /* 针对旧版 Firefox 浏览器 */
     -ms-user-select: none;
-    /* 针对旧版 Internet Explorer */
   }
-
-
-  z-index: 10;
-  /* 确保导航栏位于最上方 */
-  display: flex;
-  align-items: center; // 垂直居中
-  // justify-content: center; // 水平居中（可选，根据需求调整）
-  font-size: 1em;
-  min-height: 7.5vh;
-  width: 100%;
-  position: fixed;
-  background-color: #ffffff; // 示例背景色
 
   .title {
     margin-left: 2em;
     flex: 0 0 10%;
-    /* 占 20% */
-    font-size: 20px; // 根据需求设置字体大小
+    font-size: 20px;
     font-weight: bold;
-    color: #333; // 字体颜色
+    color: #333;
   }
 
   .menu-bar {
     flex: 0 0 40%;
-    /* 占 60% */
     font-size: 1.5em;
     justify-content: center;
-    // margin-left: 2em;
     display: flex;
     flex-wrap: nowrap;
-    /* 不允许换行 */
-    align-items: center; // 垂直居中
+    align-items: center;
 
     div {
       margin-left: 1.5em;
       color: var(--gray-2);
       white-space: nowrap;
-      /* 防止文本换行 */
       cursor: pointer;
 
       &.active {
         font-weight: bold;
-        color: var(--black); // 高亮颜色
-        border-bottom: 4px solid var(--lightblue); // 下划线高亮
+        color: var(--black);
+        border-bottom: 4px solid var(--lightblue);
       }
     }
   }
 
-
-
   .search-box {
-    /* 占 20% */
     margin-left: 2em;
 
-
-    /* From Uiverse.io by themrsami */
     .search-container {
       position: relative;
       width: 18em;
@@ -199,7 +181,6 @@ const handleSearch = () => {
       align-items: center;
       background-color: #fff;
       border-radius: 4em;
-
       overflow: hidden;
       transition: all 0.3s ease;
     }
@@ -214,8 +195,6 @@ const handleSearch = () => {
       outline: none;
     }
 
-
-
     .search-icon {
       display: flex;
       align-items: center;
@@ -227,52 +206,117 @@ const handleSearch = () => {
       cursor: pointer;
       transition: background-color 0.3s ease;
     }
-
-    .search-icon svg {
-      fill: #000;
-    }
-
-
-
   }
-
 }
 
 .avatar-container {
   position: relative;
-  margin-left: auto; // 推到右侧
+  margin-left: auto;
   margin-right: 10em;
 }
 
+// 媒体查询 - 手机横屏
+@media screen and (max-width: 926px) {
+  .header {
+    padding: 0 1em;
+
+    .title {
+      margin-left: 0.5em;
+      font-size: 16px;
+      flex: 0 0 auto;
+    }
+
+    .menu-bar {
+      flex: 1;
+      font-size: 1em;
+      margin-left: 1em;
+
+      div {
+        margin-left: 0.8em;
+      }
+    }
+
+    .search-box {
+      margin-left: 0.5em;
+
+      .search-container {
+        width: 8em;
+      }
+
+      .search-bar {
+        height: 2.2em;
+      }
+
+      .search-input {
+        padding: 4px 8px;
+        font-size: 0.75em;
+
+        &::placeholder {
+          font-size: 0.9em;
+        }
+      }
+
+      .search-icon {
+        padding: 2px;
+        margin-left: 4px;
+        margin-right: 4px;
+
+        img {
+          width: 16px;
+          height: 16px;
+        }
+      }
+    }
+
+    .avatar-container {
+      margin-right: 1em;
+    }
+
+    .dark-mode {
+      margin-right: 0.5em;
+    }
+  }
+}
+
+// 更小屏幕的适配
+@media screen and (max-width: 768px) {
+  .header {
+    .search-box {
+      display: none;
+    }
+
+    .menu-bar {
+      font-size: 0.9em;
+
+      div {
+        margin-left: 0.5em;
+      }
+    }
+  }
+}
 
 .main-container {
-  flex: 1; // 占满剩余空间
-  background-color: #f5f5f5; // 灰色背景
-  display: flex; // 可以用于子元素的布局
-  flex-direction: column; // 子元素垂直排列
-  overflow: auto; // 如果内容超出容器，允许滚动
-  width: 100%; // 添加此行
+  flex: 1;
+  background-color: #f5f5f5;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  width: 100%;
   margin-top: 7.5vh;
-  // min-height: 100vh;
 
   .content {
-    // margin: 0 15em; // 设置左右两边的空白距离
-    padding: 0; // 内容的内边距（可选）
-    // background-color: #ffffff; // 内容区域的白色背景s
-    flex: 1; // 子元素撑满父容器
-
+    padding: 0;
+    flex: 1;
   }
-
-
 
   .el-fade-in-linear-enter-active,
   .el-fade-in-linear-leave-active {
-    transition: opacity 0.3s linear; // 设置过渡效果
+    transition: opacity 0.3s linear;
   }
 
   .el-fade-in-linear-enter-from,
   .el-fade-in-linear-leave-to {
-    opacity: 0; // 初始状态或消失状态
+    opacity: 0;
   }
 }
 </style>

@@ -73,12 +73,23 @@ const sendMessage = () => {
     align-items: center;
     min-height: 92.5vh;
     text-align: center;
+
+    @media screen and (orientation: landscape) and (max-width: 900px) {
+        min-height: 100vh;
+        justify-content: center;
+        padding: 1em;
+    }
 }
 
 .welcome-message {
     margin-top: 25vh;
     font-size: 1.8em;
     font-family: 'MiSans';
+
+    @media screen and (orientation: landscape) and (max-width: 900px) {
+        margin-top: 0;
+        font-size: 1.4em;
+    }
 }
 
 .input-wrapper {
@@ -90,6 +101,12 @@ const sendMessage = () => {
     width: 100%;
     max-width: 600px;
 
+    @media screen and (orientation: landscape) and (max-width: 900px) {
+        max-width: 90%;
+        margin-top: 15px;
+        margin-bottom: 15px;
+    }
+
     .input-box {
         width: 100%;
         padding: 10px;
@@ -99,6 +116,10 @@ const sendMessage = () => {
         font-size: 14px;
         outline: none;
         transition: border-color 0.2s;
+
+        @media screen and (orientation: landscape) and (max-width: 900px) {
+            max-height: 80px;
+        }
     }
 
     .input-box:focus {

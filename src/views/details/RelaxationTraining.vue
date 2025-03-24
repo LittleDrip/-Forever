@@ -163,6 +163,7 @@ const startTraining = (item: TrainingItem) => {
         justify-content: center;
         gap: 1rem;
         margin-bottom: 2rem;
+        font-size: 1rem;
 
         .category-btn {
             padding: 0.5rem 1.5rem;
@@ -302,6 +303,83 @@ const startTraining = (item: TrainingItem) => {
 
         .categories {
             flex-wrap: wrap;
+        }
+    }
+}
+
+// 手机横屏特定样式
+@media screen and (max-height: 500px) and (orientation: landscape) {
+    .relaxation-container {
+        padding: 0.8rem;
+
+        .header {
+            margin-bottom: 1rem;
+
+            h1 {
+                font-size: 1.5rem;
+                margin-bottom: 0.2rem;
+            }
+
+            .subtitle {
+                margin-top: 0.5em;
+                font-size: 0.9rem;
+            }
+        }
+
+        .categories {
+            margin-bottom: 1rem;
+            gap: 0.5rem;
+
+            .category-btn {
+                padding: 0.3rem 1rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        .training-grid {
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+
+            .training-card {
+                min-height: 140px;
+                padding: 1rem;
+
+                .card-content {
+                    h3 {
+                        font-size: 1.1rem;
+                        margin-bottom: 0.3rem;
+                    }
+
+                    .description {
+                        font-size: 0.85rem;
+                        margin-bottom: 0.5rem;
+                    }
+
+                    .meta-info {
+                        gap: 0.5rem;
+                        font-size: 0.8rem;
+
+                        .type {
+                            padding: 0.1rem 0.6rem;
+                        }
+                    }
+                }
+
+                .card-image {
+                    width: 90px;
+                    height: 90px;
+                }
+            }
+        }
+
+        .daily-quote {
+            margin-top: 1rem;
+            padding: 1rem;
+
+            blockquote {
+                font-size: 1rem;
+            }
         }
     }
 }
