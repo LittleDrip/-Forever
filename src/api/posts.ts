@@ -15,3 +15,10 @@ export const getPostsService = () => {
         method: "get",
     })
 }
+export const getPostByIdService = (id: any) => {
+    return request({
+        url: `/posts/get/${id}`,
+        method: "get",
+    })
+}
+

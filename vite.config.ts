@@ -37,6 +37,11 @@ export default defineConfig({
         target: 'http://localhost:7070',
         changeOrigin: true,
         rewrite: path => path.replace(/^\/forComment/, '')
+      },
+      '/image': {
+        target: 'http://172.20.10.6:5000',
+        changeOrigin: true,
+        rewrite: path => path.replace(/^\/image/, '')
       }
     },
   },

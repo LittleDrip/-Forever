@@ -4,6 +4,14 @@
         <div class="container">
             <!-- 左侧内容 -->
             <div class="content">
+                <!-- 添加分类导航栏 -->
+                <div class="category-nav">
+                    <div v-for="category in categories" :key="category" class="category-item"
+                        :class="{ active: currentCategory === category }" @click="handleCategoryClick(category)">
+                        {{ category }}
+                    </div>
+                </div>
+
                 <el-skeleton :rows="50" animated v-if="posts.length <= 1" />
 
                 <div v-else class="post" v-for="post in posts" :key="post.id">
@@ -92,7 +100,7 @@
                                 d="M579.9 830.6H439.8c-24.6 0-44.5 19.9-44.5 44.5s19.9 44.5 44.5 44.5h140.1c24.6 0 44.5-19.9 44.5-44.5-0.4-24.6-20.3-44.5-44.5-44.5z"
                                 fill="#27C18F" p-id="3328"></path>
                             <path
-                                d="M579.9 941H439.8c-36.6 0-66.3-29.7-66.3-66.3 0-36.6 29.7-66.3 66.3-66.3h140.1c36.6 0 66.3 29.7 66.3 66.3-0.4 36.6-30.1 66.3-66.3 66.3z m-140.1-88.6c-12.5 0-22.7 10.2-22.7 22.7s10.2 22.7 22.7 22.7h140.1c12.5 0 22.7-10.2 22.7-22.7s-10.2-22.7-22.7-22.7H439.8zM566.5 369c0 19 15.4 34.3 34.3 34.3 19 0 34.3-15.4 34.3-34.3 0-19-15.4-34.3-34.3-34.3S566.5 350 566.5 369zM370.3 369c0 19 15.4 34.3 34.3 34.3 19 0 34.3-15.4 34.3-34.3 0-19-15.4-34.3-34.3-34.3-19 0-34.3 15.3-34.3 34.3zM468.6 369c0 19 15.3 34.3 34.3 34.4 19 0 34.3-15.3 34.4-34.3v-0.1c0-19-15.4-34.3-34.3-34.3-19 0-34.4 15.3-34.4 34.3z"
+                                d="M579.9 941H439.8c-36.6 0-66.3-29.7-66.3-66.3 0-36.6 29.7-66.3 66.3-66.3h140.1c36.6 0 66.3 29.7 66.3 66.3-0.4 36.6-30.1 66.3-66.3 66.3z m-140.1-88.6c-12.5 0-22.7 10.2-22.7 22.7s10.2 22.7 22.7 22.7h140.1c12.5 0 22.7-10.2 22.7-22.7s-10.2-22.7-22.7-22.7H439.8zM566.5 369c0 19 15.4 34.3 34.3 34.3 19 0 34.3-15.4 34.3-34.3 0-19-15.4-34.3-34.3-34.3-19 0-34.3 15.3-34.3 34.3zM370.3 369c0 19 15.4 34.3 34.3 34.3 19 0 34.3-15.4 34.3-34.3 0-19-15.4-34.3-34.3-34.3-19 0-34.3 15.3-34.3 34.3zM468.6 369c0 19 15.3 34.3 34.3 34.4 19 0 34.3-15.3 34.4-34.3v-0.1c0-19-15.4-34.3-34.3-34.3-19 0-34.4 15.3-34.4 34.3z"
                                 fill="#333333" p-id="3329"></path>
                         </svg>
                         跃动一下
@@ -135,25 +143,82 @@ import starSvg from "@/assets/svg/star.svg";
 import starSvgActive from "@/assets/svg/star_active.svg";
 import FunClass from "@/components/aside/FunClass.vue";
 import Quote from '@/components/aside/Quote.vue';
-import { articleListByPageService, articleListService, getAllPagesTotal } from '@/api/article.ts';
+import { articleListByPageService, articleListService, getAllPagesTotal, getArticleTag } from '@/api/article';
 import router from "@/router";
+import { addBrowsingHistory } from "@/api/history";
+import { useUserStore } from "@/stores/user";
 
+const userStore = useUserStore();
 
-const goToDetail = (id: any) => router.push(
-    { path: '/article', query: { id } }
-);
-// 切换点赞状态
-const toggleLike = (post: any) => {
-    post.liked = !post.liked;
-    post.likes += post.liked ? 1 : -1; // 点赞计数变化
-    console.log(post.liked);
+// 定义分类列表
+const categories = ref([
+    '全部',
+    '心理健康',
+    '情绪管理',
+    '人际关系',
+    '焦虑障碍',
+    '压力应对',
+    '生活感悟'
+]);
+
+// 当前选中的分类
+const currentCategory = ref('全部');
+
+// 处理分类点击
+const handleCategoryClick = async (category: string) => {
+    currentCategory.value = category;
+    // 重置分页
+    page.value.current = 1;
+    posts.value = []; // 清空当前文章列表
+
+    if (category === '全部') {
+        // 如果是"全部"，调用普通分页接口
+        await getArticleListByPage();
+    } else {
+        // 如果是具体分类，调用分类接口
+        try {
+            const res = await getArticleTag(category);
+            posts.value = res.data;
+            stripHtmlTags();
+            postSummaries();
+        } catch (error) {
+            console.error('获取分类文章失败:', error);
+        }
+    }
 };
 
-// 切换收藏状态
-const toggleStar = (post: any) => {
-    post.starred = !post.starred;
-    post.star += post.starred ? 1 : -1; // 收藏计数变化
+// 修改获取文章列表的方法
+const getArticleListByPage = async () => {
+    if (currentCategory.value !== '全部') return; // 如果不是"全部"分类，不执行分页加载
+
+    const res = await articleListByPageService(page.value);
+    posts.value = [...posts.value, ...res.data];
+    stripHtmlTags();
+    postSummaries();
 };
+
+// 修改滚动加载逻辑
+const handleScroll = () => {
+    const scrollTop = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop;
+    const windowHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+    const documentHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
+
+    // 只在"全部"分类下启用滚动加载
+    if (currentCategory.value === '全部' &&
+        scrollTop + windowHeight >= documentHeight - 100 &&
+        page.value.current <= page.value.totalPages) {
+        if (page.value.current < page.value.totalPages) {
+            page.value.current += 1;
+            getArticleListByPage();
+        }
+    }
+};
+
+onMounted(() => {
+    window.addEventListener("scroll", handleScroll);
+    getTotalPages();
+    getArticleListByPage();
+});
 
 // 帖子数据
 // 定义 Post 接口
@@ -193,60 +258,46 @@ const postSummaries = () => {
     });
 };
 
-// const getArticleList = async () => {
-//     const res = await articleListService();
-//     posts.value = res.data;
-//     stripHtmlTags();
-//     postSummaries();
-//     // console.log(posts.value);
-// };
 const page = ref({
     "current": 1,
     "size": 8,
     "totalPages": 10,
 })
 
-
-const getArticleListByPage = async () => {
-    // TODO：获取总页数
-    const res = await articleListByPageService(page.value);
-    posts.value = [...posts.value, ...res.data];  // 将新数据追加到 posts 数组
-    stripHtmlTags();
-    postSummaries();
-};
 const getTotalPages = async () => {
     const res = await getAllPagesTotal(page.value);
     page.value.totalPages = res.data;
 }
-// 页面滚动加载更多功能
-const handleScroll = () => {
-    const scrollTop = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop;
-    const windowHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
-    const documentHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
 
-    // 判断是否滚动到页面底部
-    if (scrollTop + windowHeight >= documentHeight - 100 && page.value.current <= page.value.totalPages) {
-        // 如果当前页面不是最后一页，则加载下一页数据
-        if (page.value.current < page.value.totalPages) {
-            page.value.current += 1;  // 切换到下一页
-            getArticleListByPage();  // 获取新数据
-        }
+const goToDetail = async (id: any) => {
+    // 记录浏览历史
+    // 从posts中找到对应的文章标题
+    const post = posts.value.find(item => item.id === id);
+    const title = post ? post.title : '未知标题';
+    const data = {
+        articleId: id,
+        articleTitle: title,
+        userId: userStore.userInfo.id,
     }
+    console.log(data);
+    await addBrowsingHistory(data);
+    router.push(
+        { path: '/article', query: { id } }
+    );
+}
+
+// 切换点赞状态
+const toggleLike = (post: any) => {
+    post.liked = !post.liked;
+    post.likes += post.liked ? 1 : -1; // 点赞计数变化
+    console.log(post.liked);
 };
 
-onMounted(() => {
-    window.addEventListener("scroll", handleScroll);
-    getTotalPages();  // 获取总页数
-    getArticleListByPage();  // 加载第一页数据
-});
-// 组件销毁时移除滚动事件监听器
-onBeforeUnmount(() => {
-    window.removeEventListener("scroll", handleScroll);
-});
-
-
-
-
+// 切换收藏状态
+const toggleStar = (post: any) => {
+    post.starred = !post.starred;
+    post.star += post.starred ? 1 : -1; // 收藏计数变化
+};
 </script>
 
 <style lang="scss" scoped>
@@ -272,6 +323,44 @@ onBeforeUnmount(() => {
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     transition: all 0.3s ease;
+
+    /* 添加分类导航样式 */
+    .category-nav {
+        display: flex;
+        justify-content: center;
+        gap: 1em;
+        padding: 0.5em 0;
+        margin-bottom: 1.5em;
+        border-bottom: 1px solid rgba(232, 213, 117, 0.2);
+        overflow-x: auto;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+
+        .category-item {
+            padding: 0.5em .8em;
+            border-radius: 10px;
+            background-color: #f5f5f5;
+            color: #666;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.3s ease;
+            font-size: 1.4em;
+
+            &:hover {
+                background-color: rgba(232, 213, 117, 0.2);
+                color: #E8D575;
+            }
+
+            &.active {
+                background-color: #E8D575;
+                color: #fff;
+            }
+        }
+    }
 
     .post {
         margin-bottom: 2em;

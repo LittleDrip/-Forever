@@ -1,97 +1,60 @@
 <template>
-    <div class="chat-input-container">
-        <div class="messages">
-            <div v-for="(msg, index) in messages" :key="index" class="message">
-                <span>{{ msg }}</span>
+    <el-card class="upload-card">
+        <h2>图片上传</h2>
+        <el-upload class="upload-demo" drag action="#" :auto-upload="false" :on-change="handleUpload"
+            :before-upload="beforeUpload" :show-file-list="true">
+            <el-icon class="el-icon--upload">
+                <upload />
+            </el-icon>
+            <div class="el-upload__text">
+                拖拽文件到此处或 <em>点击上传</em>
             </div>
-        </div>
-        <div class="input-wrapper">
-            <textarea v-model="message" @keyup.enter="sendMessage" placeholder="Type your message..." rows="4"
-                class="input-box"></textarea>
-            <button @click="sendMessage" class="send-btn">Send</button>
-        </div>
-    </div>
+            <template #tip>
+                <div class="el-upload__tip">
+                    只能上传jpg/png文件，且不超过2MB
+                </div>
+            </template>
+        </el-upload>
+    </el-card>
 </template>
 
-<script setup>
-import { ref } from 'vue';
+<script setup lang="ts">
+import { uploadImg } from '@/api/image';
+import { ElMessage } from 'element-plus';
+import type { UploadFile } from 'element-plus';
 
-// Store message input and messages list
-const message = ref('');
-const messages = ref([]);
 
-// Function to handle sending a message
-const sendMessage = () => {
-    if (message.value.trim()) {
-        messages.value.push(message.value);
-        message.value = ''; // Clear input after sending
-    }
-};
-</script>
-
-<style lang="scss">
-.chat-input-container {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 10px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    width: 100%;
-    max-width: 600px;
-
-    .messages {
-        margin-bottom: 10px;
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        gap: 5px;
-
-        .message {
-            padding: 10px;
-            background-color: #fff;
-            border-radius: 5px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            max-width: 80%;
-            word-wrap: break-word;
+const handleUpload = async (file: UploadFile) => {
+    try {
+        const res = await uploadImg(file.raw as File);
+        const response = res;
+        if (response.status === 'success' && response.detections.length > 0) {
+            const result = response.detections[0].class_name;
+            console.log('识别结果：', result);
+            ElMessage.success(`图片识别成功,心情状态:${result}`);
+        } else {
+            ElMessage.error('未能识别图片内容');
         }
-    }
-
-    .input-wrapper {
-        display: flex;
-        gap: 10px;
-        width: 100%;
-        align-items: center;
-
-        .input-box {
-            width: 100%;
-            padding: 10px;
-            border-radius: 20px;
-            border: 1px solid #ccc;
-            resize: none;
-            font-size: 14px;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-
-        .input-box:focus {
-            border-color: #007bff;
-        }
-
-        .send-btn {
-            padding: 8px 16px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: background-color 0.2s;
-        }
-
-        .send-btn:hover {
-            background-color: #0056b3;
-        }
+    } catch (error) {
+        console.error('上传错误：', error);
+        ElMessage.error('图片上传失败');
     }
 }
-</style>
+
+const beforeUpload = (file: File) => {
+    const isImage = file.type.startsWith('image/')
+    const isLt2M = file.size / 1024 / 1024 < 2
+
+    if (!isImage) {
+        ElMessage.error('只能上传图片文件！')
+        return false
+    }
+    if (!isLt2M) {
+        ElMessage.error('图片大小不能超过 2MB！')
+        return false
+    }
+    return true
+}
+</script>
+
+<style scoped></style>

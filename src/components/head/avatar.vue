@@ -59,31 +59,31 @@ const handleLogout = async () => {
                 </div>
             </div>
             <div v-if="!isUnauthorized">
-                <div class="infoCard" style="text-align: center;">
-                    <h3>{{ userStore.userInfo.nickname }}</h3>
-                    <div style="margin-top: 2em;">
-                        <ul style="list-style-type: none; padding: 0;">
-                            <li style="display: flex; align-items: center; padding: 10px 0;">
-                                <!-- 编辑图标 -->
-                                <el-icon style="margin-right: 10px;">
+                <div class="infoCard">
+
+                    <h3 style="margin: 0 0 20px 0; font-size: 1.2em; color: #303133;">
+                        {{ userStore.userInfo.nickname }}
+                    </h3>
+                    <div class="menu-list">
+                        <ul>
+                            <li @click="router.push('/user-center')">
+                                <el-icon>
                                     <Edit />
                                 </el-icon>
                                 <span>个人中心</span>
                             </li>
-
-                            <!-- 分割线 -->
-                            <el-divider direction="horizontal"></el-divider>
-
-                            <li style="display: flex; align-items: center; padding: 10px 0;">
-                                <!-- 浏览图标 -->
-                                <el-icon style="margin-right: 10px;">
+                            <div class="divider"></div>
+                            <li @click="router.push('/browse-history')">
+                                <el-icon>
                                     <View />
                                 </el-icon>
                                 <span>最近浏览</span>
                             </li>
                         </ul>
                     </div>
-                    <el-button type="danger " style="width: 100%;" plain @click="handleLogout">退出登录</el-button>
+
+                    <el-button type="danger " style="width: 100%;margin-top: 1em;" plain
+                        @click="handleLogout">退出登录</el-button>
                 </div>
             </div>
         </el-popover>
@@ -94,6 +94,46 @@ const handleLogout = async () => {
 </template>
 
 <style lang="scss" scoped>
+.infoCard {
+    text-align: center;
+    padding: 20px;
+}
+
+.menu-list ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menu-list li {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    cursor: pointer;
+    transition: all 0.3s;
+    border-radius: 4px;
+}
+
+.menu-list li:hover {
+    background-color: #f5f7fa;
+}
+
+.menu-list .el-icon {
+    margin-right: 12px;
+    font-size: 18px;
+    color: #909399;
+}
+
+.menu-list span {
+    color: #606266;
+}
+
+.divider {
+    height: 1px;
+    background-color: #ebeef5;
+    margin: 8px 0;
+}
+
 .avatar-container {
     display: flex;
     flex-direction: row;

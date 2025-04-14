@@ -37,5 +37,15 @@ export const getArticleSummary = (id: number) => {
     });
 }
 
+export const getArticleTag = (tag: any) => {
+    return request({
+        url: `/article/tag`,
+        method: "get",
+        params: { tag },
+    });
+}
+
+
+
 
 

@@ -3,10 +3,13 @@
 import Editor from '@/components/Forum/editor.vue';
 import PostCard from '@/components/forum/PostCard.vue';
 import { ChatLineSquare, CircleCheck, Clock, Compass, Document, Edit, EditPen, Star } from '@element-plus/icons-vue';
-import type { maxHeaderSize } from 'http';
 import { onMounted, ref } from 'vue';
 import WeatherInfo from '@/components/forum/WeatherInfo.vue';
 import { getPostsService } from '@/api/posts';
+import { useRouter } from 'vue-router';
+import { computed } from 'vue';
+
+const router = useRouter();
 const isDrawerVisible = ref(false);
 // 打开 Drawer
 const openEditor = () => {
@@ -18,6 +21,7 @@ const closeEditor = () => {
     isDrawerVisible.value = false;
 };
 const type = ref(["全部", "求助倾诉", "经验分享", "积极心理", "日常成长"]);
+const currentType = ref("全部"); // 添加当前选中类型
 const getColor = (index: number) => {
     const colors = ['#7eb0e3', '#95b3d7', '#b4c7e7', '#88b378', '#c3d69b']; // 更温和的颜色
     return colors[index % colors.length];
@@ -27,9 +31,24 @@ onMounted(async () => {
     topics.value = res.data;
     console.log(res.data);
 })
+
+// 根据当前分类筛选帖子
+const filteredTopics = computed(() => {
+    if (currentType.value === "全部") {
+        return topics.value; // 如果选中“全部”，显示所有帖子
+    } else {
+        return topics.value.filter(topic => topic.category === currentType.value);
+    }
+});
+
+// 跳转到帖子详情页
+const goToPostDetail = (postId: string) => {
+    router.push(`/Forum/post/${postId}`);
+};
+
 const topics = ref([
     {
-
+        "id": "",
         "authorName": "",
         "authorAvatarUrl": "",
         "createdAt": "",
@@ -78,7 +97,7 @@ const topics = ref([
 
                 <el-card style="width: 100%;margin-top: 1em;" shadow="never">
                     <span style="margin-right: 1em;" v-for="(item, index) in type" :key="item">
-                        <el-button @click="">
+                        <el-button @click="currentType = item">
                             <div class="type-icon" :style="{ 'background-color': getColor(index) }">
                             </div>
                             <span>{{ item }}</span>
@@ -88,7 +107,8 @@ const topics = ref([
                 <!-- 帖子展示区 -->
                 <el-skeleton :rows="15" animated v-if="!topics[0].title" />
                 <div v-else class="postList">
-                    <PostCard v-for="(topic, index) in topics" class="topic-card">
+                    <PostCard v-for="(topic, index) in filteredTopics" :key="index" class="topic-card"
+                        @click="goToPostDetail(topic.id)">
                         <div class="author-info" style="display: flex">
                             <div>
                                 <el-avatar :size="40" :src="topic.authorAvatarUrl" />

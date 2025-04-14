@@ -1,4 +1,13 @@
 <template>
+    <div class="back-button" @click="goBack">
+        <svg t="1710747179070" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
+            p-id="4250" width="32" height="32">
+            <path
+                d="M395.21518 513.604544l323.135538-312.373427c19.052938-18.416442 19.052938-48.273447 0-66.660212-19.052938-18.416442-49.91597-18.416442-68.968908 0L291.910961 480.275316c-19.052938 18.416442-19.052938 48.273447 0 66.660212l357.439172 345.70441c19.052938 18.416442 49.91597 18.416442 68.968908 0 19.052938-18.416442 19.052938-48.273447 0-66.660212L395.21518 513.604544z"
+                p-id="4251"></path>
+        </svg>
+        返回
+    </div>
     <div class="container">
         <div class="welcome-message">
             <h1>有什么可以帮忙的？</h1>
@@ -39,13 +48,15 @@ import { ref } from 'vue';
 const message = ref('');
 // 按钮数据列表
 const buttons = ref([
-    { label: "分析我做过的所有测试", color: "#626aef" },
-    { label: "根据我的焦虑测试做出评估", color: "#626aef" },
+    { label: "分析我的抑郁程度", color: "#626aef" },
+    { label: "分析我的焦虑程度", color: "#626aef" },
     { label: "失眠怎么办", color: "#626aef" },
     { label: "冥想小妙招", color: "#626aef" },
     { label: "推荐一些心理健康的书籍", color: "#626aef" },
 ]);
-
+const goBack = () => {
+    router.push('/emotionalDivision');
+};
 // 点击处理方法
 const handleClick = (label: string) => {
     console.log(`点击了按钮: ${label}`);
@@ -67,6 +78,28 @@ const sendMessage = () => {
 </script>
 
 <style lang="scss" scoped>
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 1.2rem;
+    padding: 10px;
+    cursor: pointer;
+    position: absolute;
+    color: #666;
+    transition: all 0.3s ease;
+
+    &:hover {
+        color: #E8D575;
+        transform: translateX(-5px);
+    }
+
+    svg {
+        width: 24px;
+        height: 24px;
+    }
+}
+
 .container {
     display: flex;
     flex-direction: column;

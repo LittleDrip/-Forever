@@ -5,6 +5,7 @@ import { useRoute } from 'vue-router';
 import Markdown from 'vue3-markdown-it';
 
 import Comment from '@/components/comment/Comment.vue';
+import router from '@/router';
 const isLoading = ref(false);
 const route = useRoute();
 const post = ref({
@@ -42,6 +43,9 @@ const fetchSummary = async () => {
         }
     }
 };
+const goBack = () => {
+    router.back();
+};
 
 onMounted(() => {
     console.log(articleId); // 检查获取的值
@@ -52,6 +56,15 @@ onMounted(() => {
 </script>
 
 <template>
+    <div class="back-button" @click="goBack">
+        <svg t="1710747179070" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
+            p-id="4250" width="32" height="32">
+            <path
+                d="M395.21518 513.604544l323.135538-312.373427c19.052938-18.416442 19.052938-48.273447 0-66.660212-19.052938-18.416442-49.91597-18.416442-68.968908 0L291.910961 480.275316c-19.052938 18.416442-19.052938 48.273447 0 66.660212l357.439172 345.70441c19.052938 18.416442 49.91597 18.416442 68.968908 0 19.052938-18.416442 19.052938-48.273447 0-66.660212L395.21518 513.604544z"
+                p-id="4251"></path>
+        </svg>
+        返回
+    </div>
     <div class="container">
         <!-- 左侧内容 -->
         <div class="content">
@@ -94,9 +107,33 @@ onMounted(() => {
 </template>
 
 <style lang="scss" scoped>
+.back-button {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    gap: 5px;
+    font-size: 1.2rem;
+    padding: 10px;
+    cursor: pointer;
+    width: fit-content;
+    margin-bottom: 15px;
+    color: #666;
+    transition: all 0.3s ease;
+
+    &:hover {
+        color: #E8D575;
+        transform: translateX(-5px);
+    }
+
+    svg {
+        width: 24px;
+        height: 24px;
+    }
+}
+
 .container {
     display: flex;
-    max-width: 90%;
+    max-width: 85%;
     margin: 0 auto;
     padding: 1.5em;
     gap: 1.5em;

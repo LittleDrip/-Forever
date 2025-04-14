@@ -20,9 +20,21 @@ const router = createRouter({
           component: () => import('../views/menu/CommonSense.vue'),
         },
         {
+          path: "/HotNews",
+          name: "热点新闻",
+          meta: { menuIndex: 1 },
+          component: () => import('../views/menu/HotNews.vue')
+        },
+        {
+          path: "/HotNews/:id",
+          name: "NewsDetail",
+          meta: { menuIndex: 1 },
+          component: () => import('../views/menu/NewsDetail.vue')
+        },
+        {
           path: '/diagnosticTests',
           name: '诊断测试',
-          meta: { menuIndex: 1 },
+          meta: { menuIndex: 2 },
           component: DiagnosticTests,
           children: [
             {
@@ -38,14 +50,26 @@ const router = createRouter({
           ]
         },
         {
+          path: '/emotionalDivision',
+          name: '跃心助手',
+          meta: { menuIndex: 3 },
+          component: () => import('../views/menu/EmotionalDivision.vue')
+        },
+        {
           path: "/Forum",
           name: "论坛信息",
-          meta: { menuIndex: 2 },
+          meta: { menuIndex: 4 },
           component: () => import('../views/menu/Forum.vue')
         },
         {
+          path: "/Forum/post/:id",
+          name: "帖子详情",
+          meta: { menuIndex: 4 },
+          component: () => import('../views/details/PostDetail.vue')
+        },
+        {
           path: "/HeartAssistant",
-          name: "跃心助手",
+          name: "跃动助手",
           meta: { menuIndex: 3 },
           component: () => import('../views/menu/HeartAssistant.vue'),
         },
@@ -60,30 +84,65 @@ const router = createRouter({
           meta: { menuIndex: 3 },
           component: () => import('../views/details/ChatDetail.vue'),
         },
+
+        {
+          path: '/mildEmotion',
+          name: '轻度情绪调节',
+          meta: { menuIndex: 3 },
+          component: () => import('../views/menu/MildEmotion.vue')
+        },
         {
           path: '/relaxation',
           name: '放松训练',
+          meta: { menuIndex: 3 },
           component: () => import('../views/details/RelaxationTraining.vue')
         },
         {
           path: '/relaxation/:type/:id',
           name: '训练详情',
+          meta: { menuIndex: 3 },
           component: () => import('../views/details/TrainingDetail.vue')
         },
         {
           path: '/sound-healing',
           name: 'SoundHealing',
+          meta: { menuIndex: 3 },
           component: () => import('../views/details/SoundHealing.vue')
         },
         {
           path: '/books',
           name: 'BookRecommend',
+          meta: { menuIndex: 3 },
           component: BookRecommend
         },
         {
           path: '/diary',
           name: '心情日记',
+          meta: { menuIndex: 3 },
           component: () => import('../views/details/MoodDiary.vue')
+        },
+        {
+          path: '/story',
+          name: '故事分享',
+          meta: { menuIndex: 3 },
+          component: () => import('../views/details/StoryShare.vue')
+        },
+        {
+          path: '/story/:id',
+          name: '故事详情',
+          meta: { menuIndex: 3 },
+          component: () => import('../views/details/StoryDetail.vue')
+        },
+        {
+          path: '/IntelligentNavigation',
+          name: '智能导航',
+          meta: { menuIndex: 3 },
+          component: () => import('../views/details/IntelligentNavigation.vue')
+        },
+        {
+          path: '/browse-history',
+          name: '浏览历史',
+          component: () => import('../views/browse-history.vue')
         }
       ]
     },

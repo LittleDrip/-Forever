@@ -3,6 +3,7 @@ import { ref, onMounted } from 'vue';
 
 import { Delete, Edit, Plus } from '@element-plus/icons-vue';
 import { getDiaryList, createDiary, updateDiary, deleteDiary } from '@/api/diary';
+import router from '@/router';
 
 interface DiaryEntry {
     id: number;
@@ -133,6 +134,9 @@ const deleteDiaryEntry = async (id: number) => {
 const analyzeDiary = () => {
     ElMessage.info('智能分析功能尚未实现');
 };
+const goBack = () => {
+    router.back();
+};
 
 // 初始加载数据
 onMounted(() => {
@@ -141,6 +145,15 @@ onMounted(() => {
 </script>
 
 <template>
+    <div class="back-button" @click="goBack">
+        <svg t="1710747179070" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
+            p-id="4250" width="32" height="32">
+            <path
+                d="M395.21518 513.604544l323.135538-312.373427c19.052938-18.416442 19.052938-48.273447 0-66.660212-19.052938-18.416442-49.91597-18.416442-68.968908 0L291.910961 480.275316c-19.052938 18.416442-19.052938 48.273447 0 66.660212l357.439172 345.70441c19.052938 18.416442 49.91597 18.416442 68.968908 0 19.052938-18.416442 19.052938-48.273447 0-66.660212L395.21518 513.604544z"
+                p-id="4251"></path>
+        </svg>
+        返回
+    </div>
     <div class="diary-container">
         <div class="diary-header">
             <h2>{{ isEditing ? '编辑日记' : '我的心情日记' }}</h2>
@@ -202,6 +215,30 @@ onMounted(() => {
 </template>
 
 <style lang="scss" scoped>
+.back-button {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    position: absolute;
+    font-size: 1.2rem;
+    padding: 10px;
+    cursor: pointer;
+    width: fit-content;
+    margin-bottom: 15px;
+    color: #666;
+    transition: all 0.3s ease;
+
+    &:hover {
+        color: #E8D575;
+        transform: translateX(-5px);
+    }
+
+    svg {
+        width: 24px;
+        height: 24px;
+    }
+}
+
 .diary-container {
     max-width: 800px;
     min-height: 92.5vh;
