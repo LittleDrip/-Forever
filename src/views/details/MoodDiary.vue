@@ -161,9 +161,9 @@ onMounted(() => {
                 <el-button type="primary" :icon="Plus" @click="toggleNewDiary">
                     写日记
                 </el-button>
-                <el-button type="success" @click="analyzeDiary">
+                <!-- <el-button type="success" @click="analyzeDiary">
                     智能分析
-                </el-button>
+                </el-button> -->
             </div>
         </div>
 

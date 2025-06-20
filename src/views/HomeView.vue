@@ -50,7 +50,8 @@ const handleSearch = () => {
     <div class="header">
 
       <div class="title">
-        心晴小屋
+        <img src="@/assets/img/avatar/home.png" alt="icon" class="title-icon" />
+        心晴卫士
       </div>
       <!-- 菜单栏 -->
       <div class="menu-bar">
@@ -60,7 +61,7 @@ const handleSearch = () => {
         </div>
 
         <!-- 搜索框 -->
-        <div class="search-box">
+        <!-- <div class="search-box">
           <div class="search-container">
             <div class="search-bar">
               <input type="text" class="search-input" placeholder="Search..." />
@@ -71,7 +72,7 @@ const handleSearch = () => {
             </div>
             <div class="glow"></div>
           </div>
-        </div>
+        </div> -->
       </div>
 
       <!-- 登录头像 -->
@@ -142,6 +143,15 @@ const handleSearch = () => {
     font-size: 20px;
     font-weight: bold;
     color: #333;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .title-icon {
+    width: 2em;
+    height: 2em;
+    object-fit: contain;
   }
 
   .menu-bar {

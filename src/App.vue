@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import { RouterLink, RouterView } from 'vue-router'
 import TestView from '@/views/TestView.vue';
+import TestView2 from '@/views/TestView2.vue';
 import PromptLandscape from '@/components/other/PromptLandscape.vue'
 
 </script>
@@ -12,6 +13,7 @@ import PromptLandscape from '@/components/other/PromptLandscape.vue'
     <RouterView />
   </transition>
   <!-- <TestView /> -->
+  <!-- <TestView2 /> -->
 </template>
 
 <style lang="scss" scoped>

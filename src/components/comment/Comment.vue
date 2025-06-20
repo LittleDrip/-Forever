@@ -38,17 +38,25 @@ defineOptions({
 })
 const articleId = toRef(props, 'articleId'); // 将 articleId 映射为 ref
 const config = reactive<ConfigApi>({
-    user: {} as any, // 当前用户信息
-    emoji: emoji,  // 表情包数据
-    comments: [],  // 评论数据
-    relativeTime: true,  // 开启人性化时间
-    page: true, // 开启分页
+    user: {
+        id: 0,
+        username: "未登录",
+        avatar: '',
+    } as any,
+    emoji: emoji,
+    comments: [],
     show: {
         likes: false,
         homeLink: false,
         address: false,
         level: false,
-
+    },
+    mention: {
+        data: [],
+        alias: {
+            username: 'nickname'  // 设置别名映射
+        },
+        showAvatar: true
     }
 })
 
@@ -59,21 +67,18 @@ const config = reactive<ConfigApi>({
 //         avatar: userStore.userInfo.avatar || 'https://cdn.uviewui.com/uview/album/1.jpg',
 //     } as any
 // }, 500)
-config.user = {
-    username: "未登录",
-    avatar: '',
-} as any
 watch(
     () => userStore.userInfo,
     (newUserInfo) => {
         if (newUserInfo.nickname) {
             config.user = {
-                username: newUserInfo.nickname,
+                id: 0,  // 添加必要的id字段
+                username: newUserInfo.nickname,  // 使用nickname作为username的值
                 avatar: newUserInfo.avatar,
             };
         }
     },
-    { immediate: true } // 立即执行一次
+    { immediate: true }
 );
 
 const query = reactive({
@@ -83,12 +88,33 @@ const query = reactive({
     articleId: 1 // 文章id
 })
 
+interface CommentUser {
+    username: string;
+    nickname?: string;
+    avatar: string;
+}
 
+interface Comment {
+    id: string | number;
+    parentId: string | number | null;
+    uid: string | number;
+    content: string;
+    createTime: string;
+    user: CommentUser;
+    reply?: any;
+}
 
 // 评论数据加载函数
 function fetchComments() {
     AComment.page(query).then((res) => {
-        config.comments = res.data.list;
+        // 处理评论数据，确保使用nickname
+        config.comments = res.data.list.map((comment: Comment) => ({
+            ...comment,
+            user: {
+                ...comment.user,
+                username: comment.user.nickname || comment.user.username
+            }
+        }));
         query.total = res.data.total;
         query.current++;
     });
@@ -113,19 +139,22 @@ watch(
 
 // 提交评论事件
 const submit = ({ content, parentId, finish }: CommentSubmitApi) => {
-    // 做敏感词审核
-    let str = '提交评论:' + content + ';\t父id: ' + parentId
-    console.log(str)
-
     AComment.save({ articleId: query.articleId, content, parentId }).then(res => {
         if (res.code == 200) {
-            finish(res.data)
-            UToast({ message: '评论成功!', type: 'info' })
+            // 处理返回的评论数据，确保使用nickname
+            const comment = {
+                ...res.data,
+                user: {
+                    ...res.data.user,
+                    username: res.data.user.nickname || res.data.user.username
+                }
+            };
+            finish(comment);
+            UToast({ message: '评论成功!', type: 'info' });
         } else {
-
-            UToast({ message: '操作失败!', type: 'warn' })
+            UToast({ message: '操作失败!', type: 'warn' });
         }
-    })
+    });
 }
 
 // 是否禁用滚动加载评论
@@ -145,10 +174,20 @@ const more = () => {
 
 //回复分页
 const replyPage = ({ parentId, pageNum, pageSize, finish }: CommentReplyPageApi) => {
-    console.log(pageNum, pageSize)
     AComment.replyPage({ parentId, current: pageNum, size: pageSize, articleId: query.articleId }).then(res => {
-        finish(res.data)
-    })
+        // 处理回复数据，确保使用nickname
+        const replyData = {
+            ...res.data,
+            list: res.data.list.map((comment: Comment) => ({
+                ...comment,
+                user: {
+                    ...comment.user,
+                    username: comment.user.nickname || comment.user.username
+                }
+            }))
+        };
+        finish(replyData);
+    });
 }
 
 // 加载前评论数据处理

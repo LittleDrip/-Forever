@@ -1,13 +1,13 @@
 <template>
-    <div class="login-page">
+    <div class="register-page">
         <div class="background">
             <el-card class="form-card" shadow="hover">
                 <div class="title">
-                    <h1>欢迎登录心晴卫士</h1>
+                    <h1>欢迎注册心晴卫士</h1>
                     <p>专注青少年心理健康，让我们共同守护</p>
                 </div>
                 <div class="form-container">
-                    <el-form @keyup.enter.native="handleLogin" ref="formRef" :model="form" :rules="rules"
+                    <el-form @keyup.enter.native="handleRegister" ref="formRef" :model="form" :rules="rules"
                         label-width="0" class="center-form">
                         <el-form-item prop="username">
                             <el-input placeholder="请输入账号" :maxlength="30" v-model="form.username" clearable></el-input>
@@ -16,78 +16,50 @@
                             <el-input placeholder="请输入密码" type="password" :maxlength="30" v-model="form.password"
                                 clearable></el-input>
                         </el-form-item>
+                        <el-form-item prop="confirmPassword">
+                            <el-input placeholder="请确认密码" type="password" :maxlength="30" v-model="form.confirmPassword"
+                                clearable></el-input>
+                        </el-form-item>
                         <el-form-item>
-                            <el-button type="danger" size="large" class="set-width" @click="handleLogin">
-                                立即登录
+                            <el-button type="danger" size="large" class="set-width" @click="handleRegister">
+                                立即注册
                             </el-button>
                         </el-form-item>
                         <el-form-item class="text-center">
-                            <el-button type="text" @click="handleRegister">
-                                没有密码？立即注册
+                            <el-button type="text" @click="handleLogin">
+                                已有账号？立即登录
                             </el-button>
                         </el-form-item>
                     </el-form>
                 </div>
             </el-card>
-
         </div>
     </div>
 </template>
 
 <script lang="ts" setup>
-import { userInfoService, userLoginService } from "@/api/user";
+import { ref } from "vue";
+import type { FormInstance } from 'element-plus';
 import router from "@/router";
-import { storeAccessToken } from "@/stores/token.ts";
-import { useUserStore } from '@/stores/user';
+import { userRegisterService } from "@/api/user";
 
-import { ref, reactive } from "vue";
-// import { FormInstance } from 'element-plus';
-
-const userStore = useUserStore();
-// 引用表单实例
 const formRef = ref<FormInstance>();
 const form = ref({
     username: "",
     password: "",
-    remember: true,
-
-});
-const userInfo = ref({
-    username: '',  // 用户名
-    nickname: '',  // 昵称
-    age: null,     // 年龄
-    email: '',     // 邮箱
-    phone: '',     // 手机号码
-    avatar: '',    // 头像
-    createTime: null // 创建时间
+    confirmPassword: "",
 });
 
-// 引用表单实例
-
-const handleLogin = async () => {
-    if (!formRef.value) return; // 表单实例不存在，直接返回
-    formRef.value.validate(async (valid) => {
-        if (valid) {
-            // 模拟登录逻辑
-            const { username, password } = form.value;
-            const requestData = { username, password }; // 使用解构得到的变量构建 requestData 对象
-            let res = await userLoginService(requestData);
-            storeAccessToken(res.data.token, form.value.remember, res.data.expire);
-            let userInfo = await userInfoService();
-            console.log('userInfo', userInfo);
-            userStore.saveUserInfo(userInfo.data);
-            router.push("/");
-            ElMessage.success('登录成功！');
-
-            console.log('登录表单数据：', form);
-        } else {
-            ElMessage.error('请检查填写是否正确');
-        }
-    });
-
+const validatePass = (rule: any, value: string, callback: any) => {
+    if (value === '') {
+        callback(new Error('请再次输入密码'));
+    } else if (value !== form.value.password) {
+        callback(new Error('两次输入密码不一致!'));
+    } else {
+        callback();
+    }
 };
 
-// 表单验证规则
 const rules = {
     username: [
         { required: true, message: '请输入账号', trigger: 'blur' },
@@ -96,21 +68,38 @@ const rules = {
     password: [
         { required: true, message: '请输入密码', trigger: 'blur' },
         { min: 6, max: 30, message: '密码长度应为6-30个字符', trigger: 'blur' }
+    ],
+    confirmPassword: [
+        { required: true, validator: validatePass, trigger: 'blur' }
     ]
 };
 
-const handleRegister = () => {
-    router.push('/register');
+const handleRegister = async () => {
+    if (!formRef.value) return;
+    formRef.value.validate(async (valid) => {
+        if (valid) {
+            // TODO: 调用注册接口
+            const res = await userRegisterService(form.value);
+            ElMessage.success('注册成功！');
+            router.push('/login');
+        } else {
+            ElMessage.error('请检查填写是否正确');
+        }
+    });
+};
+
+const handleLogin = () => {
+    router.push('/login');
 };
 </script>
 
 <style lang="scss" scoped>
-.login-page {
+.register-page {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background: #f5f5f5; // 背景色可以根据需要修改
+    background: #f5f5f5;
 
     .background {
         display: flex;

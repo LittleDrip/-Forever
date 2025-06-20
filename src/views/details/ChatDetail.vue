@@ -5,9 +5,11 @@ import { getAccessToken } from '@/stores/token';
 import { ElMessage } from 'element-plus';
 import Markdown from 'vue3-markdown-it';
 import { useRoute, useRouter } from 'vue-router';
+import { useUserStore } from '@/stores/user';
 
+const userStore = useUserStore();
 const messages = ref([
-    { sender: 'ai', text: 'Hi！我是小跃，最近怎么样呢?', avatar: 'https://via.placeholder.com/40' },
+    { sender: 'ai', text: 'Hi！我是小跃，最近怎么样呢?', avatar: 'https://pic1.imgdb.cn/item/680372c658cb8da5c8b5b90d.jpg' },
 
 ]);
 
@@ -93,14 +95,14 @@ const sendMessage = () => {
         messages.value.push({
             sender: 'user',
             text: trimmedMessage,
-            avatar: 'https://via.placeholder.com/40',
+            avatar: userStore.userInfo.avatar || 'https://pic1.imgdb.cn/item/6801e66d88c538a9b5daef83.png', // 使用用户头像或默认头像
         });
 
         // 添加一个临时占位符用于显示 AI 的流式消息
         const aiMessage = {
             sender: 'ai',
             text: '', // 流式更新内容
-            avatar: 'https://via.placeholder.com/40',
+            avatar: 'https://pic1.imgdb.cn/item/680372c658cb8da5c8b5b90d.jpg',
         };
         messages.value.push(aiMessage);
         const aiMessageIndex = messages.value.length - 1; // 获取当前 AI 消息索引

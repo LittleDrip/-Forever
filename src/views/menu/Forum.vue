@@ -1,6 +1,6 @@
 <!-- 论坛信息 -->
 <script lang="ts" setup>
-import Editor from '@/components/Forum/editor.vue';
+import Editor from '@/components/forum/editor.vue';
 import PostCard from '@/components/forum/PostCard.vue';
 import { ChatLineSquare, CircleCheck, Clock, Compass, Document, Edit, EditPen, Star } from '@element-plus/icons-vue';
 import { onMounted, ref } from 'vue';
@@ -150,7 +150,7 @@ const topics = ref([
             </div>
 
 
-            <!-- 右侧工具 -->
+            <!-- 右侧工具
             <div class="sidebar">
                 <div class="tools">
                     <p style="font-size: 1.6em;gap:1em; margin: 0 0 1.5em 0; padding: 15px 15px 0 15px">
@@ -167,7 +167,7 @@ const topics = ref([
                     </p>
                     <WeatherInfo />
                 </div>
-            </div>
+            </div> -->
         </div>
         <div class="editorDrawer">
             <el-drawer v-model="isDrawerVisible" title="发表主题" size="80%" :with-header="false" :show-close="true"

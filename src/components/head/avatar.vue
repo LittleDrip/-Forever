@@ -5,6 +5,7 @@ import { useRouter } from 'vue-router';
 import { unauthorized, deleteAccessToken } from '@/stores/token.ts';
 import { useUserStore } from '@/stores/user'
 import { userLogoutService } from '@/api/user';
+import { clearAiMemory } from '@/api/history';
 const userStore = useUserStore();
 const router = useRouter();
 // const isLoggedIn = ref(false); // 用于判断是否已登录
@@ -19,13 +20,14 @@ const handleLogin = () => {
 };
 
 const handleLogout = async () => {
+    // const res2 = await clearAiMemory();
     let res = await userLogoutService();
     ElMessage({
         message: res.data,
         type: 'success',
     }
     )
-    deleteAccessToken();
+    await deleteAccessToken();
     userStore.clearUserInfo();
     // 清除 token
     // 重定向到登录页面

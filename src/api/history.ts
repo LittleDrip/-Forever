@@ -26,3 +26,12 @@ export function clearBrowsingHistory() {
         method: 'delete'
     });
 }
+
+// /ai/resetChatMemory
+// 清空Ai记录
+export function clearAiMemory() {
+    return request({
+        url: '/ai/resetChatMemory',
+        method: 'get'
+    })
+}

@@ -1,324 +1,305 @@
 <template>
-    <div class="back-button" @click="goBack">
-        <svg t="1710747179070" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
-            p-id="4250" width="32" height="32">
-            <path
-                d="M395.21518 513.604544l323.135538-312.373427c19.052938-18.416442 19.052938-48.273447 0-66.660212-19.052938-18.416442-49.91597-18.416442-68.968908 0L291.910961 480.275316c-19.052938 18.416442-19.052938 48.273447 0 66.660212l357.439172 345.70441c19.052938 18.416442 49.91597 18.416442 68.968908 0 19.052938-18.416442 19.052938-48.273447 0-66.660212L395.21518 513.604544z"
-                p-id="4251"></path>
-        </svg>
-        返回
-    </div>
     <div class="mild-emotion-container">
-        <div class="header">
-            <h1>轻度情绪调节</h1>
-            <p>我们为您准备了多种缓解轻度情绪问题的方式</p>
+        <div class="back-button" @click="goBack">
+            <svg class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="24" height="24">
+                <path
+                    d="M395.21518 513.604544l323.135538-312.373427c19.052938-18.416442 19.052938-48.273447 0-66.660212-19.052938-18.416442-49.91597-18.416442-68.968908 0L291.910961 480.275316c-19.052938 18.416442-19.052938 48.273447 0 66.660212l357.439172 345.70441c19.052938 18.416442 49.91597 18.416442 68.968908 0 19.052938-18.416442 19.052938-48.273447 0-66.660212L395.21518 513.604544z" />
+            </svg>
+            <span>返回</span>
         </div>
 
-        <div class="carousel-container">
-            <el-carousel :interval="5000" type="card" height="400px">
-                <!-- 书籍推荐 -->
-                <el-carousel-item>
-                    <div class="feature-card book-recommendation">
-                        <div class="feature-content">
-                            <div class="feature-text">
-                                <h2>书籍推荐</h2>
-                                <p>精选书籍帮助您理解和调节情绪，提供专业心理学知识</p>
-                                <el-button type="warning" class="feature-button"
-                                    @click="navigateTo('/books')">查看推荐</el-button>
-                            </div>
-                            <div class="feature-image">
-                                <img src="@/assets/img/features/books.png" alt="书籍推荐" />
-                            </div>
-                        </div>
-                    </div>
-                </el-carousel-item>
+        <div class="content-container">
+            <!-- 左侧内容 -->
+            <div class="left-panel">
+                <div class="header">
+                    <h1>轻度情绪调节</h1>
+                    <p>我们为您准备了多种缓解轻度情绪问题的方式</p>
+                </div>
 
-                <!-- 心情日记 -->
-                <el-carousel-item>
-                    <div class="feature-card mood-diary">
-                        <div class="feature-content">
-                            <div class="feature-text">
-                                <h2>心情日记</h2>
-                                <p>记录每日心情变化，追踪情绪趋势，帮助您更好地了解自己</p>
-                                <el-button type="warning" class="feature-button"
-                                    @click="navigateTo('/diary')">开始记录</el-button>
-                            </div>
-                            <div class="feature-image">
-                                <img src="@/assets/img/features/diary.png" alt="心情日记" />
-                            </div>
-                        </div>
-                    </div>
-                </el-carousel-item>
+                <el-carousel :interval="4000" arrow="always" height="450px" indicator-position="outside">
+                    <el-carousel-item v-for="(img, index) in currentImages" :key="index">
+                        <img :src="img" class="carousel-image" />
+                    </el-carousel-item>
+                </el-carousel>
+            </div>
 
-                <!-- 放松训练 -->
-                <el-carousel-item>
-                    <div class="feature-card relaxation">
-                        <div class="feature-content">
-                            <div class="feature-text">
-                                <h2>放松训练</h2>
-                                <p>包含呼吸练习、渐进式肌肉放松等科学方法，帮助缓解压力</p>
-                                <el-button type="warning" class="feature-button"
-                                    @click="navigateTo('/relaxation')">开始训练</el-button>
-                            </div>
-                            <div class="feature-image">
-                                <img src="@/assets/img/features/relaxation.png" alt="放松训练" />
-                            </div>
+            <!-- 右侧推荐列表 -->
+            <div class="right-panel">
+                <h2>推荐内容</h2>
+                <ul class="recommend-list">
+                    <li v-for="(item, index) in recommendations" :key="index"
+                        :class="{ active: index === selectedIndex }" @click="selectRecommendation(index)">
+                        <div class="recommend-item-content">
+                            <div class="recommend-title">{{ item.title }}</div>
+                            <div class="recommend-description">{{ item.description }}</div>
+                            <button class="access-button" @click.stop="navigateToModule(item.path)">
+                                <template v-if="index === 0">查看推荐</template>
+                                <template v-else-if="index === 1">开始记录</template>
+                                <template v-else-if="index === 2">开始训练</template>
+                                <template v-else-if="index === 3">浏览故事</template>
+                                <svg viewBox="0 0 24 24" width="16" height="16">
+                                    <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"
+                                        fill="currentColor" />
+                                </svg>
+                            </button>
                         </div>
-                    </div>
-                </el-carousel-item>
-
-                <!-- 故事分享 -->
-                <el-carousel-item>
-                    <div class="feature-card story-sharing">
-                        <div class="feature-content">
-                            <div class="feature-text">
-                                <h2>故事分享</h2>
-                                <p>阅读和分享治愈系故事，获得情感共鸣与支持</p>
-                                <el-button type="warning" class="feature-button"
-                                    @click="navigateTo('/story')">浏览故事</el-button>
-                            </div>
-                            <div class="feature-image">
-                                <!-- <img src="@/assets/img/features/stories.png" alt="故事分享" /> -->
-                            </div>
-                        </div>
-                    </div>
-                </el-carousel-item>
-            </el-carousel>
+                    </li>
+                </ul>
+            </div>
         </div>
-
-        <!-- 功能导航卡片 -->
-        <!-- <div class="feature-grid">
-            <div class="grid-card" @click="navigateTo('/books')">
-                <div class="icon-container">
-                    <el-icon>
-                        <Reading />
-                    </el-icon>
-                </div>
-                <h3>书籍推荐</h3>
-            </div>
-
-            <div class="grid-card" @click="navigateTo('/diary')">
-                <div class="icon-container">
-                    <el-icon>
-                        <Notebook />
-                    </el-icon>
-                </div>
-                <h3>心情日记</h3>
-            </div>
-
-            <div class="grid-card" @click="navigateTo('/relaxation')">
-                <div class="icon-container">
-                    <el-icon>
-                        <MagicStick />
-                    </el-icon>
-                </div>
-                <h3>放松训练</h3>
-            </div>
-
-            <div class="grid-card" @click="navigateTo('/Forum')">
-                <div class="icon-container">
-                    <el-icon>
-                        <ChatDotRound />
-                    </el-icon>
-                </div>
-                <h3>故事分享</h3>
-            </div>
-        </div> -->
     </div>
 </template>
-
 <script setup lang="ts">
+import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { Reading, Notebook, MagicStick, ChatDotRound } from '@element-plus/icons-vue';
 
 const router = useRouter();
 const goBack = () => {
     router.push('/emotionalDivision');
 };
 
-const navigateTo = (path: string) => {
+// 推荐内容与对应轮播图
+const recommendations = [
+    {
+        title: '书籍推荐',
+        images: [
+            new URL('@/assets/img/features/books2.png', import.meta.url).href,
+            new URL('@/assets/img/features/books3.png', import.meta.url).href,
+        ],
+        description: '精选心理健康书籍，帮助您理解情绪，提升自我调节能力。',
+        path: '/books'
+    },
+    {
+        title: '心情日记',
+        images: [
+            new URL('@/assets/img/features/diary.png', import.meta.url).href,
+            new URL('@/assets/img/features/diary2.png', import.meta.url).href,
+        ],
+        description: '记录每日心情，追踪情绪变化，培养自我觉察能力。',
+        path: '/diary'
+    },
+    {
+        title: '放松训练',
+        images: [
+            new URL('@/assets/img/features/relaxation1.png', import.meta.url).href,
+            new URL('@/assets/img/features/relaxation2.png', import.meta.url).href,
+            new URL('@/assets/img/features/relaxation3.png', import.meta.url).href,
+
+        ],
+
+        description: '呼吸练习、肌肉放松、冥想引导，缓解压力与焦虑。',
+        path: '/relaxation'
+    },
+    {
+        title: '故事分享',
+        images: [
+            new URL('@/assets/img/features/story.png', import.meta.url).href,
+            new URL('@/assets/img/features/story2.png', import.meta.url).href,
+        ],
+        description: '真实治愈故事分享，获得共鸣与力量，不再孤单。',
+        path: '/story'
+    },
+];
+
+const selectedIndex = ref(0);
+const currentImages = ref(recommendations[0].images);
+
+const selectRecommendation = (index: number) => {
+    selectedIndex.value = index;
+    currentImages.value = recommendations[index].images;
+};
+
+const navigateToModule = (path: string) => {
     router.push(path);
 };
-</script>
 
+</script>
 <style lang="scss" scoped>
+.mild-emotion-container {
+    min-height: 100vh;
+    background-color: #f8f9fa;
+    padding: 20px;
+}
+
 .back-button {
-    display: inline-flex;
+    display: flex;
     align-items: center;
-    gap: 5px;
-    font-size: 1.2rem;
-    padding: 10px;
     cursor: pointer;
+    margin-bottom: 20px;
+    padding: 8px 12px;
+    width: fit-content;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
     position: absolute;
-    color: #666;
-    transition: all 0.3s ease;
 
     &:hover {
-        color: #E8D575;
-        transform: translateX(-5px);
+        background-color: rgba(0, 0, 0, 0.05);
     }
 
-    svg {
-        width: 24px;
-        height: 24px;
-    }
-}
-
-.mild-emotion-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 2rem;
-    color: #333;
-    height: 92.5vh;
-}
-
-.header {
-    text-align: center;
-    margin-bottom: 2rem;
-
-    h1 {
-        font-size: 2.5rem;
-        margin-bottom: 0.5rem;
-        color: #333;
+    .icon {
+        fill: #555;
+        margin-right: 6px;
     }
 
-    p {
-        font-size: 1.1rem;
-        color: #666;
-    }
-}
-
-.carousel-container {
-    margin-bottom: 3rem;
-}
-
-:deep(.el-carousel__item) {
-    border-radius: 16px;
-}
-
-.feature-card {
-    height: 100%;
-    padding: 2rem;
-    border-radius: 16px;
-    background-color: #fff;
-    overflow: hidden;
-
-    &.book-recommendation {
-        background-color: rgba(232, 213, 117, 0.8);
-    }
-
-    &.mood-diary {
-        background-color: rgba(232, 213, 117, 0.8);
-    }
-
-    &.relaxation {
-        background-color: rgba(232, 213, 117, 0.8);
-    }
-
-    &.story-sharing {
-        background-color: rgba(232, 213, 117, 0.8);
-    }
-}
-
-.feature-content {
-    display: flex;
-    height: 100%;
-    align-items: center;
-}
-
-.feature-text {
-    flex: 1;
-    padding-right: 2rem;
-
-    h2 {
-        font-size: 2rem;
-        margin-bottom: 1rem;
-        color: #333;
-    }
-
-    p {
-        font-size: 1.1rem;
-        line-height: 1.6;
-        margin-bottom: 1.5rem;
+    span {
+        font-size: 16px;
         color: #555;
     }
 }
 
-.feature-button {
-    background-color: #e8d575 !important;
-    border-color: #e8d575 !important;
-    color: #333 !important;
-    font-weight: 600;
-    font-size: 1rem;
-    border-radius: 30px;
-    transition: all 0.3s ease;
-
-    &:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-        background-color: darken(#e8d575, 5%) !important;
-        border-color: darken(#e8d575, 5%) !important;
-    }
-}
-
-.feature-image {
-    flex: 1;
+.content-container {
     display: flex;
-    justify-content: center;
-    align-items: center;
-
-    img {
-        max-width: 100%;
-        max-height: 300px;
-        object-fit: contain;
-    }
-}
-
-.feature-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 1.5rem;
-    margin-top: 2rem;
-}
-
-.grid-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 2rem;
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
     background-color: #fff;
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    transition: all 0.3s ease;
-    cursor: pointer;
-    border: 2px solid transparent;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    padding: 30px;
+}
 
-    &:hover {
-        transform: translateY(-5px);
-        border-color: #e8d575;
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
-    }
+.left-panel {
+    flex: 2;
 
-    .icon-container {
-        width: 70px;
-        height: 70px;
-        background-color: #e8d575;
-        border-radius: 50%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-bottom: 1.5rem;
+    .header {
+        text-align: center;
+        margin-bottom: 24px;
 
-        .el-icon {
-            font-size: 2rem;
-            color: #fff;
+        h1 {
+            font-size: 2.2rem;
+
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        p {
+            font-size: 1.1rem;
+            color: #666;
+            margin: 0;
         }
     }
 
-    h3 {
-        font-size: 1.2rem;
-        text-align: center;
+    :deep(.el-carousel__arrow) {
+        background-color: rgba(232, 213, 117, 0.8);
+        border-radius: 50%;
+
+        &:hover {
+            background-color: rgba(232, 213, 117, 1);
+        }
+    }
+
+    :deep(.el-carousel__indicators) {
+        margin-top: 12px;
+    }
+}
+
+.right-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+
+    h2 {
+        font-size: 1.6rem;
+        font-weight: 500;
         color: #333;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #f0f0f0;
+    }
+
+    .recommend-list {
+        list-style: none;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        li {
+            padding: 14px 18px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+            border-left: 4px solid transparent;
+
+            &:hover {
+                background-color: #f0f0f0;
+                border-left-color: #e8d575;
+            }
+
+            &.active {
+                background-color: #fff;
+                color: #333;
+                border-left-color: #e8d575;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+                font-weight: 500;
+            }
+
+            .recommend-item-content {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+
+                .recommend-title {
+                    font-weight: 500;
+                    font-size: 1.1rem;
+                    color: #333;
+                }
+
+                .recommend-description {
+                    font-size: 0.9rem;
+                    color: #666;
+                    line-height: 1.4;
+                }
+
+                .access-button {
+                    align-self: flex-start;
+                    display: flex;
+                    align-items: center;
+                    gap: 6px;
+                    padding: 6px 12px;
+                    background-color: #e8d575;
+                    color: #333;
+                    border: none;
+                    border-radius: 4px;
+                    font-size: 0.9rem;
+                    cursor: pointer;
+                    margin-top: 6px;
+                    transition: all 0.2s ease;
+
+                    &:hover {
+                        background-color: darken(#e8d575, 10%);
+                        transform: translateX(3px);
+                    }
+
+                    svg {
+                        transition: transform 0.2s ease;
+                    }
+
+                    &:hover svg {
+                        transform: translateX(3px);
+                    }
+                }
+            }
+        }
+    }
+}
+
+.carousel-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 10px;
+}
+
+@media (max-width: 768px) {
+    .content-container {
+        flex-direction: column;
+    }
+
+    .right-panel {
+        margin-top: 30px;
     }
 }
 </style>

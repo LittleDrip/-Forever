@@ -79,14 +79,11 @@ onMounted(() => {
 
                 <h1 class="title">{{ post.title }}</h1>
                 <p class="meta">
-                    发布于 {{ post.createTime }} · 阅读 {{ post.readCount }} 次 · 点赞 {{ post.likeCount }} 次
+                    发布于 {{ post.createTime }} · 阅读 {{ post.readCount }} 次
                 </p>
 
                 <div class="rich-text" v-html="post.content"></div>
-                <div class="stats">
-                    <p>评论数：{{ post.commentCount }}</p>
-                    <p>收藏数：{{ post.collectCount }}</p>
-                </div>
+
                 <div class="comment">
                     <Comment v-if="articleId" :articleId="articleId"></Comment>
                     <!-- <Comment :articleId="route.query.id"></Comment> -->
@@ -207,13 +204,6 @@ onMounted(() => {
     strong {
         color: #000;
     }
-
-    img {
-        max-width: 100%;
-        height: auto;
-        border-radius: 8px;
-        margin: 1em 0;
-    }
 }
 
 .stats {
@@ -326,6 +316,12 @@ onMounted(() => {
             margin-top: 1.5em;
             font-size: 0.8rem;
         }
+
+        .rich-text {
+            img {
+                max-height: 400px;
+            }
+        }
     }
 }
 
@@ -356,6 +352,30 @@ onMounted(() => {
 
         .stats {
             margin-top: 1.2em;
+        }
+    }
+}
+</style>
+
+<style lang="scss">
+/* 专门处理文章内容的样式 */
+.rich-text {
+    img {
+        max-width: 100%;
+        max-height: 600px;
+        height: auto;
+        border-radius: 8px;
+        margin: 1em auto;
+        display: block;
+        object-fit: contain;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .rich-text {
+        img {
+            max-height: 400px;
         }
     }
 }

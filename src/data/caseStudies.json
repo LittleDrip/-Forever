@@ -1,6 +1,129 @@
 {
     "cases": [
         {
+            "id": "case0",
+            "title": "玩“死亡游戏”的少年",
+            "video": {
+                "url": "case0.mp4",
+                "title": "案例分析视频"
+            },
+            "content": {
+                "paragraphs": [
+                    "2017年，一款名为“蓝鲸死亡游戏”的危险游戏从国外传入我国，通过网络社交平台诱导青少年自残甚至自杀。江苏常熟19岁的小姚因好奇加入了一个QQ聊天群，被诱导参与了该游戏。\n\n该'游戏'要求玩家在50天内完成一系列任务，如每天凌晨4点20分起床，听悲伤音乐，看恐怖电影，用美工刀在身上刻字符等，每次完成任务后需拍照接受管理员监督。玩家若抵触任务或中途退出，其个人私密信息会被公开，家人也会受到威胁。\n\n小姚的家庭环境并不幸福，父母离异后，他变得更加孤僻。没有朋友，缺少沟通，只能通过看书和上网打发时间。在参与游戏的过程中，他的心理状态逐渐恶化，开始出现自残行为和自杀倾向。幸运的是，他的异常行为被一位细心的网友发现并报警，最终得到及时救助。\n\n经过心理专家的评估和干预，小姚逐渐走出了心理阴霾。他后来在接受采访时表示，当时的自己就像处在一个漩涡中，明知道危险却无法自拔。这个案例不仅反映了网络危险游戏对青少年的严重危害，也暴露出家庭关系破裂、社交孤立等问题对青少年心理健康的深远影响。\n\n这起事件引发了社会各界对网络安全和青少年心理健康的广泛关注。相关部门随后加强了对网络平台的监管，严厉打击此类危险游戏的传播。同时，各地学校也开始重视心理健康教育，加强对学生的心理疏导和关爱。"
+                ]
+            },
+            "pressureAnalysis": {
+                "indicators": [
+                    { "name": "家庭压力", "value": 90 },
+                    { "name": "社交压力", "value": 85 },
+                    { "name": "网络胁迫", "value": 95 },
+                    { "name": "自我认知", "value": 70 },
+                    { "name": "心理健康", "value": 85 }
+                ]
+            },
+            "relationshipNetwork": {
+                "nodes": [
+                    {
+                        "name": "小姚",
+                        "category": 0,
+                        "role": "核心人物",
+                        "frequency": "高",
+                        "emotion": "抑郁、孤独"
+                    },
+                    {
+                        "name": "游戏管理员",
+                        "category": 0,
+                        "role": "施压者",
+                        "frequency": "高",
+                        "emotion": "控制、威胁"
+                    },
+                    {
+                        "name": "父亲",
+                        "category": 1,
+                        "role": "直系亲属",
+                        "frequency": "低",
+                        "emotion": "疏离"
+                    },
+                    {
+                        "name": "母亲",
+                        "category": 1,
+                        "role": "直系亲属",
+                        "frequency": "低",
+                        "emotion": "疏离"
+                    },
+                    {
+                        "name": "热心网友",
+                        "category": 1,
+                        "role": "救助者",
+                        "frequency": "低",
+                        "emotion": "关心"
+                    }
+                ],
+                "links": [
+                    {
+                        "source": "小姚",
+                        "target": "游戏管理员",
+                        "label": "控制关系",
+                        "strength": "强",
+                        "interaction": "负面"
+                    },
+                    {
+                        "source": "小姚",
+                        "target": "父亲",
+                        "label": "父子关系",
+                        "strength": "弱",
+                        "interaction": "疏离"
+                    },
+                    {
+                        "source": "小姚",
+                        "target": "母亲",
+                        "label": "母子关系",
+                        "strength": "弱",
+                        "interaction": "疏离"
+                    },
+                    {
+                        "source": "小姚",
+                        "target": "热心网友",
+                        "label": "救助关系",
+                        "strength": "中",
+                        "interaction": "正面"
+                    }
+                ]
+            },
+            "timeline": [
+                {
+                    "timestamp": "2017年初",
+                    "content": "小姚因好奇加入QQ群，接触“蓝鲸死亡游戏”",
+                    "type": "warning"
+                },
+                {
+                    "timestamp": "2017年3月",
+                    "content": "开始执行游戏任务，如凌晨4:20起床、听悲伤音乐等",
+                    "type": "warning"
+                },
+                {
+                    "timestamp": "2017年4月",
+                    "content": "出现自残行为，在身上刻字符",
+                    "type": "danger"
+                },
+                {
+                    "timestamp": "2017年4月中旬",
+                    "content": "心理状态恶化，产生自杀倾向",
+                    "type": "danger"
+                },
+                {
+                    "timestamp": "2017年4月底",
+                    "content": "被热心网友发现异常并报警",
+                    "type": "warning"
+                },
+                {
+                    "timestamp": "2017年5月",
+                    "content": "接受心理干预和治疗",
+                    "type": "success"
+                }
+            ]
+        },
+        {
             "id": "case1",
             "title": "升学宴变血色悲剧：18岁少年弑亲跳楼背后的心理崩塌",
             "video": {
@@ -9,7 +132,8 @@
             },
             "content": {
                 "paragraphs": [
-                    "四川成都一名18岁少年捅伤父亲并杀害奶奶后跳楼的案件，引发了社会对青少年心理健康问题的广泛关注。这起悲剧发生在2014年8月27日晚，地点位于四川巴中市东怡苑小区。案件的起因与家庭矛盾和心理压力密切相关。\n\n这名少年名叫张文，他在家中举办了一场升学宴，庆祝自己“考上大学”。然而，当父亲要求查看录取通知书时，张文因害怕被揭穿其虚构的大学录取事实而情绪失控，用刀刺伤了父亲，并进一步杀害了前来劝架的奶奶。随后，他从五楼坠下，最终不幸身亡。\n\n案件背后隐藏着多重家庭和社会因素。首先，张文的家庭并不富裕，父母因工作繁忙无法常回家陪伴孩子，导致他在成长过程中缺乏必要的亲情支持和情感交流。其次，张文本人性格内向，内心空虚，且长期沉迷于网络游戏。中考成绩未达预期后，他谎称自己考上了巴中市第五高级中学，实际上并未参加高考，而是通过网络查询时间安排了虚假的生活。\n\n更令人痛心的是，张文的姐姐考入了复旦大学，成为全家人的骄傲，这给张文带来了巨大的心理压力。他感到自卑和孤独，甚至认为自己无法像姐姐那样取得成功。这种心理落差最终导致他在升学宴上爆发了极端行为。\n\n案件发生后，警方迅速介入调查。监控录像显示，张文在坠楼前痛苦挣扎了十几分钟，但并未呼救。警方调查发现，张文的手机通讯录仅存三人：父母和姐姐，而与外界几乎无任何联系。此外，张文的高中学籍信息也未查到记录，表明他并未真正完成高中学业。\n\n这起悲剧不仅揭示了家庭教育缺失和青少年心理问题的严重性，也反映了社会对未成年人心理健康教育的不足。专家指出，家庭应成为孩子成长的避风港，父母需要更多关注孩子的内心世界，及时发现并解决他们的心理问题\n\n"
+         "四川成都一名18岁少年捅伤父亲并杀害奶奶后跳楼的案件，引发了社会对青少年心理健康问题的广泛关注。这起悲剧发生在2014年8月27日晚，地点位于四川巴中市东怡苑小区。案件的起因与家庭矛盾和心理压力密切相关。\n\n这名少年名叫张文，他在家中举办了一场升学宴，庆祝自己“考上大学”。然而，当父亲要求查看录取通知书时，张文因害怕被揭穿其虚构的大学录取事实而情绪失控，用刀刺伤了父亲，并进一步杀害了前来劝架的奶奶。随后，他从五楼坠下，最终不幸身亡。\n\n案件背后隐藏着多重家庭和社会因素。首先，张文的家庭并不富裕，父母因工作繁忙无法常回家陪伴孩子，导致他在成长过程中缺乏必要的亲情支持和情感交流。其次，张文本人性格内向，内心空虚，且长期沉迷于网络游戏。中考成绩未达预期后，他谎称自己考上了巴中市第五高级中学，实际上并未参加高考，而是通过网络查询时间安排了虚假的生活。\n\n更令人痛心的是，张文的姐姐考入了复旦大学，成为全家人的骄傲，这给张文带来了巨大的心理压力。他感到自卑和孤独，甚至认为自己无法像姐姐那样取得成功。这种心理落差最终导致他在升学宴上爆发了极端行为。\n\n案件发生后，警方迅速介入调查。监控录像显示，张文在坠楼前痛苦挣扎了十几分钟，但并未呼救。警方调查发现，张文的手机通讯录仅存三人：父母和姐姐，而与外界几乎无任何联系。此外，张文的高中学籍信息也未查到记录，表明他并未真正完成高中学业。\n\n这起悲剧不仅揭示了家庭教育缺失和青少年心理问题的严重性，也反映了社会对未成年人心理健康教育的不足。专家指出，家庭应成为孩子成长的避风港，父母需要更多关注孩子的内心世界，及时发现并解决他们的心理问题\n\n"
+
                 ]
             },
             "pressureAnalysis": {
@@ -24,91 +148,96 @@
             "relationshipNetwork": {
                 "nodes": [
                     {
-                        "name": "少女",
+                        "name": "张文",
                         "category": 0,
                         "role": "核心人物",
                         "frequency": "高",
-                        "emotion": "消极"
+                        "emotion": "自卑、压抑"
                     },
                     {
-                        "name": "父母",
+                        "name": "父亲",
                         "category": 0,
-                        "role": "监护人",
+                        "role": "直系亲属",
                         "frequency": "中",
-                        "emotion": "关心但疏离"
+                        "emotion": "期望高"
                     },
                     {
-                        "name": "班主任",
-                        "category": 1,
-                        "role": "教育者",
+                        "name": "奶奶",
+                        "category": 0,
+                        "role": "直系亲属",
                         "frequency": "中",
-                        "emotion": "关注"
+                        "emotion": "关心"
                     },
                     {
-                        "name": "心理老师",
+                        "name": "姐姐",
                         "category": 1,
-                        "role": "心理辅导",
+                        "role": "直系亲属",
                         "frequency": "低",
-                        "emotion": "专业"
+                        "emotion": "优秀榜样"
                     },
                     {
-                        "name": "闺蜜",
+                        "name": "母亲",
                         "category": 1,
-                        "role": "朋友",
-                        "frequency": "高",
-                        "emotion": "支持"
+                        "role": "直系亲属",
+                        "frequency": "低",
+                        "emotion": "疏离"
                     }
                 ],
                 "links": [
                     {
-                        "source": "少女",
-                        "target": "父母",
-                        "label": "家庭关系",
+                        "source": "张文",
+                        "target": "父亲",
+                        "label": "父子关系",
                         "strength": "强",
-                        "interaction": "日常交流"
+                        "interaction": "负面"
                     },
                     {
-                        "source": "少女",
-                        "target": "班主任",
-                        "label": "学业关系",
+                        "source": "张文",
+                        "target": "奶奶",
+                        "label": "祖孙关系",
                         "strength": "中",
-                        "interaction": "学业指导"
+                        "interaction": "负面"
                     },
                     {
-                        "source": "少女",
-                        "target": "心理老师",
-                        "label": "心理辅导",
+                        "source": "张文",
+                        "target": "姐姐",
+                        "label": "兄妹关系",
                         "strength": "弱",
-                        "interaction": "专业咨询"
+                        "interaction": "压力源"
                     },
                     {
-                        "source": "少女",
-                        "target": "闺蜜",
-                        "label": "情感支持",
-                        "strength": "强",
-                        "interaction": "情感交流"
+                        "source": "张文",
+                        "target": "母亲",
+                        "label": "母子关系",
+                        "strength": "弱",
+                        "interaction": "疏离"
                     }
                 ]
             },
             "timeline": [
                 {
-                    "timestamp": "2021年",
-                    "content": "出现情绪问题，向朋友透露压力大",
-                    "type": "default"
-                },
-                {
-                    "timestamp": "2022年初",
-                    "content": "家人发现异常但未重视",
+                    "timestamp": "2014年8月27日晚 18:00",
+                    "content": "张文在家中举办升学宴，庆祝自己考上大学",
                     "type": "warning"
                 },
                 {
-                    "timestamp": "2022年中",
-                    "content": "成绩波动，情绪低落",
+                    "timestamp": "2014年8月27日晚 19:00",
+                    "content": "父亲要求查看大学录取通知书，张文因害怕谎言被揭穿而情绪失控",
+                    "type": "warning"
+                },
+                {
+                    "timestamp": "2014年8月27日晚 19:30",
+                    "content": "张文用刀刺伤父亲",
                     "type": "danger"
                 },
                 {
-                    "timestamp": "2022年某日",
-                    "content": "坠楼事件发生，媒体广泛报道",
+                    "timestamp": "2014年8月27日晚 19:40",
+                    "content": "张文的奶奶前来劝架，被张文杀害",
+                    "type": "error"
+                },
+                {
+                    "timestamp": "2014年8月27日晚 20:00",
+                    "content": "张文从五楼坠下，当场身亡",
                     "type": "error"
                 }
             ]
@@ -137,91 +266,63 @@
             "relationshipNetwork": {
                 "nodes": [
                     {
-                        "name": "学生",
+                        "name": "16岁女生",
                         "category": 0,
                         "role": "核心人物",
                         "frequency": "高",
                         "emotion": "抑郁"
                     },
                     {
-                        "name": "班主任",
+                        "name": "家人",
                         "category": 0,
-                        "role": "教育者",
-                        "frequency": "中",
-                        "emotion": "关注"
+                        "role": "直系亲属",
+                        "frequency": "高",
+                        "emotion": "忽视"
                     },
                     {
-                        "name": "心理老师",
+                        "name": "学校",
                         "category": 1,
-                        "role": "心理辅导",
-                        "frequency": "低",
-                        "emotion": "专业"
-                    },
-                    {
-                        "name": "家长",
-                        "category": 1,
-                        "role": "监护人",
-                        "frequency": "中",
-                        "emotion": "担忧"
-                    },
-                    {
-                        "name": "同学",
-                        "category": 1,
-                        "role": "同伴",
-                        "frequency": "中",
-                        "emotion": "关心"
+                        "role": "教育机构",
+                        "frequency": "高",
+                        "emotion": "干预不足"
                     }
                 ],
                 "links": [
                     {
-                        "source": "学生",
-                        "target": "班主任",
-                        "label": "师生关系",
-                        "strength": "中",
-                        "interaction": "学业指导"
-                    },
-                    {
-                        "source": "学生",
-                        "target": "心理老师",
-                        "label": "心理辅导",
-                        "strength": "弱",
-                        "interaction": "专业咨询"
-                    },
-                    {
-                        "source": "学生",
-                        "target": "家长",
+                        "source": "16岁女生",
+                        "target": "家人",
                         "label": "家庭关系",
-                        "strength": "中",
-                        "interaction": "日常交流"
+                        "strength": "弱",
+                        "interaction": "求助未果"
                     },
                     {
-                        "source": "学生",
-                        "target": "同学",
-                        "label": "同伴关系",
+                        "source": "16岁女生",
+                        "target": "学校",
+                        "label": "就学关系",
                         "strength": "中",
-                        "interaction": "日常交流"
+                        "interaction": "支持不足"
                     }
                 ]
             },
             "timeline": [
                 {
-                    "timestamp": "2021年9月",
-                    "content": "开始出现情绪低落症状",
+                    "timestamp": "2020年9月17日中午",
+                    "content": "女生放学后返回家中",
                     "type": "warning"
                 },
                 {
-                    "timestamp": "2022年1月",
-                    "content": "预约心理老师但未前往咨询",
+                    "timestamp": "2020年9月17日下午",
+                    "content": "女生表现出明显的心理困扰，向家人发出求救信号，但未被及时察觉或重视",
                     "type": "danger"
                 },
                 {
-                    "timestamp": "2022年3月",
-                    "content": "与班主任进行心理疏导",
-                    "type": "warning"
+                    "timestamp": "2020年9月17日下午",
+                    "content": "女生乘坐电梯直达小区25楼，随后坠楼",
+                    "type": "error"
                 },
                 {
-                    "timestamp": "2022年5月",
-                    "content": "坠亡事件发生",
+                    "timestamp": "2020年9月17日晚",
+                    "content": "女生经抢救无效身亡",
                     "type": "error"
                 }
             ]
@@ -230,7 +331,7 @@
             "id": "case3",
             "title": "四川成都15岁少女KTV陪酒后坠楼事件（2023年）",
             "video": {
-                "url": "https://example.com/video3.mp4",
+                "url": "case3.mp4",
                 "title": "案例分析视频"
             },
             "content": {
@@ -250,77 +351,115 @@
             "relationshipNetwork": {
                 "nodes": [
                     {
-                        "name": "少女",
+                        "name": "丹丹",
                         "category": 0,
                         "role": "核心人物",
                         "frequency": "高",
-                        "emotion": "焦虑"
+                        "emotion": "委屈、压抑"
                     },
                     {
-                        "name": "KTV负责人",
+                        "name": "母亲",
                         "category": 0,
-                        "role": "管理者",
+                        "role": "直系亲属",
                         "frequency": "中",
-                        "emotion": "压力"
+                        "emotion": "关心"
                     },
                     {
-                        "name": "家长",
+                        "name": "KTV负责人彭某",
                         "category": 1,
-                        "role": "监护人",
-                        "frequency": "低",
-                        "emotion": "疏离"
+                        "role": "管理者",
+                        "frequency": "高",
+                        "emotion": "苛刻"
                     },
                     {
-                        "name": "同事",
+                        "name": "带组负责人林某",
+                        "category": 1,
+                        "role": "直属上级",
+                        "frequency": "高",
+                        "emotion": "冷漠"
+                    },
+                    {
+                        "name": "同事女生",
                         "category": 1,
                         "role": "同事",
                         "frequency": "中",
-                        "emotion": "一般"
+                        "emotion": "不配合"
+                    },
+                    {
+                        "name": "朋友",
+                        "category": 1,
+                        "role": "同事朋友",
+                        "frequency": "中",
+                        "emotion": "关心"
                     }
                 ],
                 "links": [
                     {
-                        "source": "少女",
-                        "target": "KTV负责人",
+                        "source": "丹丹",
+                        "target": "母亲",
+                        "label": "母女关系",
+                        "strength": "中",
+                        "interaction": "求助"
+                    },
+                    {
+                        "source": "丹丹",
+                        "target": "KTV负责人彭某",
                         "label": "工作关系",
                         "strength": "强",
                         "interaction": "负面"
                     },
                     {
-                        "source": "少女",
-                        "target": "家长",
-                        "label": "家庭关系",
-                        "strength": "弱",
-                        "interaction": "疏离"
+                        "source": "丹丹",
+                        "target": "带组负责人林某",
+                        "label": "工作关系",
+                        "strength": "强",
+                        "interaction": "负面"
                     },
                     {
-                        "source": "少女",
-                        "target": "同事",
+                        "source": "丹丹",
+                        "target": "同事女生",
                         "label": "同事关系",
                         "strength": "中",
-                        "interaction": "日常交流"
+                        "interaction": "矛盾"
+                    },
+                    {
+                        "source": "丹丹",
+                        "target": "朋友",
+                        "label": "朋友关系",
+                        "strength": "中",
+                        "interaction": "支持"
                     }
                 ]
             },
             "timeline": [
                 {
-                    "timestamp": "2023年1月",
-                    "content": "开始在KTV工作",
+                    "timestamp": "2023年8月25日晚 22:00",
+                    "content": "丹丹在KTV上班，接待客人并开始陪酒",
                     "type": "warning"
                 },
                 {
-                    "timestamp": "2023年3月",
-                    "content": "出现情绪问题",
+                    "timestamp": "2023年8月25日晚 23:00",
+                    "content": "因另一名女生未按要求饮酒，丹丹向负责人反映，被指责穿着问题，感到委屈",
+                    "type": "warning"
+                },
+                {
+                    "timestamp": "2023年8月26日凌晨 0:00",
+                    "content": "丹丹饮酒过量后倒地，被朋友扶至卫生间呕吐，后回到休息室",
                     "type": "danger"
                 },
                 {
-                    "timestamp": "2023年4月",
-                    "content": "与负责人发生争执",
+                    "timestamp": "2023年8月26日凌晨 0:30",
+                    "content": "丹丹给母亲打电话，表达疲惫和不满，通话中再次感到不适",
+                    "type": "danger"
+                },
+                {
+                    "timestamp": "2023年8月26日凌晨 0:45",
+                    "content": "丹丹从三楼坠落，被送往医院",
                     "type": "error"
                 },
                 {
-                    "timestamp": "2023年4月",
-                    "content": "坠楼事件发生",
+                    "timestamp": "2023年8月26日凌晨",
+                    "content": "丹丹入院，被诊断为多处粉碎性骨折、失血性休克、肺挫伤伴感染及抑郁症",
                     "type": "error"
                 }
             ]

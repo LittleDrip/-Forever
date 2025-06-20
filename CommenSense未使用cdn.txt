@@ -5,6 +5,34 @@
         <div class="container">
             <!-- 左侧边栏 -->
             <div class="left-sidebar">
+                <!-- 心理问题成因统计南丁格尔玫瑰图 -->
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <p class="chart-title">
+                            <svg t="1732109612981" class="icon" viewBox="0 0 1024 1024" version="1.1"
+                                xmlns="http://www.w3.org/2000/svg" p-id="3320" width="32" height="32">
+                                <path
+                                    d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64z m0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
+                                    fill="#F68F3B" p-id="3321"></path>
+                                <path
+                                    d="M512 336c-97.2 0-176 78.8-176 176s78.8 176 176 176 176-78.8 176-176-78.8-176-176-176z m0 288c-61.9 0-112-50.1-112-112s50.1-112 112-112 112 50.1 112 112-50.1 112-112 112z"
+                                    fill="#F68F3B" p-id="3322"></path>
+                                <path
+                                    d="M512 392c-66.2 0-120 53.8-120 120s53.8 120 120 120 120-53.8 120-120-53.8-120-120-120z m0 176c-30.9 0-56-25.1-56-56s25.1-56 56-56 56 25.1 56 56-25.1 56-56 56z"
+                                    fill="#F68F3B" p-id="3323"></path>
+                            </svg>
+                            <span>心理问题成因分布</span>
+                        </p>
+                        <el-select v-model="selectedChartType" class="chart-type-select" @change="updateCauseChart"
+                            placeholder="请选择">
+                            <el-option v-for="item in chartOptions" :key="item.value" :label="item.label"
+                                :value="item.value">
+                            </el-option>
+                        </el-select>
+                    </div>
+                    <div id="depression-cause-chart" class="chart"></div>
+                </div>
+
                 <!-- 中小学生抑郁检出率 -->
                 <div class="chart-container">
                     <p class="chart-title">
@@ -23,26 +51,6 @@
                         中小学生抑郁检出率
                     </p>
                     <div id="student-mental-chart" class="chart"></div>
-                </div>
-
-                <!-- 大学生焦虑抑郁风险 -->
-                <div class="chart-container">
-                    <p class="chart-title">
-                        <svg t="1732109612981" class="icon" viewBox="0 0 1024 1024" version="1.1"
-                            xmlns="http://www.w3.org/2000/svg" p-id="3320" width="32" height="32">
-                            <path
-                                d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64z m0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
-                                fill="#1E4D8C" p-id="3321"></path>
-                            <path
-                                d="M512 336c-97.2 0-176 78.8-176 176s78.8 176 176 176 176-78.8 176-176-78.8-176-176-176z m0 288c-61.9 0-112-50.1-112-112s50.1-112 112-112 112 50.1 112 112-50.1 112-112 112z"
-                                fill="#1E4D8C" p-id="3322"></path>
-                            <path
-                                d="M512 392c-66.2 0-120 53.8-120 120s53.8 120 120 120 120-53.8 120-120-53.8-120-120-120z m0 176c-30.9 0-56-25.1-56-56s25.1-56 56-56 56 25.1 56 56-25.1 56-56 56z"
-                                fill="#1E4D8C" p-id="3323"></path>
-                        </svg>
-                        大学生抑郁、焦虑风险
-                    </p>
-                    <div id="college-mental-chart" class="chart"></div>
                 </div>
             </div>
 
@@ -90,32 +98,24 @@
                     <div id="mental-health-chart" class="chart"></div>
                 </div>
 
-                <!-- 心理问题成因统计南丁格尔玫瑰图 -->
+                <!-- 大学生焦虑抑郁风险 -->
                 <div class="chart-container">
-                    <div class="chart-header">
-                        <p class="chart-title">
-                            <svg t="1732109612981" class="icon" viewBox="0 0 1024 1024" version="1.1"
-                                xmlns="http://www.w3.org/2000/svg" p-id="3320" width="32" height="32">
-                                <path
-                                    d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64z m0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
-                                    fill="#F68F3B" p-id="3321"></path>
-                                <path
-                                    d="M512 336c-97.2 0-176 78.8-176 176s78.8 176 176 176 176-78.8 176-176-78.8-176-176-176z m0 288c-61.9 0-112-50.1-112-112s50.1-112 112-112 112 50.1 112 112-50.1 112-112 112z"
-                                    fill="#F68F3B" p-id="3322"></path>
-                                <path
-                                    d="M512 392c-66.2 0-120 53.8-120 120s53.8 120 120 120 120-53.8 120-120-53.8-120-120-120z m0 176c-30.9 0-56-25.1-56-56s25.1-56 56-56 56 25.1 56 56-25.1 56-56 56z"
-                                    fill="#F68F3B" p-id="3323"></path>
-                            </svg>
-                            <span>心理问题成因分布</span>
-                        </p>
-                        <el-select v-model="selectedChartType" class="chart-type-select" @change="updateCauseChart"
-                            placeholder="请选择">
-                            <el-option v-for="item in chartOptions" :key="item.value" :label="item.label"
-                                :value="item.value">
-                            </el-option>
-                        </el-select>
-                    </div>
-                    <div id="depression-cause-chart" class="chart"></div>
+                    <p class="chart-title">
+                        <svg t="1732109612981" class="icon" viewBox="0 0 1024 1024" version="1.1"
+                            xmlns="http://www.w3.org/2000/svg" p-id="3320" width="32" height="32">
+                            <path
+                                d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64z m0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
+                                fill="#1E4D8C" p-id="3321"></path>
+                            <path
+                                d="M512 336c-97.2 0-176 78.8-176 176s78.8 176 176 176 176-78.8 176-176-78.8-176-176-176z m0 288c-61.9 0-112-50.1-112-112s50.1-112 112-112 112 50.1 112 112-50.1 112-112 112z"
+                                fill="#1E4D8C" p-id="3322"></path>
+                            <path
+                                d="M512 392c-66.2 0-120 53.8-120 120s53.8 120 120 120 120-53.8 120-120-53.8-120-120-120z m0 176c-30.9 0-56-25.1-56-56s25.1-56 56-56 56 25.1 56 56-25.1 56-56 56z"
+                                fill="#1E4D8C" p-id="3323"></path>
+                        </svg>
+                        大学生抑郁、焦虑风险
+                    </p>
+                    <div id="college-mental-chart" class="chart"></div>
                 </div>
             </div>
         </div>
@@ -131,14 +131,7 @@ import { articleListByPageService, articleListService, getAllPagesTotal, getArti
 import router from "@/router";
 import { addBrowsingHistory } from "@/api/history";
 import { useUserStore } from "@/stores/user";
-
-// 声明全局echarts类型
-declare global {
-    interface Window {
-        echarts: any;
-    }
-}
-
+import * as echarts from 'echarts';
 const userStore = useUserStore();
 
 // 定义分类列表
@@ -202,10 +195,10 @@ const handleScroll = (e: Event) => {
 };
 
 // 初始化图表
-let mentalHealthChart: any | null = null;
-let studentMentalChart: any | null = null;
-let collegeMentalChart: any | null = null;
-let depressionCauseChart: any | null = null;
+let mentalHealthChart: echarts.ECharts | null = null;
+let studentMentalChart: echarts.ECharts | null = null;
+let collegeMentalChart: echarts.ECharts | null = null;
+let depressionCauseChart: echarts.ECharts | null = null;
 
 const initChart = () => {
     if (mentalHealthChart) {
@@ -215,7 +208,7 @@ const initChart = () => {
     const chartDom = document.getElementById('mental-health-chart');
     if (!chartDom) return;
 
-    mentalHealthChart = window.echarts.init(chartDom);
+    mentalHealthChart = echarts.init(chartDom);
 
     const anxietyData = [
         [2014, 4300], [2015, 4400], [2016, 4500], [2017, 4600],
@@ -413,7 +406,7 @@ const initStudentMentalChart = () => {
     const chartDom = document.getElementById('student-mental-chart');
     if (!chartDom) return;
 
-    studentMentalChart = window.echarts.init(chartDom);
+    studentMentalChart = echarts.init(chartDom);
 
     const option = {
         title: {
@@ -483,7 +476,7 @@ const initCollegeMentalChart = () => {
     const chartDom = document.getElementById('college-mental-chart');
     if (!chartDom) return;
 
-    collegeMentalChart = window.echarts.init(chartDom);
+    collegeMentalChart = echarts.init(chartDom);
 
     const option = {
         title: {
@@ -553,7 +546,7 @@ const initDepressionCauseChart = () => {
     const chartDom = document.getElementById('depression-cause-chart');
     if (!chartDom) return;
 
-    depressionCauseChart = window.echarts.init(chartDom);
+    depressionCauseChart = echarts.init(chartDom);
 
     const option = {
         title: {

@@ -32,6 +32,7 @@ import MultiChoice from "@/components/quiz/MultiChoice.vue";
 import Judgment from "@/components/quiz/Judgment.vue";
 import ShortAnswer from "@/components/quiz/ShortAnswer.vue";
 import { getQuestionsList, submitPaper } from "@/api/quiz";
+import { clearAiMemory } from '@/api/history';
 import { useRoute } from "vue-router";
 import router from "@/router";
 const route = useRoute();
@@ -72,9 +73,16 @@ onMounted(() => {
     });
 });
 
+
+
+// 清空Ai记录
+const clearAiMemoryFunction = async () => {
+    await clearAiMemory();
+}
+
 const submitAnswers = async () => {
     isSubmitting.value = true;  // 提交开始时，禁用按钮
-
+    await clearAiMemoryFunction();
     // 判断是否所有问题都有答案
     const unansweredQuestions = questions.value.filter(item => !item.resource);
 

@@ -1,7 +1,18 @@
 <template>
+
     <div class="news-detail">
+
         <!-- 案例选择器 -->
         <div class="case-selector">
+            <div class="back-button" @click="goBack">
+                <svg t="1710747179070" class="icon" viewBox="0 0 1024 1024" version="1.1"
+                    xmlns="http://www.w3.org/2000/svg" p-id="4250" width="32" height="32">
+                    <path
+                        d="M395.21518 513.604544l323.135538-312.373427c19.052938-18.416442 19.052938-48.273447 0-66.660212-19.052938-18.416442-49.91597-18.416442-68.968908 0L291.910961 480.275316c-19.052938 18.416442-19.052938 48.273447 0 66.660212l357.439172 345.70441c19.052938 18.416442 49.91597 18.416442 68.968908 0 19.052938-18.416442 19.052938-48.273447 0-66.660212L395.21518 513.604544z"
+                        p-id="4251"></path>
+                </svg>
+                返回
+            </div>
             <el-select v-model="currentCaseId" placeholder="请选择案例" @change="handleCaseChange">
                 <el-option v-for="caseItem in cases" :key="caseItem.id" :label="caseItem.title" :value="caseItem.id" />
             </el-select>
@@ -62,9 +73,10 @@ import 'element-plus/es/components/radio-button/style/css'
 import 'element-plus/es/components/select/style/css'
 import 'element-plus/es/components/option/style/css'
 import caseStudies from '@/data/caseStudies.json'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import case1Video from '@/assets/video/case1.mp4'
-
+import case3Video from '@/assets/video/case3.mp4'
+import case0Video from '@/assets/video/case0.mp4'
 const relationChartRef = ref<HTMLElement | null>(null)
 const pressureChartRef = ref<HTMLElement | null>(null)
 const currentChart = ref<'relation' | 'pressure'>('pressure')
@@ -72,6 +84,7 @@ const currentCaseId = ref('')
 let relationChart: echarts.ECharts | null = null
 let pressureChart: echarts.ECharts | null = null
 const videoUrl = ref('')
+const router = useRouter()
 
 const cases = caseStudies.cases
 const currentCase = computed(() => cases.find(c => c.id === currentCaseId.value) || cases[0])
@@ -98,13 +111,19 @@ const getVideoUrl = (url: string) => {
     }
     // 根据案例ID返回对应的视频
     switch (currentCaseId.value) {
+        case 'case0':
+            return case0Video
         case 'case1':
             return case1Video
+        case 'case3':
+            return case3Video
         default:
             return url
     }
 }
-
+const goBack = () => {
+    router.push('/HotNews')
+}
 // 初始化压力源分析图
 const initPressureChart = () => {
     if (pressureChartRef.value) {
@@ -277,9 +296,7 @@ const getLineColor = (interaction: string) => {
 
 // 处理案例切换
 const handleCaseChange = () => {
-    videoUrl.value = getVideoUrl(currentCase.value.video.url)
-    initPressureChart()
-    initRelationChart()
+    window.location.href = `/HotNews/${currentCaseId.value}`
 }
 
 // 监听图表切换
@@ -310,6 +327,28 @@ onUnmounted(() => {
 </script>
 
 <style lang="scss" scoped>
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 1.2rem;
+    position: absolute;
+    cursor: pointer;
+    left: 1.5rem;
+    color: #666;
+    transition: all 0.3s ease;
+
+    &:hover {
+        color: #E8D575;
+        transform: translateX(-5px);
+    }
+
+    svg {
+        width: 24px;
+        height: 24px;
+    }
+}
+
 .news-detail {
     display: grid;
     grid-template-columns: 1fr 1fr;

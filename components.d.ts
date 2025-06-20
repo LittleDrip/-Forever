@@ -58,6 +58,7 @@ declare module 'vue' {
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
     ElUpload: typeof import('element-plus/es')['ElUpload']
     FunClass: typeof import('./src/components/aside/FunClass.vue')['default']
+    HotlineList: typeof import('./src/components/aside/HotlineList.vue')['default']
     Judgment: typeof import('./src/components/quiz/Judgment.vue')['default']
     MultiChoice: typeof import('./src/components/quiz/MultiChoice.vue')['default']
     OrientationPrompt: typeof import('./src/components/OrientationPrompt.vue')['default']

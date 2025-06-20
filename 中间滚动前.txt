@@ -56,14 +56,12 @@
                     </div>
                 </div>
 
-                <div class="post-list" @scroll="handleScroll">
-                    <el-skeleton :rows="50" animated v-if="posts.length <= 1" />
+                <el-skeleton :rows="50" animated v-if="posts.length <= 1" />
 
-                    <div v-else class="post" v-for="post in posts" :key="post.id">
-                        <div @click="goToDetail(post.id)">
-                            <h3 class="post-title">{{ post.title }}</h3>
-                            <p class="post-content">{{ post.content }}</p>
-                        </div>
+                <div v-else class="post" v-for="post in posts" :key="post.id">
+                    <div @click="goToDetail(post.id)">
+                        <h3 class="post-title">{{ post.title }}</h3>
+                        <p class="post-content">{{ post.content }}</p>
                     </div>
                 </div>
             </div>
@@ -108,12 +106,10 @@
                             </svg>
                             <span>心理问题成因分布</span>
                         </p>
-                        <el-select v-model="selectedChartType" class="chart-type-select" @change="updateCauseChart"
-                            placeholder="请选择">
-                            <el-option v-for="item in chartOptions" :key="item.value" :label="item.label"
-                                :value="item.value">
-                            </el-option>
-                        </el-select>
+                        <select v-model="selectedChartType" class="chart-type-select" @change="updateCauseChart">
+                            <option value="depression">抑郁症成因</option>
+                            <option value="anxiety">焦虑症成因</option>
+                        </select>
                     </div>
                     <div id="depression-cause-chart" class="chart"></div>
                 </div>
@@ -131,13 +127,7 @@ import { articleListByPageService, articleListService, getAllPagesTotal, getArti
 import router from "@/router";
 import { addBrowsingHistory } from "@/api/history";
 import { useUserStore } from "@/stores/user";
-
-// 声明全局echarts类型
-declare global {
-    interface Window {
-        echarts: any;
-    }
-}
+import * as echarts from 'echarts';
 
 const userStore = useUserStore();
 
@@ -186,26 +176,27 @@ const getArticleListByPage = async () => {
 };
 
 // 修改滚动加载逻辑
-const handleScroll = (e: Event) => {
-    const target = e.target as HTMLElement;
-    const scrollTop = target.scrollTop;
-    const scrollHeight = target.scrollHeight;
-    const clientHeight = target.clientHeight;
+const handleScroll = () => {
+    const scrollTop = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop;
+    const windowHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+    const documentHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
 
     // 只在"全部"分类下启用滚动加载
     if (currentCategory.value === '全部' &&
-        scrollTop + clientHeight >= scrollHeight - 100 &&
-        page.value.current < page.value.totalPages) {
-        page.value.current += 1;
-        getArticleListByPage();
+        scrollTop + windowHeight >= documentHeight - 100 &&
+        page.value.current <= page.value.totalPages) {
+        if (page.value.current < page.value.totalPages) {
+            page.value.current += 1;
+            getArticleListByPage();
+        }
     }
 };
 
 // 初始化图表
-let mentalHealthChart: any | null = null;
-let studentMentalChart: any | null = null;
-let collegeMentalChart: any | null = null;
-let depressionCauseChart: any | null = null;
+let mentalHealthChart: echarts.ECharts | null = null;
+let studentMentalChart: echarts.ECharts | null = null;
+let collegeMentalChart: echarts.ECharts | null = null;
+let depressionCauseChart: echarts.ECharts | null = null;
 
 const initChart = () => {
     if (mentalHealthChart) {
@@ -215,7 +206,7 @@ const initChart = () => {
     const chartDom = document.getElementById('mental-health-chart');
     if (!chartDom) return;
 
-    mentalHealthChart = window.echarts.init(chartDom);
+    mentalHealthChart = echarts.init(chartDom);
 
     const anxietyData = [
         [2014, 4300], [2015, 4400], [2016, 4500], [2017, 4600],
@@ -282,10 +273,9 @@ const initChart = () => {
             type: 'value',
             min: 2014,
             max: 2023,
-            interval: 2,
+            interval: 1,
             axisLabel: {
-                formatter: '{value}',
-                interval: 0
+                formatter: '{value}'
             }
         },
         yAxis: {
@@ -413,7 +403,7 @@ const initStudentMentalChart = () => {
     const chartDom = document.getElementById('student-mental-chart');
     if (!chartDom) return;
 
-    studentMentalChart = window.echarts.init(chartDom);
+    studentMentalChart = echarts.init(chartDom);
 
     const option = {
         title: {
@@ -483,7 +473,7 @@ const initCollegeMentalChart = () => {
     const chartDom = document.getElementById('college-mental-chart');
     if (!chartDom) return;
 
-    collegeMentalChart = window.echarts.init(chartDom);
+    collegeMentalChart = echarts.init(chartDom);
 
     const option = {
         title: {
@@ -553,7 +543,7 @@ const initDepressionCauseChart = () => {
     const chartDom = document.getElementById('depression-cause-chart');
     if (!chartDom) return;
 
-    depressionCauseChart = window.echarts.init(chartDom);
+    depressionCauseChart = echarts.init(chartDom);
 
     const option = {
         title: {
@@ -640,12 +630,6 @@ const updateCauseChart = () => {
     // 根据 selectedChartType 的值，更新图表
     initDepressionCauseChart();
 };
-
-// 添加图表选项数据
-const chartOptions = [
-    { value: 'depression', label: '抑郁症成因' },
-    { value: 'anxiety', label: '焦虑症成因' }
-];
 
 onMounted(() => {
     window.addEventListener("scroll", handleScroll);
@@ -741,15 +725,15 @@ const getTotalPages = async () => {
 const goToDetail = async (id: any) => {
     // 记录浏览历史
     // 从posts中找到对应的文章标题
-    // const post = posts.value.find(item => item.id === id);
-    // const title = post ? post.title : '未知标题';
-    // const data = {
-    //     articleId: id,
-    //     articleTitle: title,
-    //     userId: (userStore.userInfo && 'id' in userStore.userInfo) ? userStore.userInfo.id : '',
-    // }
-    // console.log(data);
-    // await addBrowsingHistory(data);
+    const post = posts.value.find(item => item.id === id);
+    const title = post ? post.title : '未知标题';
+    const data = {
+        articleId: id,
+        articleTitle: title,
+        userId: (userStore.userInfo && 'id' in userStore.userInfo) ? userStore.userInfo.id : '',
+    }
+    console.log(data);
+    await addBrowsingHistory(data);
     router.push(
         { path: '/article', query: { id } }
     );
@@ -786,7 +770,7 @@ const toggleStar = (post: any) => {
 
 /* 左侧边栏 */
 .left-sidebar {
-    flex: 1.1;
+    flex: 1;
     display: flex;
     flex-direction: column;
     gap: 1.5em;
@@ -794,11 +778,11 @@ const toggleStar = (post: any) => {
     .chart-container {
         background: linear-gradient(145deg, #ffffff, #f8f8f8);
         border-radius: 12px;
+
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         overflow: hidden;
         transition: all 0.3s ease;
         padding-bottom: 15px;
-        height: calc(50% - 0.75em); // 每个图表占一半高度，减去间距的一半
 
         .chart-title {
             font-size: 1.3em;
@@ -819,21 +803,8 @@ const toggleStar = (post: any) => {
 
         .chart {
             width: 100%;
-            height: calc(100% - 60px); // 减去标题的高度
+            height: 280px;
             margin: 0 auto;
-        }
-
-        .chart-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 15px 0 15px;
-            margin-bottom: 0.5em;
-
-            .chart-title {
-                margin: 0;
-                padding: 0;
-            }
         }
     }
 }
@@ -843,14 +814,9 @@ const toggleStar = (post: any) => {
     flex: 2.2;
     background-color: #ffffff;
     padding: 1.5em;
-
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     transition: all 0.3s ease;
-    display: flex;
-    flex-direction: column;
-    height: calc(100vh); // 设置固定高度
-    overflow: hidden; // 隐藏整体溢出
 
     /* 添加分类导航样式 */
     .category-nav {
@@ -863,7 +829,6 @@ const toggleStar = (post: any) => {
         overflow-x: auto;
         scrollbar-width: none;
         -ms-overflow-style: none;
-        flex-shrink: 0; // 防止导航栏被压缩
 
         &::-webkit-scrollbar {
             display: none;
@@ -891,36 +856,9 @@ const toggleStar = (post: any) => {
         }
     }
 
-    /* 文章列表容器 */
-    .post-list {
-        flex: 1;
-        overflow-y: auto;
-        padding-right: 1em;
-        scrollbar-width: thin;
-        scrollbar-color: #999 #f0f0f0;
-
-        &::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        &::-webkit-scrollbar-track {
-            background: #f0f0f0;
-            border-radius: 3px;
-        }
-
-        &::-webkit-scrollbar-thumb {
-            background: #999;
-            border-radius: 3px;
-        }
-
-        &::-webkit-scrollbar-thumb:hover {
-            background: #666;
-        }
-    }
-
     .post {
         margin-bottom: 2em;
-        padding: 1em;
+        padding: 1.5em;
         border-radius: 10px;
         background: linear-gradient(145deg, #ffffff, #f8f8f8);
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
@@ -1009,7 +947,7 @@ const toggleStar = (post: any) => {
 
 /* 右侧工具区域 */
 .sidebar {
-    flex: 1.1;
+    flex: 1.3;
     display: flex;
     flex-direction: column;
     gap: 1.5em;
@@ -1021,29 +959,11 @@ const toggleStar = (post: any) => {
         overflow: hidden;
         transition: all 0.3s ease;
         padding-bottom: 15px;
-        height: calc(50% - 0.75em); // 每个图表占一半高度，减去间距的一半
 
-        .chart-title {
-            font-size: 1.3em;
-            margin: 0 0 0.5em 0;
-            padding: 15px 15px 0 15px;
-            display: flex;
-            align-items: center;
-            font-weight: 500;
-            color: #2c3e50;
-
-            svg {
-                flex-shrink: 0;
-                margin-right: 8px;
-                width: 24px;
-                height: 24px;
+        &:nth-child(2) {
+            .chart {
+                height: 330px;
             }
-        }
-
-        .chart {
-            width: 100%;
-            height: calc(100% - 60px); // 减去标题的高度
-            margin: 0 auto;
         }
 
         .chart-header {
@@ -1059,7 +979,45 @@ const toggleStar = (post: any) => {
             }
         }
 
+        .chart-type-select {
+            border: 1px solid #e8e8e8;
+            border-radius: 6px;
+            padding: 5px 10px;
+            font-size: 0.9em;
+            color: #2c3e50;
+            background-color: #fff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            outline: none;
+            border-color: #F68F3B;
 
+            &:hover,
+            &:focus {
+
+                box-shadow: 0 0 0 2px rgba(246, 143, 59, 0.1);
+            }
+        }
+
+        .chart-title {
+            font-size: 1.4em;
+            margin: 0 0 0.5em 0;
+            padding: 15px 15px 0 15px;
+            display: flex;
+            align-items: center;
+            font-weight: 500;
+            color: #2c3e50;
+
+            svg {
+                flex-shrink: 0;
+                margin-right: 8px;
+            }
+        }
+
+        .chart {
+            width: 100%;
+            height: 350px;
+            margin: 0 auto;
+        }
     }
 }
 
@@ -1230,26 +1188,6 @@ const toggleStar = (post: any) => {
                 height: 300px;
             }
         }
-    }
-}
-
-.chart-type-select {
-    width: 120px;
-    margin-left: 10px;
-
-    :deep(.el-input__wrapper) {
-        background-color: #f5f5f5;
-        border: none;
-        box-shadow: none;
-
-        &:hover {
-            background-color: rgba(232, 213, 117, 0.2);
-        }
-    }
-
-    :deep(.el-input__inner) {
-        color: #666;
-        font-size: 14px;
     }
 }
 </style>

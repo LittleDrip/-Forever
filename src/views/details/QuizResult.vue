@@ -135,10 +135,11 @@ onMounted(async () => {
 
 // 返回首页
 const goBack = () => {
-    router.push("/diagnosticTests").then(() => {
-        window.location.reload();
-    }); // 跳转到测试列表页面
-
+    // 在返回前触发数据刷新
+    router.push({
+        path: "/diagnosticTests",
+        query: { refresh: Date.now() } // 添加时间戳参数强制刷新
+    });
 };
 </script>
 

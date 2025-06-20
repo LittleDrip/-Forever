@@ -1,0 +1,618 @@
+<template>
+
+    <div class="common-sense">
+        <!-- 整体布局 -->
+        <div class="container">
+            <!-- 左侧内容 -->
+            <div class="content">
+                <!-- 添加分类导航栏 -->
+                <div class="category-nav">
+                    <div v-for="category in categories" :key="category" class="category-item"
+                        :class="{ active: currentCategory === category }" @click="handleCategoryClick(category)">
+                        {{ category }}
+                    </div>
+                </div>
+
+                <el-skeleton :rows="50" animated v-if="posts.length <= 1" />
+
+                <div v-else class="post" v-for="post in posts" :key="post.id">
+                    <div @click="goToDetail(post.id)">
+                        <h3 class="post-title">{{ post.title }}</h3>
+                        <p class="post-content">{{ post.content }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右侧工具 -->
+            <div class="sidebar">
+                <!-- 心理援助热线 -->
+                <div class="hotline">
+                    <p style="font-size: 1.5em; margin: 0 0 0.5em 0; padding: 15px 15px 0 15px">
+                        <svg t="1732109612981" class="icon" viewBox="0 0 1024 1024" version="1.1"
+                            xmlns="http://www.w3.org/2000/svg" p-id="3320" width="32" height="32">
+                            <path
+                                d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64z m0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
+                                fill="#E8D575" p-id="3321"></path>
+                            <path
+                                d="M512 336c-97.2 0-176 78.8-176 176s78.8 176 176 176 176-78.8 176-176-78.8-176-176-176z m0 288c-61.9 0-112-50.1-112-112s50.1-112 112-112 112 50.1 112 112-50.1 112-112 112z"
+                                fill="#E8D575" p-id="3322"></path>
+                            <path
+                                d="M512 392c-66.2 0-120 53.8-120 120s53.8 120 120 120 120-53.8 120-120-53.8-120-120-120z m0 176c-30.9 0-56-25.1-56-56s25.1-56 56-56 56 25.1 56 56-25.1 56-56 56z"
+                                fill="#E8D575" p-id="3323"></path>
+                        </svg>
+                        全国心理援助热线
+                    </p>
+                    <HotlineList />
+                </div>
+                <div class="quote">
+                    <p class="quote-title">
+                        <svg t="1732109322983" class="icon" viewBox="0 0 1024 1024" version="1.1"
+                            xmlns="http://www.w3.org/2000/svg" p-id="27931" width="32" height="32">
+                            <path
+                                d="M506.8 185.8c-164.6 0-298.1 132.4-298.1 295.8 0 104.8 55 196.8 137.8 249.3L288.7 825l137.1-58.8a300.6 300.6 0 0 0 81 11.1c164.6 0 298.1-132.4 298.1-295.8S671.4 185.8 506.8 185.8z"
+                                fill="#F68F3B" p-id="27932"></path>
+                            <path
+                                d="M703.9 361.5c-4.9 0-9.7-2.5-12.3-7.1-31.7-54.8-90.6-73.2-91.2-73.4-7.5-2.3-11.7-10.1-9.4-17.6 2.3-7.4 10.2-11.6 17.6-9.4 2.8 0.8 70.1 21.5 107.6 86.3 3.9 6.7 1.6 15.4-5.2 19.2-2.2 1.4-4.7 2-7.1 2zM551.7 268.8c-1.2 0-2.5-0.1-3.7-0.5-21.3-5.7-38.9-3.2-39.1-3.2-7.8 1.2-15-4.1-16.1-11.8-1.2-7.7 4.1-14.8 11.8-16 1-0.1 23.4-3.5 50.8 3.8 7.6 2 12 9.8 10 17.3-1.7 6.2-7.4 10.4-13.7 10.4z"
+                                fill="#FFFFFF" p-id="27933"></path>
+                            <path
+                                d="M506.8 167c-174.8 0-317 141.1-317 314.6 0 101.7 48.7 195.7 131.3 254.9l-48.6 78.9c-4.2 6.9-3.5 15.8 1.8 21.9 3.7 4.3 9 6.6 14.4 6.6 2.4 0 4.8-0.5 7.1-1.4L427 786c26.1 6.7 52.9 10.1 79.8 10.1 174.8 0 317-141.1 317-314.6 0-173.4-142.2-314.5-317-314.5z m0 591.6c-25.5 0-51.1-3.5-75.9-10.4-4.1-1.2-8.4-0.9-12.3 0.7l-84.4 37.5 28.4-45.8c5.3-8.7 2.6-20-6-25.5-80.8-51.3-129-138.6-129-233.5 0-152.7 125.2-277 279.1-277s279.1 124.3 279.1 277c0.1 152.7-125.1 277-279 277z"
+                                fill="#211F1E" p-id="27934"></path>
+                            <path
+                                d="M661.5 423.4c0-20.7-16.9-37.6-37.9-37.6-20.9 0-37.8 16.8-37.8 37.6 0 20.7 16.9 37.6 37.8 37.6 21 0 37.9-16.8 37.9-37.6zM433.1 423.4c0-20.7-16.9-37.6-37.9-37.6-20.9 0-37.8 16.8-37.8 37.6 0 20.7 16.9 37.6 37.8 37.6 21 0 37.9-16.8 37.9-37.6zM597.5 531.6c-9.7-3.9-20.7 0.7-24.7 10.3-0.2 0.4-16.2 38-63.4 38-48.6 0-61.6-32.8-62.9-36.8-3.2-9.8-13.9-15.1-23.7-12-10 3.1-15.5 13.7-12.3 23.6 0.8 2.6 21 62.8 98.9 62.8 72.3 0 97.4-58.8 98.4-61.3 4-9.7-0.6-20.6-10.3-24.6zM303.2 502.4c-4.1 0-7.3 3.3-7.3 7.3s3.3 7.3 7.3 7.3 7.3-3.3 7.3-7.3-3.3-7.3-7.3-7.3zM336.8 502.4c-4.1 0-7.3 3.3-7.3 7.3s3.3 7.3 7.3 7.3 7.3-3.3 7.3-7.3c0.1-4-3.2-7.3-7.3-7.3zM320 525.1c-4.1 0-7.3 3.3-7.3 7.3s3.3 7.3 7.3 7.3 7.3-3.3 7.3-7.3c0-4.1-3.2-7.3-7.3-7.3zM353.7 525.1c-4 0-7.3 3.3-7.3 7.3s3.3 7.3 7.3 7.3 7.3-3.3 7.3-7.3c0-4.1-3.3-7.3-7.3-7.3zM336.8 546.9c-4.1 0-7.3 3.3-7.3 7.3s3.3 7.3 7.3 7.3 7.3-3.3 7.3-7.3c0.1-4-3.2-7.3-7.3-7.3zM374.8 502.4c-4.1 0-7.3 3.3-7.3 7.3s3.3 7.3 7.3 7.3 7.3-3.3 7.3-7.3-3.2-7.3-7.3-7.3zM654.7 502.4c-4.1 0-7.3 3.3-7.3 7.3s3.3 7.3 7.3 7.3 7.3-3.3 7.3-7.3c0.1-4-3.2-7.3-7.3-7.3zM688.4 502.4c-4.1 0-7.3 3.3-7.3 7.3s3.3 7.3 7.3 7.3 7.3-3.3 7.3-7.3-3.2-7.3-7.3-7.3zM671.6 525.1c-4.1 0-7.3 3.3-7.3 7.3s3.3 7.3 7.3 7.3 7.3-3.3 7.3-7.3c0-4.1-3.3-7.3-7.3-7.3zM705.3 525.1c-4 0-7.3 3.3-7.3 7.3s3.3 7.3 7.3 7.3 7.3-3.3 7.3-7.3c0-4.1-3.3-7.3-7.3-7.3zM688.4 546.9c-4.1 0-7.3 3.3-7.3 7.3s3.3 7.3 7.3 7.3 7.3-3.3 7.3-7.3-3.2-7.3-7.3-7.3zM726.4 502.4c-4.1 0-7.3 3.3-7.3 7.3s3.3 7.3 7.3 7.3 7.3-3.3 7.3-7.3-3.3-7.3-7.3-7.3z"
+                                fill="#211F1E" p-id="27935"></path>
+                        </svg>
+                        <span>慧语心灯</span>
+
+                    </p>
+                    <el-divider />
+                    <Quote />
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script lang="ts" setup>
+import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
+import starSvg from "@/assets/svg/star.svg";
+import starSvgActive from "@/assets/svg/star_active.svg";
+import FunClass from "@/components/aside/FunClass.vue";
+import Quote from '@/components/aside/Quote.vue';
+import { articleListByPageService, articleListService, getAllPagesTotal, getArticleTag } from '@/api/article';
+import router from "@/router";
+import { addBrowsingHistory } from "@/api/history";
+import { useUserStore } from "@/stores/user";
+import HotlineList from '@/components/aside/HotlineList.vue';
+
+const userStore = useUserStore();
+
+// 定义分类列表
+const categories = ref([
+    '全部',
+    '心理健康',
+    '情绪管理',
+    '人际关系',
+    '焦虑障碍',
+    '压力应对',
+    '生活感悟'
+]);
+
+// 当前选中的分类
+const currentCategory = ref('全部');
+
+// 处理分类点击
+const handleCategoryClick = async (category: string) => {
+    currentCategory.value = category;
+    // 重置分页
+    page.value.current = 1;
+    posts.value = []; // 清空当前文章列表
+
+    if (category === '全部') {
+        // 如果是"全部"，调用普通分页接口
+        await getArticleListByPage();
+    } else {
+        // 如果是具体分类，调用分类接口
+        try {
+            const res = await getArticleTag(category);
+            posts.value = res.data;
+            stripHtmlTags();
+            postSummaries();
+        } catch (error) {
+            console.error('获取分类文章失败:', error);
+        }
+    }
+};
+
+// 修改获取文章列表的方法
+const getArticleListByPage = async () => {
+    if (currentCategory.value !== '全部') return; // 如果不是"全部"分类，不执行分页加载
+
+    const res = await articleListByPageService(page.value);
+    posts.value = [...posts.value, ...res.data];
+    stripHtmlTags();
+    postSummaries();
+};
+
+// 修改滚动加载逻辑
+const handleScroll = () => {
+    const scrollTop = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop;
+    const windowHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+    const documentHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
+
+    // 只在"全部"分类下启用滚动加载
+    if (currentCategory.value === '全部' &&
+        scrollTop + windowHeight >= documentHeight - 100 &&
+        page.value.current <= page.value.totalPages) {
+        if (page.value.current < page.value.totalPages) {
+            page.value.current += 1;
+            getArticleListByPage();
+        }
+    }
+};
+
+onMounted(() => {
+    window.addEventListener("scroll", handleScroll);
+    getTotalPages();
+    getArticleListByPage();
+});
+
+// 帖子数据
+// 定义 Post 接口
+interface Post {
+    id: string;
+    title: string;
+    content: string;
+    createTime: string;
+    userId: string;
+    type: string;
+    commentCount: string;
+    likeCount: string;
+    readCount: string;
+    collectCount: string;
+}
+
+// 初始化 posts 数组，确保每个元素都符合 Post 接口
+const posts = ref<Post[]>([]);
+const stripHtmlTags = () => {
+    posts.value.forEach(post => {
+        if (post.content) { // 确保 content 存在并为字符串
+            post.content = post.content.replace(/<[^>]+>/g, '');
+        } else {
+            post.content = ''; // 如果 content 为 null 或 undefined，设置为空字符串
+        }
+    });
+    console.log(posts.value.length);
+};
+
+const postSummaries = () => {
+    posts.value.forEach(post => {
+        const previewLength = Math.floor(Math.random() * 21) + 30; // 随机生成30到50之间的数字
+        if (post.content) { // 确保 content 存在
+            post.content = post.content.length > previewLength
+                ? `${post.content.substring(0, previewLength)}...`
+                : post.content;
+        }
+    });
+};
+
+const page = ref({
+    "current": 1,
+    "size": 8,
+    "totalPages": 10,
+})
+
+const getTotalPages = async () => {
+    const res = await getAllPagesTotal(page.value);
+    page.value.totalPages = res.data;
+}
+
+const goToDetail = async (id: any) => {
+    // 记录浏览历史
+    // 从posts中找到对应的文章标题
+    const post = posts.value.find(item => item.id === id);
+    const title = post ? post.title : '未知标题';
+    const data = {
+        articleId: id,
+        articleTitle: title,
+        userId: userStore.userInfo?.id || '',
+    }
+    console.log(data);
+    await addBrowsingHistory(data);
+    router.push(
+        { path: '/article', query: { id } }
+    );
+}
+
+// 切换点赞状态
+const toggleLike = (post: any) => {
+    post.liked = !post.liked;
+    post.likes += post.liked ? 1 : -1; // 点赞计数变化
+    console.log(post.liked);
+};
+
+// 切换收藏状态
+const toggleStar = (post: any) => {
+    post.starred = !post.starred;
+    post.star += post.starred ? 1 : -1; // 收藏计数变化
+};
+</script>
+
+<style lang="scss" scoped>
+/* 页面整体样式 */
+.common-sense {
+
+    background-color: #fafafa; // 更改背景色为浅灰色
+    min-height: 100vh;
+}
+
+.container {
+    display: flex;
+    max-width: 70%;
+    margin: 0 auto;
+    padding: 1.2em;
+    gap: 1.2em;
+}
+
+/* 左侧内容区域 */
+.content {
+    flex: 2.2;
+    background-color: #ffffff;
+    padding: 1.5em;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+
+    /* 添加分类导航样式 */
+    .category-nav {
+        display: flex;
+        justify-content: center;
+        gap: 1em;
+        padding: 0.5em 0;
+        margin-bottom: 1.5em;
+        border-bottom: 1px solid rgba(232, 213, 117, 0.2);
+        overflow-x: auto;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+
+        .category-item {
+            padding: 0.5em .8em;
+            border-radius: 10px;
+            background-color: #f5f5f5;
+            color: #666;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.3s ease;
+            font-size: 1.4em;
+
+            &:hover {
+                background-color: rgba(232, 213, 117, 0.2);
+                color: #E8D575;
+            }
+
+            &.active {
+                background-color: #E8D575;
+                color: #fff;
+            }
+        }
+    }
+
+    .post {
+        margin-bottom: 2em;
+        padding: 1.5em;
+        border-radius: 10px;
+        background: linear-gradient(145deg, #ffffff, #f8f8f8);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+
+        &:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .post-title {
+            font-size: 1.8em;
+            font-weight: 500;
+            margin-bottom: 0.8em;
+            color: #2c3e50;
+            cursor: pointer;
+            position: relative;
+            padding-left: 1em;
+
+            &::before {
+                content: '';
+                position: absolute;
+                left: 0;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 4px;
+                height: 100%;
+                background-color: #E8D575;
+                border-radius: 2px;
+            }
+
+            &:hover {
+                color: #a89743;
+            }
+        }
+
+        .post-content {
+            color: #666;
+            font-size: 1.2em;
+            line-height: 1.8;
+            margin-bottom: 1.5em;
+            padding: 0 1em;
+            cursor: pointer;
+
+            &:hover {
+                color: #333;
+            }
+        }
+
+        .post-footer {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 0.5em 1em;
+            border-top: 1px solid rgba(232, 213, 117, 0.2);
+            margin-top: 1em;
+
+            span {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                color: #666;
+                transition: all 0.3s ease;
+                padding: 0.5em 1em;
+                border-radius: 20px;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: rgba(232, 213, 117, 0.1);
+                    color: #E8D575;
+                }
+
+                svg {
+                    width: 20px;
+                    height: 20px;
+                    transition: transform 0.3s ease;
+
+                    &:hover {
+                        transform: scale(1.2);
+                    }
+                }
+            }
+        }
+    }
+}
+
+/* 右侧工具区域 */
+.sidebar {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+
+    .quote {
+        background: linear-gradient(145deg, #ffffff, #f8f8f8);
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+        transition: all 0.3s ease;
+
+        .quote-title {
+            font-size: 1.5em;
+            margin: 0 0 1.5em 0;
+            padding: 15px 15px 0 15px;
+            display: flex;
+            align-items: center;
+            font-weight: 500;
+            color: #2c3e50;
+
+            svg {
+                flex-shrink: 0;
+                margin-right: 8px;
+            }
+
+            span {
+                line-height: 32px;
+                vertical-align: middle;
+            }
+
+            .el-divider {
+                margin-top: 10px;
+                margin-left: 10px;
+                flex-grow: 1;
+            }
+        }
+    }
+
+    .hotline {
+        background: linear-gradient(145deg, #ffffff, #f8f8f8);
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+        transition: all 0.3s ease;
+        height: calc(100vh - 300px);
+        position: sticky;
+        top: 20px;
+
+        p {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5em;
+            color: #2c3e50;
+            margin: 0;
+            padding: 1em;
+            border-bottom: 2px solid rgba(232, 213, 117, 0.2);
+            background: #fff;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+
+            svg {
+                width: 24px;
+                height: 24px;
+            }
+        }
+    }
+}
+
+/* 响应式设计 */
+@media screen and (max-width: 1200px) {
+    .container {
+        max-width: 95%;
+        padding: 0.8em;
+    }
+
+    .content {
+        .post {
+            padding: 1.2em;
+
+            .post-title {
+                font-size: 1.5em;
+            }
+
+            .post-content {
+                font-size: 1em;
+            }
+        }
+    }
+
+    .sidebar {
+        .hotline {
+            height: auto;
+            // max-height: calc(100vh - 120px);
+        }
+    }
+}
+
+// 平板和手机横屏
+@media screen and (max-width: 926px) and (orientation: landscape) {
+    .container {
+        max-width: 100%;
+        padding: 0.5em;
+        gap: 0.8em;
+        flex-direction: row;
+        height: 100vh;
+        overflow: hidden;
+    }
+
+    .content {
+        flex: 1.8;
+        padding: 0.8em;
+        height: 100vh;
+        overflow-y: auto;
+
+        .post {
+            margin-bottom: 0.8em;
+            padding: 0.8em;
+
+            .post-title {
+                font-size: 1.2em;
+                margin-bottom: 0.5em;
+                padding-left: 0.8em;
+            }
+
+            .post-content {
+                font-size: 0.9em;
+                line-height: 1.6;
+                margin-bottom: 0.8em;
+                padding: 0 0.8em;
+            }
+        }
+    }
+
+    .sidebar {
+        flex: 1;
+        gap: 0.8em;
+        height: 100vh;
+        overflow-y: hidden;
+        padding-right: 0.5em;
+
+        .hotline {
+            height: 100%;
+            margin-bottom: 0;
+            background: #fff;
+
+            p {
+                font-size: 1.1em;
+                padding: 0.6em;
+                margin-bottom: 0.5em;
+
+                svg {
+                    width: 18px;
+                    height: 18px;
+                }
+            }
+        }
+    }
+}
+
+// 手机竖屏
+@media screen and (max-width: 768px) and (orientation: portrait) {
+    .container {
+        flex-direction: column;
+        max-width: 100%;
+        padding: 0.3em;
+    }
+
+    .content {
+        padding: 0.8em;
+
+        .post {
+            .post-title {
+                font-size: 1.2em;
+            }
+
+            .post-content {
+                font-size: 0.85em;
+            }
+        }
+    }
+
+    .sidebar {
+        order: -1;
+
+        .hotline {
+            height: auto;
+            max-height: 50vh;
+            margin-bottom: 1em;
+        }
+    }
+}
+
+// 超小屏幕
+@media screen and (max-width: 480px) {
+    .container {
+        padding: 0.2em;
+    }
+
+    .content {
+        padding: 0.5em;
+
+        .post {
+            padding: 0.8em;
+
+            .post-title {
+                font-size: 1.1em;
+            }
+
+            .post-content {
+                font-size: 0.8em;
+                padding: 0 0.5em;
+            }
+        }
+    }
+
+    .sidebar {
+        .hotline {
+            max-height: 40vh;
+        }
+    }
+}
+</style>

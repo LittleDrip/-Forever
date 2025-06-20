@@ -7,6 +7,13 @@ export const userLoginService = (LoginData: any) => {
     });
 };
 
+export const userRegisterService = (RegisterData: any) => {
+    return request({
+        url: "/user/register",
+        method: "post",
+        data: RegisterData,
+    });
+};
 export const userInfoService = () => {
     return request({
         url: "/user/getUserInfo",
@@ -20,3 +27,14 @@ export const userLogoutService = () => {
         method: "get",
     });
 }
+
+export const updateUserInfoService = (nickname?: string, avatar?: string) => {
+    return request({
+        url: '/user/updateNicknameAndAvatar',
+        method: 'post',
+        params: {
+            nickname,
+            avatar
+        }
+    });
+};

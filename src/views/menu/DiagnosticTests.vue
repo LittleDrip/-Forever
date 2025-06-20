@@ -1,7 +1,7 @@
 <!-- DiagnosticTest.vue -->
 <script lang="ts" setup>
 import router from "@/router";
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import { papersListService, userPapersService } from '@/api/quiz';
 const route = useRoute();
@@ -45,6 +45,12 @@ const testStatus = computed(() => {
     }));
 });
 const showCards = computed(() => route.path === "/diagnosticTests");
+
+// 监听路由参数变化
+watch(() => route.query, () => {
+    fetchUserPapers();
+}, { immediate: true });
+
 // 在组件挂载时获取用户试卷数据
 onMounted(() => {
     fetchUserPapers();
@@ -81,6 +87,15 @@ onMounted(() => {
                 </div>
             </el-card>
 
+            <!-- 添加参考来源区域 -->
+            <div class="reference-section">
+                <h4>试题集来源参考</h4>
+                <ul>
+                    <li>DASS-21抑郁、焦虑与压力量表</li>
+                    <li>艾森克情绪稳定性测评</li>
+                    <li>广泛性焦虑障碍测试（GAD-7）</li>
+                </ul>
+            </div>
         </div>
     </div>
 </template>
@@ -91,6 +106,7 @@ onMounted(() => {
     flex-direction: column;
     max-width: 50%;
     margin: 20px auto;
+    min-height: 92.5vh;
     gap: 1.5em;
     padding: 1.5em;
     background-color: #fff;
@@ -228,6 +244,19 @@ onMounted(() => {
     .el-button {
         font-size: 0.8rem;
     }
+
+    .reference-section {
+        margin-top: 1.5em;
+        padding: 0.8em;
+
+        h4 {
+            font-size: 0.9rem;
+        }
+
+        ul li {
+            font-size: 0.8rem;
+        }
+    }
 }
 
 // 超小屏幕
@@ -265,6 +294,19 @@ onMounted(() => {
         font-size: 0.75rem;
         padding: 8px 12px;
     }
+
+    .reference-section {
+        margin-top: 1em;
+        padding: 0.6em;
+
+        h4 {
+            font-size: 0.85rem;
+        }
+
+        ul li {
+            font-size: 0.75rem;
+        }
+    }
 }
 
 .el-fade-in-linear-enter-active,
@@ -275,5 +317,30 @@ onMounted(() => {
 .el-fade-in-linear-enter-from,
 .el-fade-in-linear-leave-to {
     opacity: 0; // 初始状态或消失状态
+}
+
+.reference-section {
+    margin-top: 2em;
+    padding: 1em;
+    border-top: 1px solid #eee;
+    color: #666;
+
+    h4 {
+        font-size: 1rem;
+        margin-bottom: 0.8em;
+        color: #333;
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        li {
+            font-size: 0.9rem;
+            margin-bottom: 0.5em;
+            color: #666;
+        }
+    }
 }
 </style>

@@ -143,6 +143,11 @@ const router = createRouter({
           path: '/browse-history',
           name: '浏览历史',
           component: () => import('../views/browse-history.vue')
+        },
+        {
+          path: '/test',
+          name: '1',
+          component: () => import('../views/TestView2.vue')
         }
       ]
     },
@@ -150,6 +155,16 @@ const router = createRouter({
       path: '/login',
       name: '登录',
       component: () => import('../views/user/Login.vue'),
+    },
+    {
+      path: '/register',
+      name: '注册',
+      component: () => import('../views/user/register.vue'),
+    },
+    {
+      path: '/user-center',
+      name: "个人中心",
+      component: () => import('../views/user/user-center.vue')
     }
   ],
 })
